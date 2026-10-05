@@ -1,0 +1,98 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Iniciar Sesión — VidaSys-IBV{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center align-items-center min-vh-100">
+        <div class="col-11 col-sm-8 col-md-6 col-lg-4">
+
+            <!-- Card del login -->
+            <div class="card shadow-sm border-0" style="border-radius: 16px;">
+                <div class="card-body p-4 p-md-5">
+
+                    <!-- Logo y título -->
+                    <div class="text-center mb-4">
+                        <div class="mb-3">
+                            <!-- Placeholder para el escudo del IBV -->
+                            <div style="width: 80px; height: 80px; margin: 0 auto; background: linear-gradient(135deg, #1E3A5F, #2563EB); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <i class="bi bi-book" style="font-size: 40px; color: white;"></i>
+                            </div>
+                        </div>
+                        <h1 style="font-size: 22px; font-weight: 700; color: var(--color-primario); margin-bottom: 4px;">
+                            Instituto Bíblico Vida
+                        </h1>
+                        <p style="font-size: 14px; color: var(--color-texto-secundario); margin: 0;">
+                            VidaSys-IBV
+                        </p>
+                    </div>
+
+                    <!-- Mensaje de error (si existe) -->
+                    {% if error %}
+                    <div class="alert alert-danger" role="alert" style="border-radius: 8px;">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        {{ error }}
+                    </div>
+                    {% endif %}
+
+                    <!-- Formulario de login -->
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <!-- Campo usuario -->
+                        <div class="mb-3">
+                            <label for="numero_usuario">Usuario o correo</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="numero_usuario"
+                                name="numero_usuario"
+                                placeholder="Ej: admin o admin@ibv.local"
+                                required
+                                autofocus
+                            >
+                        </div>
+
+                        <!-- Campo contraseña -->
+                        <div class="mb-4">
+                            <label for="password">Contraseña</label>
+                            <input
+                                type="password"
+                                class="form-control"
+                                id="password"
+                                name="password"
+                                placeholder="Tu contraseña"
+                                required
+                            >
+                        </div>
+
+                        <!-- Botón de login -->
+                        <button type="submit" class="btn btn-primario w-100">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>
+                            Iniciar Sesión
+                        </button>
+                    </form>
+
+                    <!-- Enlace de olvido de contraseña -->
+                    <div class="text-center mt-3">
+                        <a href="#" style="color: var(--color-texto-secundario); font-size: 14px; text-decoration: none;">
+                            ¿Olvidó su contraseña?
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pie de página -->
+            <div class="text-center mt-4">
+                <p style="font-size: 12px; color: var(--color-texto-secundario); margin: 0;">
+                    © 2026 Instituto Bíblico Vida
+                </p>
+                <p style="font-size: 12px; color: var(--color-texto-secundario); margin: 0;">
+                    Dependencia de Ministerios Vida El Salvador
+                </p>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
