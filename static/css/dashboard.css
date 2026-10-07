@@ -5,6 +5,7 @@ body {
     background-color: var(--color-fondo);
 }
 
+/* ---- Sidebar ---- */
 .sidebar {
     background-color: var(--color-primario);
     color: white;
@@ -14,55 +15,11 @@ body {
     overflow-y: auto;
 }
 
-.sidebar-logo {
-    padding: 20px;
-    text-align: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.sidebar-logo img {
-    max-width: 100px;
-    height: auto;
-}
-
-.sidebar-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.sidebar-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 20px;
-    color: white;
-    text-decoration: none;
-    transition: background 0.2s;
-}
-
-.sidebar-item:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.sidebar-item.active {
-    background-color: rgba(37, 99, 235, 0.3);
-    border-left: 4px solid var(--color-primario-claro);
-}
-
-.main-content {
-    margin-left: 240px;
-    padding: 20px;
-    min-height: 100vh;
-    background-color: var(--color-fondo);
-}
-
 .sidebar::after {
     content: '';
     display: block;
     height: 3px;
     background-color: var(--color-acento);
-    /* #DC2626 */
     position: fixed;
     bottom: 0;
     width: 240px;
@@ -111,25 +68,58 @@ body {
     font-weight: 700;
 }
 
-.dashboard-header {
-    h1 {
-        font-size: 24px;
-        font-weight: 350;
-        color: var(--color-primario);
-    }
+.sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
 
-    .subtitulo {
-        color: var(--color-texto-secundario);
-        font-size: 16px;
-    }
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    color: white;
+    text-decoration: none;
+    transition: background 0.2s;
+}
 
-    .versiculo {
-        font-style: italic;
-        color: var(--color-texto-secundario);
-    }
+.sidebar-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
 
-    .cita {
-        font-weight: 600;
-        font-style: normal;
-    }
+.sidebar-item.active {
+    background-color: rgba(37, 99, 235, 0.3);
+    border-left: 4px solid var(--color-primario-claro);
+}
+
+/* ---- Contenido principal ---- */
+.main-content {
+    margin-left: 240px;
+    padding: 20px;
+    min-height: 100vh;
+    background-color: var(--color-fondo);
+}
+
+/* ---- Header del dashboard ---- */
+.dashboard-header h1 {
+    font-size: 24px;
+    font-weight: 350;
+    color: var(--color-primario);
+}
+
+.dashboard-header .subtitulo {
+    color: var(--color-texto-secundario);
+    font-size: 16px;
+}
+
+.dashboard-header .versiculo {
+    font-style: italic;
+    color: var(--color-texto-secundario);
+}
+
+.dashboard-header .blockquote-footer {
+    font-weight: 600;
+    font-style: normal;
+    color: var(--color-texto-secundario);
 }
