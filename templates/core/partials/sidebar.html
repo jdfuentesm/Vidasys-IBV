@@ -1,10 +1,18 @@
+{% load static %}
 <aside class="sidebar">
     <div class="sidebar-logo">
-        <img src="/static/img/logo.png" alt="IBV" size="60" style="width: 60px; height: 60px;">
+    <div class="logo-circle">
+        <img src="{% static 'img/logo.png' %}" alt="IBV">
     </div>
+    <div class="sidebar-brand">
+        <span>INSTITUTO</span>
+        <span>BÍBLICO VIDA</span>
+    </div>
+</div>
+</div>
     <nav class="sidebar-nav">
         <ul>
-            <li><a href="{% url 'dashboard' %}" class="sidebar-item">
+            <li><a href="{% url 'dashboard' %}" class="sidebar-item {% if request.path == '/' %}active{% endif %}">
                 <i class="bi bi-house-door"></i>
                 <span>Inicio</span>
             </a></li>
