@@ -1,70 +1,119 @@
 {% extends 'core/base.html' %}
 
-{% block title %}Panel Principal — VidaSys-IBV{% endblock %}
+{% block title %}
+  Panel Principal — VidaSys-IBV
+{% endblock %}
 
 {% block content %}
+  {# Incluir el sidebar #}
+  {% include 'core/partials/sidebar.html' %}
 
-    {# Incluir el sidebar #}
-    {% include 'core/partials/sidebar.html' %}
-
-    {# Contenido principal #}
-    <main class="main-content">
-
-        {# Header con saludo y versículo #}
-        <section class="dashboard-header py-4">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-md-8">
-                        <h1>¡Bienvenido de nuevo!</h1>
-                        <p class="subtitulo">Aquí tienes el resumen de tu actividad para el día de hoy.</p>
-                    </div>
-                    <div class="col-md-4">
-                        <blockquote class="blockquote border-start border-4 ps-3">
-                            <p class="versiculo">"El Señor es mi pastor, nada me faltará."</p>
-                            <cite title="Source Title" class="blockquote-footer text-end mt-1">Salmo 23:1</cite>
-                        </blockquote>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        {# Tarjeta con bienvenida personal #}
-        <div class="card shadow-sm border-0 mb-4" style="border-radius: 12px;">
-            <div class="card-body p-4">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h1 style="font-size: 24px; font-weight: 700; color: var(--color-primario); margin: 0;">
-                            ¡Bienvenido, {{ usuario.numero_usuario }}!
-                        </h1>
-                        <p style="color: var(--color-texto-secundario); margin: 4px 0 0;">
-                            Rol: <strong>{{ usuario.get_rol_display }}</strong>
-                        </p>
-                    </div>
-                    <div>
-                        <a href="{% url 'logout' %}" class="btn btn-outline-secondary">
-                            <i class="bi bi-box-arrow-right me-2"></i>
-                            Cerrar sesión
-                        </a>
-                    </div>
-                </div>
-            </div>
+  {# Contenido principal #}
+  <main class="main-content">
+    {# Header con saludo y versículo #}
+    <section class="dashboard-header py-4">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-md-8">
+            <h1>¡Bienvenido de nuevo!</h1>
+            <p class="subtitulo">Aquí tienes el resumen de tu actividad para el día de hoy.</p>
+          </div>
+          <div class="col-md-4">
+            <blockquote class="blockquote border-start border-4 ps-3">
+              <p class="versiculo">"El Señor es mi pastor, nada me faltará."</p>
+              <cite title="Source Title" class="blockquote-footer text-end mt-1">Salmo 23:1</cite>
+            </blockquote>
+          </div>
         </div>
+      </div>
+    </section>
 
-        {# Placeholder del dashboard #}
-        <div class="card shadow-sm border-0" style="border-radius: 12px;">
-            <div class="card-body p-5 text-center">
-                <i class="bi bi-tools" style="font-size: 64px; color: var(--color-texto-secundario);"></i>
-                <h2 style="margin-top: 16px; color: var(--color-texto);">
-                    Dashboard en construcción
-                </h2>
-                <p style="color: var(--color-texto-secundario);">
-                    Aquí aparecerán las funciones según su rol.
-                </p>
-                <p style="color: var(--color-texto-secundario); font-size: 14px;">
-                    Próximamente: matrículas, pagos, estudiantes, reportes.
-                </p>
-            </div>
+    {# Tarjeta con bienvenida personal #}
+    <div class="card shadow-sm border-0 mb-4" style="border-radius: 12px;">
+      <div class="card-body p-4">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h1 style="font-size: 24px; font-weight: 700; color: var(--color-primario); margin: 0;">¡Bienvenido, {{ usuario.numero_usuario }}!</h1>
+            <p style="color: var(--color-texto-secundario); margin: 4px 0 0;">
+              Rol: <strong>{{ usuario.get_rol_display }}</strong>
+            </p>
+          </div>
+          <div>
+            <a href="{% url 'logout' %}" class="btn btn-outline-secondary">
+              <i class="bi bi-box-arrow-right me-2"></i>
+              Cerrar sesión
+            </a>
+          </div>
         </div>
-
-    </main>
+      </div>
+    </div>
+    <!-- Sección de tarjetas de métricas -->
+    <section class="metricas-dashboard py-3">
+      <!-- Tarjeta #1 Estudiantes activos -->
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-3 mb-3">
+            <div class="tarjeta-metrica">
+              <div class="icono-tarjeta icono-azul">
+                <i class="bi bi-people"></i>
+              </div>
+              <h6 class="titulo-tarjeta">Estudiantes activos</h6>
+              <h2 class="valor-tarjeta">284</h2>
+              <p class="detalle-tarjeta">
+                <span class="positivo">+12%</span> respecto al ciclo anterior
+              </p>
+            </div>
+          </div>
+          <!-- Tarjeta #2 Materia del Ciclo -->
+          <div class="col-md-3 mb-3">
+            <div class="tarjeta-metrica">
+              <div class="icono-tarjeta icono-amarillo">
+                <i class="bi bi-book"></i>
+              </div>
+              <h6 class="titulo-tarjeta">Materia del Ciclo</h6>
+              <h2 class="valor-tarjeta">12</h2>
+              <p class="detalle-tarjeta">
+                <span class="positivo">+12</span> Asignaturas del curso actual
+              </p>
+            </div>
+          </div>
+          <!-- Tarjeta #3 Asistencia General -->
+          <div class="col-md-3 mb-3">
+            <div class="tarjeta-metrica">
+              <div class="icono-tarjeta icono-verde">
+                <i class="bi-bar-chart"></i>
+              </div>
+              <h6 class="titulo-tarjeta">Asistencia General</h6>
+              <h2 class="valor-tarjeta">92%</h2>
+              <p class="detalle-tarjeta">
+                <span class="positivo">+3%</span> respecto al ciclo anterior
+              </p>
+            </div>
+          </div>
+          <!-- Tarjeta #4 Próxima Clase -->
+          <div class="col-md-3 mb-3">
+            <div class="tarjeta-metrica">
+              <div class="icono-tarjeta icono-rojo">
+                <i class="bi-calendar-event"></i>
+              </div>
+              <h6 class="titulo-tarjeta">Próxima Clase</h6>
+              <h2 class="valor-tarjeta texto-largo">"Teologia Sistematica"</h2>
+              <p class="detalle-tarjeta">
+                <span class="positivo">Hoy</span> Online a las ⏰ 08:00 PM
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    {# Placeholder del dashboard #}
+    <div class="card shadow-sm border-0" style="border-radius: 12px;">
+      <div class="card-body p-5 text-center">
+        <i class="bi bi-tools" style="font-size: 64px; color: var(--color-texto-secundario);"></i>
+        <h2 style="margin-top: 16px; color: var(--color-texto);">Dashboard en construcción</h2>
+        <p style="color: var(--color-texto-secundario);">Aquí aparecerán las funciones según su rol.</p>
+        <p style="color: var(--color-texto-secundario); font-size: 14px;">Próximamente: matrículas, pagos, estudiantes, reportes.</p>
+      </div>
+    </div>
+  </main>
 {% endblock %}
