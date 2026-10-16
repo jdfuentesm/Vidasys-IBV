@@ -2,6 +2,7 @@ from decimal import Decimal
 
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.utils import timezone
 
 
 class ConceptoCobro(models.Model):
@@ -507,6 +508,36 @@ class ConvenioObligacion(models.Model):
             ),
         )
 
+    def clean(self):
+        errores = {}
+
+        if self.saldo_incluido is not None and self.saldo_incluido <= Decimal("0.00"):
+            errores["saldo_incluido"] = "El saldo incluido debe ser mayor que cero."
+
+        if hasattr(self, "obligacion"):
+            if self.obligacion.estado == "PAGADA":
+                errores["obligacion"] = (
+                    "Una obligación pagada no puede incluirse en un convenio."
+                )
+
+            if (
+                self.obligacion.fecha_vencimiento
+                and self.obligacion.fecha_vencimiento >= timezone.localdate()
+            ):
+                errores["obligacion"] = (
+                    "El convenio solamente puede incluir obligaciones vencidas."
+                )
+
+        if hasattr(self, "convenio") and hasattr(self, "obligacion"):
+            estudiante_convenio = self.convenio.estudiante.pk
+            estudiante_obligacion = self.obligacion.matricula.estudiante.pk
+
+            if estudiante_convenio != estudiante_obligacion:
+                errores["obligacion"] = "La obligación pertenece a otro estudiante."
+
+        if errores:
+            raise ValidationError(errores)
+
     def __str__(self):
         return f"{self.convenio} - {self.obligacion}"
 
@@ -531,6 +562,44 @@ class CuotaConvenio(models.Model):
     )
 
     estado = models.CharField(max_length=20)
+
+    def clean(self):
+        super().clean()
+        errores = {}
+
+        if self.numero_cuota is not None and self.numero_cuota <= 0:
+            errores["numero_cuota"] = "El número de cuota debe ser mayor que cero."
+
+        if self.monto_cuota is not None and self.monto_cuota <= 0:
+            errores["monto_cuota"] = "El monto de la cuota debe ser mayor que cero."
+
+        convenio = None
+
+        if self.__dict__.get("convenio_id") is not None:
+            convenio = self.convenio
+
+        if (
+            convenio is not None
+            and self.numero_cuota is not None
+            and convenio.numero_cuotas is not None
+            and self.numero_cuota > convenio.numero_cuotas
+        ):
+            errores["numero_cuota"] = (
+                "El número de cuota supera la cantidad establecida en el convenio."
+            )
+
+        if (
+            convenio is not None
+            and self.fecha_vencimiento
+            and convenio.fecha_convenio
+            and self.fecha_vencimiento < convenio.fecha_convenio
+        ):
+            errores["fecha_vencimiento"] = (
+                "La fecha de vencimiento no puede ser anterior a la fecha del convenio."
+            )
+
+        if errores:
+            raise ValidationError(errores)
 
     class Meta:
         managed = False
@@ -569,6 +638,43 @@ class AplicacionPagoCuota(models.Model):
         max_digits=10,
         decimal_places=2,
     )
+
+    def clean(self):
+        super().clean()
+        errores = {}
+
+        if self.monto_aplicado is not None and self.monto_aplicado <= 0:
+            errores["monto_aplicado"] = "El monto aplicado debe ser mayor que cero."
+
+        cuota = None
+        pago = None
+
+        if self.__dict__.get("cuota_id") is not None:
+            cuota = self.cuota
+
+        if self.__dict__.get("pago_id") is not None:
+            pago = self.pago
+
+        if (
+            cuota is not None
+            and self.monto_aplicado is not None
+            and self.monto_aplicado > cuota.monto_cuota
+        ):
+            errores["monto_aplicado"] = (
+                "El monto aplicado no puede superar el monto de la cuota."
+            )
+
+        if (
+            pago is not None
+            and self.monto_aplicado is not None
+            and self.monto_aplicado > pago.monto_total
+        ):
+            errores["monto_aplicado"] = (
+                "El monto aplicado no puede superar el total del pago."
+            )
+
+        if errores:
+            raise ValidationError(errores)
 
     class Meta:
         managed = False
