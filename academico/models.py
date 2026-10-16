@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models, transaction
+from django.utils import timezone
 
 
 class Estudiante(models.Model):
@@ -359,6 +360,12 @@ class Asistencia(models.Model):
 class Calificacion(models.Model):
     id_calificacion = models.BigAutoField(primary_key=True)
 
+    ESTADOS_CALIFICACION = (
+        ("PENDIENTE", "Pendiente"),
+        ("APROBADA", "Aprobada"),
+        ("REPROBADA_ACADEMICAMENTE", "Reprobada académicamente"),
+    )
+
     inscripcion = models.OneToOneField(
         InscripcionCurso,
         on_delete=models.PROTECT,
@@ -374,8 +381,65 @@ class Calificacion(models.Model):
     )
 
     fecha_registro = models.DateTimeField(null=True, blank=True)
-    estado = models.CharField(max_length=20)
+    estado = models.CharField(max_length=30, choices=ESTADOS_CALIFICACION)
     observaciones = models.TextField(null=True, blank=True)
+
+    def clean(self):
+        super().clean()
+        errores = {}
+
+        if self.nota_final is not None and (
+            self.nota_final < 0 or self.nota_final > 100
+        ):
+            errores["nota_final"] = "La nota final debe estar entre 0 y 100."
+
+        inscripcion = None
+
+        if self.__dict__.get("inscripcion_id") is not None:
+            inscripcion = self.inscripcion
+
+        if (
+            inscripcion is not None
+            and inscripcion.estado == "REPROBADA_POR_INASISTENCIA"
+            and self.nota_final is not None
+        ):
+            errores["nota_final"] = (
+                "No se puede registrar una nota porque el estudiante "
+                "fue excluido por inasistencia."
+            )
+
+        if errores:
+            raise ValidationError(errores)
+
+    def save(self, *args, **kwargs):
+        if self.nota_final is None:
+            self.estado = "PENDIENTE"
+        elif self.nota_final >= 70:
+            self.estado = "APROBADA"
+        else:
+            self.estado = "REPROBADA_ACADEMICAMENTE"
+
+        if self.fecha_registro is None:
+            self.fecha_registro = timezone.now()
+
+        self.full_clean()
+
+        with transaction.atomic():
+            super().save(*args, **kwargs)
+
+            if self.nota_final is not None:
+                if self.estado == "APROBADA":
+                    motivo = "Materia aprobada con nota final."
+                else:
+                    motivo = "Materia reprobada académicamente."
+
+                InscripcionCurso.objects.filter(pk=self.inscripcion.pk).exclude(
+                    estado="REPROBADA_POR_INASISTENCIA"
+                ).update(
+                    estado=self.estado,
+                    fecha_cierre=timezone.localdate(),
+                    motivo_cierre=motivo,
+                )
 
     class Meta:
         managed = False
