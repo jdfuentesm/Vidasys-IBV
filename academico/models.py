@@ -1,5 +1,6 @@
 from django.conf import settings
-from django.db import models
+from django.core.exceptions import ValidationError
+from django.db import models, transaction
 
 
 class Estudiante(models.Model):
@@ -259,6 +260,12 @@ class SesionClase(models.Model):
 class Asistencia(models.Model):
     id_asistencia = models.BigAutoField(primary_key=True)
 
+    ESTADOS_ASISTENCIA = (
+        ("PRESENTE", "Presente"),
+        ("AUSENTE_JUSTIFICADA", "Ausencia justificada"),
+        ("AUSENTE_INJUSTIFICADA", "Ausencia injustificada"),
+    )
+
     inscripcion = models.ForeignKey(
         InscripcionCurso,
         on_delete=models.PROTECT,
@@ -273,8 +280,59 @@ class Asistencia(models.Model):
         related_name="asistencias",
     )
 
-    estado_asistencia = models.CharField(max_length=30)
+    estado_asistencia = models.CharField(max_length=30, choices=ESTADOS_ASISTENCIA)
     observaciones = models.TextField(null=True, blank=True)
+
+    def clean(self):
+        super().clean()
+        errores = {}
+
+        estados_validos = {codigo for codigo, nombre in self.ESTADOS_ASISTENCIA}
+
+        if self.estado_asistencia not in estados_validos:
+            errores["estado_asistencia"] = "Seleccione un estado de asistencia válido."
+
+        inscripcion = None
+        sesion = None
+
+        if self.__dict__.get("inscripcion_id") is not None:
+            inscripcion = self.inscripcion
+
+        if self.__dict__.get("sesion_id") is not None:
+            sesion = self.sesion
+
+        if (
+            inscripcion is not None
+            and sesion is not None
+            and inscripcion.curso.pk != sesion.curso.pk
+        ):
+            errores["sesion"] = (
+                "La sesión seleccionada no pertenece al curso de esta inscripción."
+            )
+
+        if errores:
+            raise ValidationError(errores)
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+
+        with transaction.atomic():
+            super().save(*args, **kwargs)
+
+            if self.estado_asistencia == "AUSENTE_INJUSTIFICADA":
+                cantidad_ausencias = Asistencia.objects.filter(
+                    inscripcion=self.inscripcion,
+                    estado_asistencia="AUSENTE_INJUSTIFICADA",
+                ).count()
+
+                if cantidad_ausencias >= 2:
+                    InscripcionCurso.objects.filter(pk=self.inscripcion.pk).exclude(
+                        estado="REPROBADA_POR_INASISTENCIA"
+                    ).update(
+                        estado="REPROBADA_POR_INASISTENCIA",
+                        fecha_cierre=self.sesion.fecha,
+                        motivo_cierre=("Acumuló dos ausencias injustificadas."),
+                    )
 
     class Meta:
         managed = False
