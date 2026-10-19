@@ -66,9 +66,22 @@ class Maestro(models.Model):
 
 
 class Materia(models.Model):
+    CICLOS_FORMATIVOS = (
+        (1, "Ciclo I"),
+        (2, "Ciclo II"),
+        (3, "Ciclo III"),
+        (4, "Ciclo IV"),
+    )
+
     id_materia = models.BigAutoField(primary_key=True)
     codigo_materia = models.CharField(max_length=30, unique=True)
     nombre = models.CharField(max_length=150)
+
+    numero_ciclo_formativo = models.SmallIntegerField(
+        choices=CICLOS_FORMATIVOS,
+        verbose_name="Ciclo formativo",
+    )
+
     estado = models.CharField(max_length=20)
 
     class Meta:
@@ -78,7 +91,11 @@ class Materia(models.Model):
         verbose_name_plural = "Materias"
 
     def __str__(self):
-        return f"{self.codigo_materia} - {self.nombre}"
+        nombre_ciclo = dict(self.CICLOS_FORMATIVOS).get(
+            self.numero_ciclo_formativo,
+            f"Ciclo {self.numero_ciclo_formativo}",
+        )
+        return f"{self.codigo_materia} - {self.nombre} ({nombre_ciclo})"
 
 
 class CicloAcademico(models.Model):
@@ -130,6 +147,69 @@ class Curso(models.Model):
     modalidad = models.CharField(max_length=20)
     horario = models.CharField(max_length=150, null=True, blank=True)
     estado = models.CharField(max_length=20)
+
+    def clean(self):
+        super().clean()
+        errores = {}
+
+        materia = None
+        ciclo = None
+
+        if self.__dict__.get("materia_id") is not None:
+            materia = self.materia
+
+        if self.__dict__.get("ciclo_id") is not None:
+            ciclo = self.ciclo
+
+        # La materia debe pertenecer al mismo número de ciclo formativo.
+        if (
+            materia is not None
+            and ciclo is not None
+            and materia.numero_ciclo_formativo != ciclo.numero_ciclo
+        ):
+            errores["materia"] = (
+                f"La materia pertenece al ciclo formativo "
+                f"{materia.numero_ciclo_formativo}, pero el ciclo académico "
+                f"seleccionado es el número {ciclo.numero_ciclo}."
+            )
+
+        # La fecha final no puede ser anterior a la inicial.
+        if (
+            self.fecha_inicio is not None
+            and self.fecha_fin is not None
+            and self.fecha_fin < self.fecha_inicio
+        ):
+            errores["fecha_fin"] = (
+                "La fecha final del curso no puede ser anterior a la fecha inicial."
+            )
+
+        # Las fechas del curso deben estar dentro del ciclo académico.
+        if (
+            ciclo is not None
+            and self.fecha_inicio is not None
+            and not ciclo.fecha_inicio <= self.fecha_inicio <= ciclo.fecha_fin
+        ):
+            errores["fecha_inicio"] = (
+                "La fecha inicial del curso debe estar dentro "
+                "del período del ciclo académico."
+            )
+
+        if (
+            ciclo is not None
+            and self.fecha_fin is not None
+            and not ciclo.fecha_inicio <= self.fecha_fin <= ciclo.fecha_fin
+        ):
+            errores["fecha_fin"] = (
+                "La fecha final del curso debe estar dentro "
+                "del período del ciclo académico."
+            )
+
+        if errores:
+            raise ValidationError(errores)
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
 
     class Meta:
         managed = False
