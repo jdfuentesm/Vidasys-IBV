@@ -216,26 +216,78 @@ class SesionClaseAdmin(admin.ModelAdmin):
         "hora_inicio",
         "hora_fin",
         "estado",
+        "es_extraordinaria",
+        "usuario_autoriza",
     )
 
     search_fields = (
         "curso__materia__nombre",
         "curso__maestro__nombres",
         "curso__maestro__apellidos",
+        "motivo_extension",
     )
 
     list_filter = (
         "estado",
+        "es_extraordinaria",
         "fecha",
         "curso",
     )
 
-    autocomplete_fields = ("curso",)
+    autocomplete_fields = (
+        "curso",
+        "usuario_autoriza",
+    )
+
+    fieldsets = (
+        (
+            "Información de la sesión",
+            {
+                "fields": (
+                    "curso",
+                    "numero_clase",
+                    "fecha",
+                    "hora_inicio",
+                    "hora_fin",
+                    "estado",
+                    "observaciones",
+                )
+            },
+        ),
+        (
+            "Extensión extraordinaria",
+            {
+                "fields": (
+                    "es_extraordinaria",
+                    "motivo_extension",
+                    "usuario_autoriza",
+                    "fecha_autorizacion",
+                ),
+                "description": (
+                    "Esta sección solamente aplica para las clases 7 y 8. "
+                    "La autorización debe corresponder a la directora."
+                ),
+            },
+        ),
+    )
 
     ordering = (
         "-fecha",
         "numero_clase",
     )
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "usuario_autoriza":
+            kwargs["queryset"] = db_field.remote_field.model.objects.filter(
+                rol="DIRECTORA",
+                estado_cuenta="ACTIVA",
+            )
+
+        return super().formfield_for_foreignkey(
+            db_field,
+            request,
+            **kwargs,
+        )
 
 
 @admin.register(Asistencia)

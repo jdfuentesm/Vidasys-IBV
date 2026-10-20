@@ -304,6 +304,17 @@ class InscripcionCurso(models.Model):
 
 
 class SesionClase(models.Model):
+    NUMEROS_CLASE = (
+        (1, "Clase 1"),
+        (2, "Clase 2"),
+        (3, "Clase 3"),
+        (4, "Clase 4"),
+        (5, "Clase 5"),
+        (6, "Clase 6"),
+        (7, "Clase 7 extraordinaria"),
+        (8, "Clase 8 extraordinaria"),
+    )
+
     id_sesion = models.BigAutoField(primary_key=True)
 
     curso = models.ForeignKey(
@@ -313,12 +324,94 @@ class SesionClase(models.Model):
         related_name="sesiones",
     )
 
-    numero_clase = models.SmallIntegerField()
+    numero_clase = models.SmallIntegerField(
+        choices=NUMEROS_CLASE,
+        verbose_name="Número de clase",
+    )
+
     fecha = models.DateField()
     hora_inicio = models.TimeField()
     hora_fin = models.TimeField()
     estado = models.CharField(max_length=20)
+
+    es_extraordinaria = models.BooleanField(
+        default=False,
+        verbose_name="¿Es extraordinaria?",
+    )
+
+    motivo_extension = models.TextField(
+        null=True,
+        blank=True,
+        verbose_name="Motivo de la extensión",
+    )
+
+    usuario_autoriza = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        db_column="id_usuario_autoriza",
+        null=True,
+        blank=True,
+        related_name="sesiones_extraordinarias_autorizadas",
+        verbose_name="Directora que autoriza",
+    )
+
+    fecha_autorizacion = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name="Fecha de autorización",
+    )
+
     observaciones = models.TextField(null=True, blank=True)
+
+    def clean(self):
+        super().clean()
+        errores = {}
+
+        if self.numero_clase is not None:
+            if not 1 <= self.numero_clase <= 8:
+                errores["numero_clase"] = "El número de clase debe estar entre 1 y 8."
+
+            elif self.numero_clase <= 6:
+                self.es_extraordinaria = False
+
+            else:
+                self.es_extraordinaria = True
+
+                if not self.motivo_extension or not self.motivo_extension.strip():
+                    errores["motivo_extension"] = (
+                        "Debe indicar el motivo de la clase extraordinaria."
+                    )
+
+                usuario = self.usuario_autoriza
+                if usuario is None:
+                    errores["usuario_autoriza"] = (
+                        "La clase extraordinaria debe ser autorizada por la directora."
+                    )
+                else:
+                    if usuario.rol != "DIRECTORA":
+                        errores["usuario_autoriza"] = (
+                            "Solamente una usuaria con rol DIRECTORA "
+                            "puede autorizar esta clase."
+                        )
+
+                if self.fecha_autorizacion is None:
+                    errores["fecha_autorizacion"] = (
+                        "Debe registrar la fecha de autorización."
+                    )
+
+        if (
+            self.hora_inicio is not None
+            and self.hora_fin is not None
+            and self.hora_fin <= self.hora_inicio
+        ):
+            errores["hora_fin"] = "La hora final debe ser posterior a la hora inicial."
+
+        if errores:
+            raise ValidationError(errores)
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
 
     class Meta:
         managed = False
@@ -335,7 +428,8 @@ class SesionClase(models.Model):
         verbose_name_plural = "Sesiones de clase"
 
     def __str__(self):
-        return f"{self.curso} - Clase {self.numero_clase}"
+        tipo = " extraordinaria" if self.es_extraordinaria else ""
+        return f"{self.curso} - Clase {self.numero_clase}{tipo}"
 
 
 class Asistencia(models.Model):
