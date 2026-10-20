@@ -121,6 +121,13 @@ class CicloAcademico(models.Model):
 class Curso(models.Model):
     id_curso = models.BigAutoField(primary_key=True)
 
+    ESTADOS_CURSO = (
+        ("PROGRAMADO", "Programado"),
+        ("ACTIVO", "Activo"),
+        ("FINALIZADO", "Finalizado"),
+        ("CANCELADO", "Cancelado"),
+    )
+
     materia = models.ForeignKey(
         Materia,
         on_delete=models.PROTECT,
@@ -146,7 +153,7 @@ class Curso(models.Model):
     fecha_fin = models.DateField()
     modalidad = models.CharField(max_length=20)
     horario = models.CharField(max_length=150, null=True, blank=True)
-    estado = models.CharField(max_length=20)
+    estado = models.CharField(max_length=20, choices=ESTADOS_CURSO)
 
     def clean(self):
         super().clean()
@@ -203,6 +210,38 @@ class Curso(models.Model):
                 "La fecha final del curso debe estar dentro "
                 "del período del ciclo académico."
             )
+
+        # Para finalizar un curso deben haberse realizado entre 5 y 8 clases.
+        if self.estado == "FINALIZADO":
+            if self.pk is None:
+                errores["estado"] = (
+                    "Primero debe guardar el curso antes de poder finalizarlo."
+                )
+            else:
+                sesiones_curso = SesionClase.objects.filter(curso_id=self.pk)
+
+                cantidad_impartidas = sesiones_curso.filter(estado="IMPARTIDA").count()
+
+                cantidad_pendientes = sesiones_curso.filter(
+                    estado__in=("PROGRAMADA", "SUSPENDIDA")
+                ).count()
+
+                if cantidad_impartidas < 5:
+                    errores["estado"] = (
+                        "El curso no puede finalizar porque debe tener "
+                        "al menos 5 clases impartidas."
+                    )
+                elif cantidad_impartidas > 8:
+                    errores["estado"] = (
+                        "El curso no puede tener más de 8 clases impartidas."
+                    )
+
+                if cantidad_pendientes > 0:
+                    errores["estado"] = (
+                        errores.get("estado", "")
+                        + " No deben quedar sesiones programadas o suspendidas "
+                        "al finalizar el curso."
+                    ).strip()
 
         if errores:
             raise ValidationError(errores)
@@ -329,11 +368,17 @@ class SesionClase(models.Model):
         verbose_name="Número de clase",
     )
 
+    ESTADOS_SESION = (
+        ("PROGRAMADA", "Programada"),
+        ("IMPARTIDA", "Impartida"),
+        ("SUSPENDIDA", "Suspendida"),
+        ("CANCELADA", "Cancelada"),
+    )
+
     fecha = models.DateField()
     hora_inicio = models.TimeField()
     hora_fin = models.TimeField()
-    estado = models.CharField(max_length=20)
-
+    estado = models.CharField(max_length=20, choices=ESTADOS_SESION)
     es_extraordinaria = models.BooleanField(
         default=False,
         verbose_name="¿Es extraordinaria?",
