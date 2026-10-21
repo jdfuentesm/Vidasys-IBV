@@ -429,18 +429,17 @@ class SesionClase(models.Model):
 
                 usuario = self.usuario_autoriza
                 if usuario is None:
-                    errores["usuario_autoriza"] = (
+                    errores.setdefault("__all__", []).append(
                         "La clase extraordinaria debe ser autorizada por la directora."
                     )
-                else:
-                    if usuario.rol != "DIRECTORA":
-                        errores["usuario_autoriza"] = (
-                            "Solamente una usuaria con rol DIRECTORA "
-                            "puede autorizar esta clase."
-                        )
+                elif usuario.rol != "DIRECTORA":
+                    errores.setdefault("__all__", []).append(
+                        "Solamente una usuaria con rol DIRECTORA "
+                        "puede autorizar esta clase."
+                    )
 
                 if self.fecha_autorizacion is None:
-                    errores["fecha_autorizacion"] = (
+                    errores.setdefault("__all__", []).append(
                         "Debe registrar la fecha de autorización."
                     )
 

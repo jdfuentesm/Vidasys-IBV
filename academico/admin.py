@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils import timezone
 
 from .models import (
     Asistencia,
@@ -234,6 +235,12 @@ class SesionClaseAdmin(admin.ModelAdmin):
         "curso",
     )
 
+    readonly_fields = (
+        "es_extraordinaria",
+        "usuario_autoriza",
+        "fecha_autorizacion",
+    )
+
     autocomplete_fields = (
         "curso",
         "usuario_autoriza",
@@ -275,6 +282,34 @@ class SesionClaseAdmin(admin.ModelAdmin):
         "-fecha",
         "numero_clase",
     )
+
+    def get_form(self, request, obj=None, **kwargs):
+        formulario_base = super().get_form(request, obj, **kwargs)
+        usuario_actual = request.user
+
+        class SesionClaseSeguraForm(formulario_base):
+            def clean(self):
+                datos = super().clean()
+                numero_clase = datos.get("numero_clase")
+
+                if numero_clase is None:
+                    return datos
+
+                if numero_clase in (7, 8):
+                    self.instance.es_extraordinaria = True
+                    self.instance.usuario_autoriza = usuario_actual
+                    self.instance.fecha_autorizacion = timezone.now()
+
+                else:
+                    self.instance.es_extraordinaria = False
+                    self.instance.usuario_autoriza = None
+                    self.instance.fecha_autorizacion = None
+                    self.instance.motivo_extension = None
+                    datos["motivo_extension"] = None
+
+                return datos
+
+        return SesionClaseSeguraForm
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "usuario_autoriza":
