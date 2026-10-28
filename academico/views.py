@@ -125,7 +125,7 @@ def registrar_calificacion(request):
                     )
 
                 return redirect("registrar_calificacion")
-            except Exception as e:
+            except IntegrityError as e:
                 messages.error(request, f"❌ Error al guardar: {e}")
         else:
             messages.error(request, "❌ Errores en el formulario. Revisa los datos.")
