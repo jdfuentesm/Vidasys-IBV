@@ -68,13 +68,25 @@ class Obligacion(models.Model):
         default=Decimal("0.00"),
     )
 
-    monto_final = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        default=Decimal("0.00"),
-    )
+    #  monto_final = models.DecimalField(
+    #      max_digits=10,
+    #      decimal_places=2,
+    #      editable=False,  # This field is calculated based on monto_original and monto_descuento
+    # )
     estado = models.CharField(max_length=20)
     observaciones = models.TextField(null=True, blank=True)
+
+    # def save(self, *args, **kwargs):
+    # Si la obligación es nueva (no tiene ID), le decimos a Django
+    # que no intente guardar el monto_final porque la BD lo calcula.
+    #    if not self.pk:
+    #       # Esto es un truco para que Django no incluya el campo en el INSERT
+    #      self._meta.get_field("monto_final").auto_created = True
+
+    #    super().save(*args, **kwargs)
+
+    # Recargamos la obligación para traer el monto_final calculado por la BD
+    #    self.refresh_from_db()
 
     class Meta:
         managed = False
@@ -89,6 +101,12 @@ class Obligacion(models.Model):
 
         verbose_name = "Obligación"
         verbose_name_plural = "Obligaciones"
+
+    @property
+    def monto_final(self):
+        if self.monto_original is None:
+            return None
+        return self.monto_original - (self.monto_descuento or Decimal("0.00"))
 
     def clean(self):
         errores = {}
@@ -129,6 +147,32 @@ class Obligacion(models.Model):
 
         if errores:
             raise ValidationError(errores)
+
+    def actualizar_estado(self):
+        # Sumamos todos los pagos aplicados a esta obligación
+        total_pagado = sum(
+            detalle.monto_aplicado
+            for detalle in DetallePago.objects.filter(obligacion_id=self.pk)
+        )
+
+        # 🔥 EL TRUCO: Le preguntamos a la base de datos cuánto es el monto_final
+        from django.db import connection
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "SELECT monto_final FROM obligacion WHERE id_obligacion = %s", [self.pk]
+            )
+            monto_final_bd = cursor.fetchone()[0]
+
+        if total_pagado == 0:
+            self.estado = "PENDIENTE"
+        elif total_pagado < monto_final_bd:  # <-- Usamos el valor de la BD
+            self.estado = "PARCIAL"
+        else:
+            self.estado = "PAGADA"
+
+        # Guardamos solo el estado
+        self.save(update_fields=["estado"])
 
     def __str__(self):
         return f"{self.matricula} - {self.concepto} - {self.fecha_vencimiento}"
@@ -240,6 +284,7 @@ class DetallePago(models.Model):
         if (
             self.monto_aplicado is not None
             and hasattr(self, "obligacion")
+            and self.obligacion.monto_final is not None
             and self.monto_aplicado > self.obligacion.monto_final
         ):
             errores["monto_aplicado"] = (
@@ -248,6 +293,15 @@ class DetallePago(models.Model):
 
         if errores:
             raise ValidationError(errores)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)  # Guardamos el detalle de pago primero
+        self.obligacion.actualizar_estado()  # Luego actualizamos el estado de la obligación asociada
+
+    def delete(self, *args, **kwargs):
+        obligacion = self.obligacion
+        super().delete(*args, **kwargs)  # Eliminamos el detalle de pago primero
+        obligacion.actualizar_estado()  # Luego actualizamos el estado de la obligación asociada
 
     def __str__(self):
         return f"{self.pago.numero_recibo} - {self.obligacion}"
