@@ -19,6 +19,6 @@ urlpatterns = [
 ]
 
 urlpatterns = [
-    # ... tus otras rutas ...
-    path("asistencia/", views.registrar_asistencia, name="registrar_asistencia"),
+    path("admin/", admin.site.urls),
+    path("", include("academico.urls")),  # <--- Esta línea es la clave
 ]

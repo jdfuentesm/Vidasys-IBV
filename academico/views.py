@@ -3,7 +3,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
-from .forms import AsistenciaForm
+from .forms import AsistenciaForm, SesionExtraordinariaForm
 from .models import Estudiante, InscripcionCurso
 
 
@@ -48,3 +48,27 @@ def registrar_asistencia(request):
         "academico/registrar_asistencia.html",
         {"form": form, "inscripciones": inscripciones},
     )
+
+
+def autorizar_clase_extraordinaria(request):
+    if request.method == "POST":
+        form = SesionExtraordinariaForm(request.POST)
+        if form.is_valid():
+            try:
+                sesion = form.save()
+                messages.success(
+                    request,
+                    f"✅ Clase {sesion.numero_clase} autorizada correctamente por {sesion.usuario_autoriza}.",
+                )
+                return redirect("autorizar_clase_extraordinaria")
+            except Exception as e:
+                # Aquí caen los errores de tu clean() (ej: falta motivo o no es directora)
+                messages.error(request, f"❌ Error al autorizar: {e}")
+        else:
+            messages.error(
+                request, "❌ El formulario tiene errores. Revisa los campos."
+            )
+    else:
+        form = SesionExtraordinariaForm()
+
+    return render(request, "academico/autorizar_clase.html", {"form": form})

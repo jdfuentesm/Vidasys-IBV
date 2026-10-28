@@ -68,7 +68,10 @@ def login_view(request):
             # Verificar que la cuenta esté activa
             if usuario.is_active:
                 login(request, usuario)
-                messages.success(request, f"¡Bienvenido, {usuario.numero_usuario}!")
+                numero_usuario = getattr(
+                    usuario, "numero_usuario", usuario.get_username()
+                )
+                messages.success(request, f"¡Bienvenido, {numero_usuario}!")
                 return redirect("dashboard")
             else:
                 return render(
