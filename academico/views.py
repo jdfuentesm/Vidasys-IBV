@@ -61,7 +61,7 @@ def autorizar_clase_extraordinaria(request):
                     f"✅ Clase {sesion.numero_clase} autorizada correctamente por {sesion.usuario_autoriza}.",
                 )
                 return redirect("autorizar_clase_extraordinaria")
-            except Exception as e:
+            except IntegrityError as e:
                 # Aquí caen los errores de tu clean() (ej: falta motivo o no es directora)
                 messages.error(request, f"❌ Error al autorizar: {e}")
         else:
