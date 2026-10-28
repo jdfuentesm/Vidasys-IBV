@@ -3,8 +3,8 @@ from django.db import IntegrityError
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
-from .forms import AsistenciaForm, SesionExtraordinariaForm
-from .models import Estudiante, InscripcionCurso
+from .forms import AsistenciaForm, CalificacionForm, SesionExtraordinariaForm
+from .models import Calificacion, Estudiante, InscripcionCurso
 
 
 def probar_conexion(request):
@@ -72,3 +72,64 @@ def autorizar_clase_extraordinaria(request):
         form = SesionExtraordinariaForm()
 
     return render(request, "academico/autorizar_clase.html", {"form": form})
+
+
+def registrar_calificacion(request):
+    if request.method == "POST":
+        form = CalificacionForm(request.POST)
+        if form.is_valid():
+            try:
+                # Obtenemos la inscripción seleccionada
+                inscripcion = form.cleaned_data["inscripcion"]
+
+                # Buscamos si ya existe una calificación para esta inscripción
+                calificacion_existente = Calificacion.objects.filter(
+                    inscripcion=inscripcion
+                ).first()
+
+                if calificacion_existente:
+                    # Si existe, actualizamos los campos manualmente
+                    calificacion_existente.nota_asistencia = form.cleaned_data[
+                        "nota_asistencia"
+                    ]
+                    calificacion_existente.nota_uniforme = form.cleaned_data[
+                        "nota_uniforme"
+                    ]
+                    calificacion_existente.nota_participacion = form.cleaned_data[
+                        "nota_participacion"
+                    ]
+                    calificacion_existente.nota_companerismo = form.cleaned_data[
+                        "nota_companerismo"
+                    ]
+                    calificacion_existente.puntos_extras = form.cleaned_data[
+                        "puntos_extras"
+                    ]
+                    calificacion_existente.tarea_1 = form.cleaned_data["tarea_1"]
+                    calificacion_existente.examen_1 = form.cleaned_data["examen_1"]
+                    calificacion_existente.tarea_2 = form.cleaned_data["tarea_2"]
+                    calificacion_existente.examen_2 = form.cleaned_data["examen_2"]
+                    calificacion_existente.observaciones = form.cleaned_data[
+                        "observaciones"
+                    ]
+                    calificacion_existente.save()  # El save() recalcula la nota final
+                    messages.success(
+                        request,
+                        f"✅ Nota ACTUALIZADA para {inscripcion}. Nota Final: {calificacion_existente.nota_final}. Estado: {calificacion_existente.estado}.",
+                    )
+                else:
+                    # Si no existe, la creamos desde cero
+                    calificacion = form.save()
+                    messages.success(
+                        request,
+                        f"✅ Nota CREADA para {calificacion.inscripcion}. Nota Final: {calificacion.nota_final}. Estado: {calificacion.estado}.",
+                    )
+
+                return redirect("registrar_calificacion")
+            except Exception as e:
+                messages.error(request, f"❌ Error al guardar: {e}")
+        else:
+            messages.error(request, "❌ Errores en el formulario. Revisa los datos.")
+    else:
+        form = CalificacionForm()
+
+    return render(request, "academico/registrar_calificacion.html", {"form": form})

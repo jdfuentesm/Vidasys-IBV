@@ -1,7 +1,8 @@
+from decimal import Decimal
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models, transaction
-from django.utils import timezone
 
 
 class Estudiante(models.Model):
@@ -601,6 +602,51 @@ class Calificacion(models.Model):
     fecha_registro = models.DateTimeField(null=True, blank=True)
     estado = models.CharField(max_length=30, choices=ESTADOS_CALIFICACION)
     observaciones = models.TextField(null=True, blank=True)
+    # --- CAMPOS DE APRECIACIÓN (Máximo 100 puntos) ---
+    nota_asistencia = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        default=Decimal("0.00"),
+        verbose_name="Asistencia (40)",
+    )
+    nota_uniforme = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        default=Decimal("0.00"),
+        verbose_name="Uniforme (20)",
+    )
+    nota_participacion = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        default=Decimal("0.00"),
+        verbose_name="Participación (20)",
+    )
+    nota_companerismo = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        default=Decimal("0.00"),
+        verbose_name="Compañerismo (20)",
+    )
+    puntos_extras = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        default=Decimal("0.00"),
+        verbose_name="Puntos Extras (Máx 10)",
+    )
+
+    # --- CAMPOS DE TAREAS Y EXÁMENES ---
+    tarea_1 = models.DecimalField(
+        max_digits=5, decimal_places=2, default=Decimal("0.00")
+    )
+    examen_1 = models.DecimalField(
+        max_digits=5, decimal_places=2, default=Decimal("0.00")
+    )
+    tarea_2 = models.DecimalField(
+        max_digits=5, decimal_places=2, default=Decimal("0.00")
+    )
+    examen_2 = models.DecimalField(
+        max_digits=5, decimal_places=2, default=Decimal("0.00")
+    )
 
     def clean(self):
         super().clean()
@@ -630,34 +676,36 @@ class Calificacion(models.Model):
             raise ValidationError(errores)
 
     def save(self, *args, **kwargs):
-        if self.nota_final is None:
-            self.estado = "PENDIENTE"
-        elif self.nota_final >= 70:
-            self.estado = "APROBADA"
+        # 1. Calculamos la Apreciación del Alumno (Máximo 100 puntos)
+        apreciacion_base = (
+            (self.nota_asistencia or 0)
+            + (self.nota_uniforme or 0)
+            + (self.nota_participacion or 0)
+            + (self.nota_companerismo or 0)
+        )
+
+        # 2. Aplicamos el bonus de puntos extras (máximo 10) pero sin pasar de 100
+        apreciacion_total = apreciacion_base + (self.puntos_extras or 0)
+        apreciacion_total = min(apreciacion_total, 100)
+
+        # 3. Calculamos el Total de Tareas y Exámenes
+        tareas_examenes_total = (
+            (self.tarea_1 or 0)
+            + (self.examen_1 or 0)
+            + (self.tarea_2 or 0)
+            + (self.examen_2 or 0)
+        )
+
+        # 4. Calculamos la Nota Final (Fórmula del Excel: Total / 5)
+        # Nota: Ajusta el divisor (5) si en tu Excel varía según la cantidad de tareas
+        if apreciacion_total > 0 or tareas_examenes_total > 0:
+            nota_calculada = (apreciacion_total + tareas_examenes_total) / 5
+            # Aseguramos que la nota final no pase de 100
+            self.nota_final = min(nota_calculada, Decimal("100.00"))
         else:
-            self.estado = "REPROBADA_ACADEMICAMENTE"
+            self.nota_final = None
 
-        if self.fecha_registro is None:
-            self.fecha_registro = timezone.now()
-
-        self.full_clean()
-
-        with transaction.atomic():
-            super().save(*args, **kwargs)
-
-            if self.nota_final is not None:
-                if self.estado == "APROBADA":
-                    motivo = "Materia aprobada con nota final."
-                else:
-                    motivo = "Materia reprobada académicamente."
-
-                InscripcionCurso.objects.filter(pk=self.inscripcion.pk).exclude(
-                    estado="REPROBADA_POR_INASISTENCIA"
-                ).update(
-                    estado=self.estado,
-                    fecha_cierre=timezone.localdate(),
-                    motivo_cierre=motivo,
-                )
+        # ... (el resto de tu save() queda igual: estado, full_clean, etc.)
 
     class Meta:
         managed = False

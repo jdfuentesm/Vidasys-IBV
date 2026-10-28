@@ -9,4 +9,5 @@ urlpatterns = [
         views.autorizar_clase_extraordinaria,
         name="autorizar_clase_extraordinaria",
     ),
+    path("calificacion/", views.registrar_calificacion, name="registrar_calificacion"),
 ]

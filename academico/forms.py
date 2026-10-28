@@ -2,7 +2,7 @@ from typing import ClassVar, cast
 
 from django import forms
 
-from .models import Asistencia, SesionClase
+from .models import Asistencia, Calificacion, SesionClase
 
 
 class AsistenciaForm(forms.ModelForm):
@@ -77,3 +77,52 @@ class SesionExtraordinariaForm(forms.ModelForm):
             usuario_autoriza.queryset = usuario_autoriza.queryset.filter(
                 rol="DIRECTORA"
             )
+
+
+class CalificacionForm(forms.ModelForm):
+    class Meta:
+        model = Calificacion
+        fields: ClassVar[list[str]] = [
+            "inscripcion",
+            "nota_asistencia",
+            "nota_uniforme",
+            "nota_participacion",
+            "nota_companerismo",
+            "puntos_extras",
+            "tarea_1",
+            "examen_1",
+            "tarea_2",
+            "examen_2",
+            "observaciones",
+        ]
+        widgets: ClassVar[dict[str, forms.Widget]] = {
+            "inscripcion": forms.Select(attrs={"class": "form-control"}),
+            "nota_asistencia": forms.NumberInput(
+                attrs={"class": "form-control", "step": "0.01", "min": "0", "max": "40"}
+            ),
+            "nota_uniforme": forms.NumberInput(
+                attrs={"class": "form-control", "step": "0.01", "min": "0", "max": "20"}
+            ),
+            "nota_participacion": forms.NumberInput(
+                attrs={"class": "form-control", "step": "0.01", "min": "0", "max": "20"}
+            ),
+            "nota_companerismo": forms.NumberInput(
+                attrs={"class": "form-control", "step": "0.01", "min": "0", "max": "20"}
+            ),
+            "puntos_extras": forms.NumberInput(
+                attrs={"class": "form-control", "step": "0.01", "min": "0", "max": "10"}
+            ),
+            "tarea_1": forms.NumberInput(
+                attrs={"class": "form-control", "step": "0.01"}
+            ),
+            "examen_1": forms.NumberInput(
+                attrs={"class": "form-control", "step": "0.01"}
+            ),
+            "tarea_2": forms.NumberInput(
+                attrs={"class": "form-control", "step": "0.01"}
+            ),
+            "examen_2": forms.NumberInput(
+                attrs={"class": "form-control", "step": "0.01"}
+            ),
+            "observaciones": forms.Textarea(attrs={"rows": 3, "class": "form-control"}),
+        }
