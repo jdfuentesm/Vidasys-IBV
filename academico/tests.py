@@ -8,7 +8,7 @@ from django.test import Client, TestCase
 from django.urls import resolve, reverse
 
 from core.models import Usuario
-from .forms import CalificacionForm
+from .forms import CalificacionForm, FilaCalificacionForm
 from .models import (
     Calificacion, CicloAcademico, Curso, Estudiante, InscripcionCurso,
     Maestro, Materia, Matricula,
@@ -46,6 +46,21 @@ class CalificacionesTests(TestCase):
             puntos_extras="10", tarea_1="75", examen_1="75", tarea_2="75", examen_2="75", observaciones="Prueba")
         datos.update(cambios)
         return datos
+
+    def libro_datos(self, **cambios):
+        datos = self.datos(**cambios)
+        ids = list(InscripcionCurso.objects.filter(curso_id=datos["curso"]).order_by("pk"))
+        salida = {"curso": datos["curso"], "inscripciones": [str(i.pk) for i in ids]}
+        for inscripcion in ids:
+            nota = Calificacion.objects.filter(inscripcion=inscripcion).first() or Calificacion(inscripcion=inscripcion)
+            form = FilaCalificacionForm(inscripcion=inscripcion, instance=nota,
+                inscripciones=InscripcionCurso.objects.filter(pk=inscripcion.pk), prefix=f"nota-{inscripcion.pk}")
+            salida[f"nota-{inscripcion.pk}-revision"] = form.initial["revision"]
+            for campo in (*Calificacion.COMPONENTES, "observaciones"):
+                salida[f"nota-{inscripcion.pk}-{campo}"] = datos[campo]
+        if datos["inscripcion"] != str(self.inscripciones[0].pk):
+            salida["inscripciones"] = [datos["inscripcion"]]
+        return salida
 
     def nota(self, **cambios):
         datos = self.datos(**cambios)
@@ -134,7 +149,7 @@ class CalificacionesTests(TestCase):
     def test_rol_estudiante_rechazado_get_y_post(self):
         self.client.force_login(self.estudiante_usuario)
         self.assertEqual(self.client.get(reverse("registrar_calificacion")).status_code, 403)
-        self.assertEqual(self.client.post(reverse("registrar_calificacion"), self.datos()).status_code, 403)
+        self.assertEqual(self.client.post(reverse("registrar_calificacion"), self.libro_datos()).status_code, 403)
         self.assertFalse(Calificacion.objects.exists())
 
     def test_solo_cursos_propios(self):
@@ -147,25 +162,25 @@ class CalificacionesTests(TestCase):
         self.client.force_login(self.docente)
         for datos in (self.datos(curso=str(self.cursos[1].pk), inscripcion=str(self.inscripciones[1].pk)),
                       self.datos(inscripcion=str(self.inscripciones[1].pk))):
-            self.assertEqual(self.client.post(reverse("registrar_calificacion"), datos).status_code, 404)
+            self.assertEqual(self.client.post(reverse("registrar_calificacion"), self.libro_datos(**datos)).status_code in (403, 404), True)
         self.assertFalse(Calificacion.objects.exists())
 
     def test_flujo_crear_consultar_modificar(self):
         self.client.force_login(self.docente)
-        respuesta = self.client.post(reverse("registrar_calificacion"), self.datos(), follow=True)
-        self.assertContains(respuesta, "Calificación registrada correctamente")
-        self.assertEqual(respuesta.context["form"].instance.nota_final, Decimal("80"))
-        respuesta = self.client.post(reverse("registrar_calificacion"), self.datos(tarea_1="25"), follow=True)
-        self.assertContains(respuesta, "Calificación actualizada correctamente")
-        self.assertEqual(respuesta.context["form"].initial["tarea_1"], Decimal("25"))
+        respuesta = self.client.post(reverse("registrar_calificacion"), self.libro_datos(), follow=True)
+        self.assertContains(respuesta, "Libro guardado correctamente")
+        self.assertEqual(respuesta.context["filas"][0]["form"].instance.nota_final, Decimal("80"))
+        respuesta = self.client.post(reverse("registrar_calificacion"), self.libro_datos(tarea_1="25"), follow=True)
+        self.assertContains(respuesta, "Libro guardado correctamente")
+        self.assertEqual(respuesta.context["filas"][0]["form"].initial["tarea_1"], Decimal("25"))
         self.assertEqual(Calificacion.objects.count(), 1)
         self.assertEqual(Calificacion.objects.get().nota_final, Decimal("70"))
 
     def test_errores_visibles_y_datos_conservados(self):
         self.client.force_login(self.docente)
-        respuesta = self.client.post(reverse("registrar_calificacion"), self.datos(nota_asistencia="41"))
+        respuesta = self.client.post(reverse("registrar_calificacion"), self.libro_datos(nota_asistencia="41"))
         self.assertContains(respuesta, "La nota no puede superar 40")
-        self.assertTrue(respuesta.context["form"].is_bound)
+        self.assertTrue(respuesta.context["filas"][0]["form"].is_bound)
         self.assertFalse(Calificacion.objects.exists())
 
     def test_docente_sin_perfil_no_ve_cursos(self):
@@ -197,7 +212,7 @@ class CalificacionesTests(TestCase):
 
     def test_extras_en_blanco_opcionales(self):
         self.client.force_login(self.docente)
-        respuesta = self.client.post(reverse("registrar_calificacion"), self.datos(puntos_extras=""))
+        respuesta = self.client.post(reverse("registrar_calificacion"), self.libro_datos(puntos_extras=""))
         self.assertEqual(respuesta.status_code, 302)
         self.assertEqual(Calificacion.objects.get().puntos_extras, Decimal("0"))
 
@@ -205,7 +220,7 @@ class CalificacionesTests(TestCase):
         self.docente.estado_cuenta = "BLOQUEADA"
         self.docente.save(update_fields=["estado_cuenta"])
         self.client.force_login(self.docente)
-        respuesta = self.client.post(reverse("registrar_calificacion"), self.datos())
+        respuesta = self.client.post(reverse("registrar_calificacion"), self.libro_datos())
         self.assertEqual(respuesta.status_code, 302)
         self.assertFalse(Calificacion.objects.exists())
 
@@ -225,9 +240,150 @@ class CalificacionesTests(TestCase):
 
     def test_post_sin_seleccion_muestra_error(self):
         self.client.force_login(self.docente)
-        respuesta = self.client.post(reverse("registrar_calificacion"), self.datos(inscripcion=""))
-        self.assertContains(respuesta, "Seleccione un estudiante antes de guardar")
+        respuesta = self.client.post(reverse("registrar_calificacion"), self.libro_datos(inscripcion=""))
+        self.assertEqual(respuesta.status_code, 403)
         self.assertFalse(Calificacion.objects.exists())
+
+    def agregar_inscripcion(self):
+        estudiante = Estudiante.objects.create(codigo_estudiante="E2", nombres="Segunda", apellidos="Estudiante",
+            fecha_ingreso=date(2026, 1, 1), estado="ACTIVO")
+        matricula = Matricula.objects.create(estudiante=estudiante, ciclo=self.cursos[0].ciclo,
+            numero_matricula="M2", fecha_matricula=date(2026, 1, 1), estado="ACTIVA")
+        return InscripcionCurso.objects.create(matricula=matricula, curso=self.cursos[0],
+            fecha_inscripcion=date(2026, 1, 1), estado="CURSANDO")
+
+    def test_libro_crea_y_modifica_varias_filas(self):
+        segunda = self.agregar_inscripcion()
+        self.client.force_login(self.docente)
+        respuesta = self.client.post(reverse("registrar_calificacion"), self.libro_datos(), follow=True)
+        self.assertContains(respuesta, "2 calificaciones guardadas")
+        self.assertEqual(Calificacion.objects.count(), 2)
+        self.assertEqual(len(respuesta.context["filas"]), 2)
+        datos = self.libro_datos(tarea_1="25")
+        datos[f"nota-{segunda.pk}-examen_2"] = "25"
+        respuesta = self.client.post(reverse("registrar_calificacion"), datos, follow=True)
+        self.assertContains(respuesta, "2 calificaciones guardadas")
+        self.assertEqual(Calificacion.objects.get(inscripcion=segunda).nota_final, Decimal("60"))
+        self.assertEqual(Calificacion.objects.get(inscripcion=self.inscripciones[0]).nota_final, Decimal("70"))
+        self.assertEqual(Calificacion.objects.count(), 2)
+
+    def test_error_en_segunda_fila_no_guarda_primera(self):
+        segunda = self.agregar_inscripcion()
+        self.client.force_login(self.docente)
+        datos = self.libro_datos()
+        datos[f"nota-{segunda.pk}-examen_2"] = "101"
+        respuesta = self.client.post(reverse("registrar_calificacion"), datos)
+        self.assertContains(respuesta, "No se guardó ninguna calificación")
+        self.assertContains(respuesta, "La nota no puede superar 100")
+        self.assertEqual(respuesta.context["filas"][1]["form"].data[f"nota-{segunda.pk}-examen_2"], "101")
+        self.assertFalse(Calificacion.objects.exists())
+        self.inscripciones[0].refresh_from_db()
+        self.assertEqual(self.inscripciones[0].estado, "CURSANDO")
+
+    def test_pendiente_vacio_distinto_de_cero_registrado(self):
+        segunda = self.agregar_inscripcion()
+        self.client.force_login(self.docente)
+        datos = self.libro_datos()
+        for campo in (*Calificacion.COMPONENTES, "observaciones"):
+            datos[f"nota-{self.inscripciones[0].pk}-{campo}"] = ""
+            datos[f"nota-{segunda.pk}-{campo}"] = "0" if campo != "observaciones" else ""
+        respuesta = self.client.post(reverse("registrar_calificacion"), datos, follow=True)
+        self.assertContains(respuesta, "1 calificaciones guardadas")
+        self.assertFalse(Calificacion.objects.filter(inscripcion=self.inscripciones[0]).exists())
+        self.assertEqual(Calificacion.objects.get(inscripcion=segunda).nota_final, Decimal("0"))
+        self.assertEqual(Calificacion.objects.get(inscripcion=segunda).estado, "REPROBADA_ACADEMICAMENTE")
+        self.assertContains(respuesta, "0,00")
+        self.assertContains(respuesta, "Pendiente")
+
+    def test_fila_parcial_exige_componentes_restantes(self):
+        self.client.force_login(self.docente)
+        datos = self.libro_datos()
+        datos[f"nota-{self.inscripciones[0].pk}-tarea_1"] = ""
+        respuesta = self.client.post(reverse("registrar_calificacion"), datos)
+        self.assertContains(respuesta, "Complete esta nota")
+        self.assertFalse(Calificacion.objects.exists())
+
+    def test_no_borra_nota_existente_al_vaciar_fila(self):
+        nota = self.nota()
+        nota.save()
+        self.client.force_login(self.docente)
+        datos = self.libro_datos()
+        for campo in (*Calificacion.COMPONENTES, "observaciones"):
+            datos[f"nota-{self.inscripciones[0].pk}-{campo}"] = ""
+        respuesta = self.client.post(reverse("registrar_calificacion"), datos)
+        self.assertContains(respuesta, "Complete esta nota")
+        nota.refresh_from_db()
+        self.assertEqual(nota.nota_final, Decimal("80"))
+
+    def test_no_reescribe_filas_sin_cambios(self):
+        self.client.force_login(self.docente)
+        self.client.post(reverse("registrar_calificacion"), self.libro_datos())
+        with patch("academico.forms.FilaCalificacionForm.save") as guardar:
+            respuesta = self.client.post(reverse("registrar_calificacion"), self.libro_datos(), follow=True)
+        guardar.assert_not_called()
+        self.assertContains(respuesta, "0 calificaciones guardadas")
+
+    def test_detecta_edicion_desactualizada_sin_sobrescribir(self):
+        nota = self.nota()
+        nota.save()
+        self.client.force_login(self.docente)
+        datos = self.libro_datos()
+        nota.tarea_1 = Decimal("25")
+        nota.save()
+        respuesta = self.client.post(reverse("registrar_calificacion"), datos)
+        self.assertContains(respuesta, "Esta fila cambió")
+        nota.refresh_from_db()
+        self.assertEqual(nota.tarea_1, Decimal("25"))
+
+    def test_rechaza_identificadores_duplicados_y_revision_adulterada(self):
+        self.client.force_login(self.docente)
+        datos = self.libro_datos()
+        datos["inscripciones"] *= 2
+        self.assertEqual(self.client.post(reverse("registrar_calificacion"), datos).status_code, 403)
+        datos = self.libro_datos()
+        datos[f"nota-{self.inscripciones[0].pk}-revision"] = "adulterada"
+        respuesta = self.client.post(reverse("registrar_calificacion"), datos)
+        self.assertContains(respuesta, "Esta fila cambió")
+        self.assertFalse(Calificacion.objects.exists())
+
+    def test_vista_previa_reutiliza_calculo_sin_guardar(self):
+        self.agregar_inscripcion()
+        self.client.force_login(self.docente)
+        datos = self.libro_datos()
+        datos["accion"] = "calcular"
+        respuesta = self.client.post(reverse("registrar_calificacion"), datos)
+        self.assertEqual(respuesta.status_code, 200)
+        self.assertEqual(len(respuesta.json()["filas"]), 2)
+        self.assertEqual(respuesta.json()["filas"][0]["nota"], "80.00")
+        self.assertEqual(respuesta.json()["filas"][0]["estado"], "Aprobada")
+        self.assertFalse(Calificacion.objects.exists())
+        self.inscripciones[0].refresh_from_db()
+        self.assertEqual(self.inscripciones[0].estado, "CURSANDO")
+
+    def test_fila_bloqueada_no_impide_guardar_otro_estudiante(self):
+        segunda = self.agregar_inscripcion()
+        InscripcionCurso.objects.filter(pk=segunda.pk).update(estado="REPROBADA_POR_INASISTENCIA")
+        self.client.force_login(self.docente)
+        respuesta = self.client.post(reverse("registrar_calificacion"), self.libro_datos(), follow=True)
+        self.assertContains(respuesta, "No editable: reprobada por inasistencia")
+        self.assertEqual(Calificacion.objects.count(), 1)
+        self.assertFalse(Calificacion.objects.filter(inscripcion=segunda).exists())
+
+    def test_error_al_guardar_segunda_fila_revierte_todo(self):
+        segunda = self.agregar_inscripcion()
+        self.client.force_login(self.docente)
+        datos = self.libro_datos()
+        guardar = Calificacion.save
+        def fallo(nota, *args, **kwargs):
+            if nota.inscripcion_id == segunda.pk:
+                raise ValidationError("Error simulado en segunda fila.")
+            return guardar(nota, *args, **kwargs)
+        with patch.object(Calificacion, "save", fallo):
+            respuesta = self.client.post(reverse("registrar_calificacion"), datos)
+        self.assertContains(respuesta, "No se guardó ninguna calificación")
+        self.assertFalse(Calificacion.objects.exists())
+        self.inscripciones[0].refresh_from_db()
+        self.assertEqual(self.inscripciones[0].estado, "CURSANDO")
 
     def test_rutas_preservadas(self):
         for nombre, ruta in (("login", "/login/"), ("logout", "/logout/"), ("dashboard", "/"),

@@ -693,14 +693,16 @@ class Calificacion(models.Model):
         return (min((apreciacion + evaluaciones) / Decimal("5"), Decimal("100"))
                 .quantize(Decimal("0.01")))
 
+    @staticmethod
+    def estado_para_nota(nota):
+        return ("PENDIENTE" if nota is None else
+                "APROBADA" if nota >= 70 else "REPROBADA_ACADEMICAMENTE")
+
     def save(self, *args, **kwargs):
         # full_clean convierte y valida los componentes antes de operar con ellos.
         self.full_clean(exclude=["nota_final", "estado", "fecha_registro"])
         self.nota_final = self.calcular_nota()
-        self.estado = (
-            "PENDIENTE" if self.nota_final is None else
-            "APROBADA" if self.nota_final >= 70 else "REPROBADA_ACADEMICAMENTE"
-        )
+        self.estado = self.estado_para_nota(self.nota_final)
         if self.fecha_registro is None:
             self.fecha_registro = timezone.now()
         # Un guardado parcial debe incluir todos los datos que determinan la nota.

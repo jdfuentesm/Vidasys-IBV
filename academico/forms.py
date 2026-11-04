@@ -147,3 +147,70 @@ class CalificacionForm(forms.ModelForm):
             ),
             "observaciones": forms.Textarea(attrs={"rows": 3, "class": "form-control"}),
         }
+
+
+class FilaCalificacionForm(CalificacionForm):
+    """Una fila del libro; reutiliza la validación y persistencia de CalificacionForm."""
+    revision = forms.CharField(widget=forms.HiddenInput)
+
+    def __init__(self, *args, inscripcion, **kwargs):
+        from django.core import signing
+        from hashlib import sha256
+        import json
+
+        self.inscripcion_libro = inscripcion
+        super().__init__(*args, **kwargs)
+        self.fields["inscripcion"].disabled = True
+        self.fields["inscripcion"].widget = forms.HiddenInput()
+        self.initial["inscripcion"] = inscripcion.pk
+        self.bloqueada = inscripcion.estado == "REPROBADA_POR_INASISTENCIA"
+        self.omitir = False
+        # Una nota existente tiene que conservar exactamente su versión al editarla.
+        datos = {campo: str(getattr(self.instance, campo)) for campo in self.Meta.fields
+                 if campo != "inscripcion"}
+        datos.update(pk=self.instance.pk, estado=inscripcion.estado,
+                     nota_final=str(self.instance.nota_final))
+        digest = sha256(json.dumps(datos, sort_keys=True).encode()).hexdigest()
+        self.revision_actual = signing.Signer(salt="vidasys-libro").sign(f"{inscripcion.pk}:{digest}")
+        self.initial["revision"] = self.revision_actual
+        if not self.instance.pk:
+            for campo in Calificacion.COMPONENTES:
+                self.initial[campo] = None
+        for campo in Calificacion.COMPONENTES:
+            self.fields[campo].required = False
+            self.fields[campo].widget.attrs["aria-label"] = (
+                f"{self.fields[campo].label}: {inscripcion.matricula.estudiante}"
+            )
+        self.fields["observaciones"].widget = forms.TextInput(attrs={
+            "aria-label": f"Observaciones: {inscripcion.matricula.estudiante}",
+        })
+        if self.bloqueada:
+            for campo in self.fields.values():
+                campo.disabled = True
+
+    @property
+    def componentes(self):
+        return [self[campo] for campo in Calificacion.COMPONENTES]
+
+    def clean(self):
+        from django.utils.crypto import constant_time_compare
+
+        datos = super().clean()
+        vacia = not any(self.data.get(self.add_prefix(campo), "").strip()
+                        for campo in (*Calificacion.COMPONENTES, "observaciones"))
+        self.omitir = self.bloqueada or (not self.instance.pk and vacia)
+        if self.omitir:
+            return datos
+        if not constant_time_compare(datos.get("revision", ""), self.revision_actual):
+            raise forms.ValidationError(
+                "Esta fila cambió desde que abrió el libro. Recargue y revise la calificación antes de guardar."
+            )
+        for campo in Calificacion.COMPONENTES:
+            if campo != "puntos_extras" and datos.get(campo) is None and campo not in self.errors:
+                self.add_error(campo, "Complete esta nota. Use 0 si la evaluación vale cero.")
+        return datos
+
+    def _post_clean(self):
+        # Una fila nueva vacía no representa una evaluación: no crear un registro con ceros.
+        if not self.omitir:
+            super()._post_clean()

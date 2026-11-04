@@ -1,0 +1,28 @@
+:root { color-scheme: light; font-family: system-ui, sans-serif; font-size: 18px; color: #172b45; background: #f5f7fa; }
+body { margin: 0; }
+main { padding: 1rem; max-width: 1600px; margin: auto; }
+h1 { font-size: 1.9rem; } h2 { font-size: 1.3rem; }
+a { color: #174a85; } p { line-height: 1.6; }
+label { display: block; font-weight: 700; margin: .75rem 0; }
+input, select, button { font: inherit; min-height: 48px; border: 1px solid #64748b; border-radius: 6px; padding: .55rem; }
+select { max-width: 100%; }
+button { background: #1e3a5f; color: white; cursor: pointer; font-weight: 700; }
+input:focus, select:focus, button:focus, a:focus, summary:focus, .tabla-scroll:focus { outline: 3px solid #b96b00; outline-offset: 2px; }
+.mensaje { padding: 1rem; border: 2px solid; border-radius: 6px; background: white; }
+.error, .errorlist { color: #9c1720; } .success { color: #146332; }
+.errorlist { padding-left: 1rem; font-size: .9rem; min-width: 9rem; }
+.tabla-scroll { overflow: auto; max-height: 65vh; background: white; border: 1px solid #8b9aad; margin-top: 1rem; }
+table { border-collapse: separate; border-spacing: 0; width: 100%; }
+caption { text-align: left; padding: 1rem; }
+th, td { border-bottom: 1px solid #c7d1dc; border-right: 1px solid #dde3eb; padding: .6rem; text-align: left; vertical-align: top; }
+thead th { position: sticky; top: 0; z-index: 2; background: #1e3a5f; color: white; min-width: 7rem; }
+.estudiante { position: sticky; left: 0; min-width: 12rem; max-width: 15rem; background: #edf2f8; z-index: 1; }
+thead .estudiante { background: #1e3a5f; z-index: 3; }
+small { display: block; font-weight: 400; margin-top: .35rem; }
+td input[type=number] { width: 7rem; } td input[type=text] { width: 13rem; }
+input[aria-invalid=true] { border: 2px solid #9c1720; background: #fff4f3; }
+input:disabled { background: #e4e8ed; color: #475569; }
+.resultado { font-size: 1.2rem; font-weight: 700; white-space: nowrap; }
+.guardar { position: sticky; top: 0; z-index: 4; background: #fff; padding: .7rem; border: 1px solid #8b9aad; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.guardar p { margin: 0; } .bloqueada { color: #475569; }
+@media(max-width: 600px) { main { padding: .5rem; } .estudiante { min-width: 9rem; max-width: 10rem; } .guardar button { width: 100%; } }
