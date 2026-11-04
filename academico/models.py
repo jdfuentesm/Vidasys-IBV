@@ -3,6 +3,7 @@ from decimal import Decimal
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models, transaction
+from django.utils import timezone
 
 
 class Estudiante(models.Model):
@@ -648,64 +649,78 @@ class Calificacion(models.Model):
         max_digits=5, decimal_places=2, default=Decimal("0.00")
     )
 
+    # Límites existentes de apreciación y rangos de evaluación confirmados por el usuario.
+    LIMITES_COMPONENTES = {
+        "nota_asistencia": Decimal("40"),
+        "nota_uniforme": Decimal("20"),
+        "nota_participacion": Decimal("20"),
+        "nota_companerismo": Decimal("20"),
+        "puntos_extras": Decimal("10"),
+        "tarea_1": Decimal("100"),
+        "examen_1": Decimal("100"),
+        "tarea_2": Decimal("100"),
+        "examen_2": Decimal("100"),
+    }
+    COMPONENTES = tuple(LIMITES_COMPONENTES)
+
     def clean(self):
         super().clean()
         errores = {}
+        for campo in self.COMPONENTES:
+            valor = getattr(self, campo)
+            if valor is None or not isinstance(valor, Decimal) or not valor.is_finite():
+                errores[campo] = "Ingrese una nota numérica válida."
+            elif valor < 0:
+                errores[campo] = "La nota no puede ser negativa."
+            elif valor > self.LIMITES_COMPONENTES[campo]:
+                errores[campo] = f"La nota no puede superar {self.LIMITES_COMPONENTES[campo]}."
 
-        if self.nota_final is not None and (
-            self.nota_final < 0 or self.nota_final > 100
-        ):
-            errores["nota_final"] = "La nota final debe estar entre 0 y 100."
-
-        inscripcion = None
-
-        if self.__dict__.get("inscripcion_id") is not None:
-            inscripcion = self.inscripcion
-
-        if (
-            inscripcion is not None
-            and inscripcion.estado == "REPROBADA_POR_INASISTENCIA"
-            and self.nota_final is not None
-        ):
-            errores["nota_final"] = (
-                "No se puede registrar una nota porque el estudiante "
-                "fue excluido por inasistencia."
-            )
-
+        if self.inscripcion_id is not None and self.inscripcion.estado == "REPROBADA_POR_INASISTENCIA":
+            errores["__all__"] = "No se pueden registrar notas: la inscripción está reprobada por inasistencia."
         if errores:
             raise ValidationError(errores)
 
+    def calcular_nota(self):
+        """Conserva la fórmula de 8e668f5; cero es una nota según la regla confirmada."""
+        apreciacion = min(
+            sum((getattr(self, campo) for campo in self.COMPONENTES[:5]), Decimal("0")),
+            Decimal("100"),
+        )
+        evaluaciones = sum(
+            (getattr(self, campo) for campo in ("tarea_1", "examen_1", "tarea_2", "examen_2")),
+            Decimal("0"),
+        )
+        return (min((apreciacion + evaluaciones) / Decimal("5"), Decimal("100"))
+                .quantize(Decimal("0.01")))
+
     def save(self, *args, **kwargs):
-        # 1. Calculamos la Apreciación del Alumno (Máximo 100 puntos)
-        apreciacion_base = (
-            (self.nota_asistencia or 0)
-            + (self.nota_uniforme or 0)
-            + (self.nota_participacion or 0)
-            + (self.nota_companerismo or 0)
+        # full_clean convierte y valida los componentes antes de operar con ellos.
+        self.full_clean(exclude=["nota_final", "estado", "fecha_registro"])
+        self.nota_final = self.calcular_nota()
+        self.estado = (
+            "PENDIENTE" if self.nota_final is None else
+            "APROBADA" if self.nota_final >= 70 else "REPROBADA_ACADEMICAMENTE"
         )
-
-        # 2. Aplicamos el bonus de puntos extras (máximo 10) pero sin pasar de 100
-        apreciacion_total = apreciacion_base + (self.puntos_extras or 0)
-        apreciacion_total = min(apreciacion_total, 100)
-
-        # 3. Calculamos el Total de Tareas y Exámenes
-        tareas_examenes_total = (
-            (self.tarea_1 or 0)
-            + (self.examen_1 or 0)
-            + (self.tarea_2 or 0)
-            + (self.examen_2 or 0)
-        )
-
-        # 4. Calculamos la Nota Final (Fórmula del Excel: Total / 5)
-        # Nota: Ajusta el divisor (5) si en tu Excel varía según la cantidad de tareas
-        if apreciacion_total > 0 or tareas_examenes_total > 0:
-            nota_calculada = (apreciacion_total + tareas_examenes_total) / 5
-            # Aseguramos que la nota final no pase de 100
-            self.nota_final = min(nota_calculada, Decimal("100.00"))
-        else:
-            self.nota_final = None
-
-        # ... (el resto de tu save() queda igual: estado, full_clean, etc.)
+        if self.fecha_registro is None:
+            self.fecha_registro = timezone.now()
+        # Un guardado parcial debe incluir todos los datos que determinan la nota.
+        if kwargs.get("update_fields") is not None:
+            kwargs["update_fields"] = set(kwargs["update_fields"]) | set(self.COMPONENTES) | {
+                "nota_final", "estado", "fecha_registro",
+            }
+        database = kwargs.get("using") or self._state.db or "default"
+        with transaction.atomic(using=database):
+            inscripcion = InscripcionCurso.objects.using(database).select_for_update().get(pk=self.inscripcion_id)
+            if inscripcion.estado == "REPROBADA_POR_INASISTENCIA":
+                raise ValidationError("No se pueden registrar notas: la inscripción está reprobada por inasistencia.")
+            super().save(*args, **kwargs)
+            if self.nota_final is not None:
+                InscripcionCurso.objects.using(database).filter(pk=inscripcion.pk).update(
+                    estado=self.estado,
+                    fecha_cierre=timezone.localdate(),
+                    motivo_cierre=("Materia aprobada con nota final." if self.estado == "APROBADA"
+                                   else "Materia reprobada académicamente."),
+                )
 
     class Meta:
         managed = False

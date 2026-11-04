@@ -2,67 +2,62 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Registrar Calificación - VidaSys</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Calificaciones — VidaSys-IBV</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        h1 { color: #333; margin-bottom: 5px; }
-        h3 { color: #17a2b8; border-bottom: 2px solid #eee; padding-bottom: 5px; margin-top: 20px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 14px; }
-        .form-control { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
-        .btn { background: #17a2b8; color: white; padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; width: 100%; margin-top: 20px; }
-        .btn:hover { background: #138496; }
-        .alert { padding: 15px; margin-bottom: 20px; border-radius: 4px; }
-        .alert-success { background: #d4edda; color: #155724; }
-        .alert-error { background: #f8d7da; color: #721c24; }
+        body { font-family: sans-serif; max-width: 900px; margin: auto; padding: 1rem; }
+        label { display: block; margin-top: 1rem; }
+        input, select, textarea { max-width: 100%; padding: .5rem; box-sizing: border-box; }
+        .errorlist, .error { color: #a11212; }
+        .success { color: #146c2e; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        td, th { text-align: left; padding: .5rem; border-bottom: 1px solid #ccc; }
+        button { margin-top: 1rem; padding: .75rem; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Registro de Notas</h1>
-        <p>El sistema calculará automáticamente la nota final y el estado de aprobación.</p>
-
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-
-        <form method="post">
-            {% csrf_token %}
-
-            <div class="form-group">
-                {{ form.inscripcion.label_tag }}
-                {{ form.inscripcion }}
-            </div>
-
-            <h3>Apreciación del Alumno (Máx 100 puntos)</h3>
-            <div class="grid-3">
-                <div class="form-group">{{ form.nota_asistencia.label_tag }}{{ form.nota_asistencia }}</div>
-                <div class="form-group">{{ form.nota_uniforme.label_tag }}{{ form.nota_uniforme }}</div>
-                <div class="form-group">{{ form.nota_participacion.label_tag }}{{ form.nota_participacion }}</div>
-                <div class="form-group">{{ form.nota_companerismo.label_tag }}{{ form.nota_companerismo }}</div>
-                <div class="form-group">{{ form.puntos_extras.label_tag }}{{ form.puntos_extras }}</div>
-            </div>
-
-            <h3>Tareas y Exámenes</h3>
-            <div class="grid-3">
-                <div class="form-group">{{ form.tarea_1.label_tag }}{{ form.tarea_1 }}</div>
-                <div class="form-group">{{ form.examen_1.label_tag }}{{ form.examen_1 }}</div>
-                <div class="form-group">{{ form.tarea_2.label_tag }}{{ form.tarea_2 }}</div>
-                <div class="form-group">{{ form.examen_2.label_tag }}{{ form.examen_2 }}</div>
-            </div>
-
-            <div class="form-group">
-                {{ form.observaciones.label_tag }}
-                {{ form.observaciones }}
-            </div>
-
-            <button type="submit" class="btn">Calcular y Guardar Nota Final</button>
-        </form>
-    </div>
+    <a href="{% url 'dashboard' %}">Volver al inicio</a>
+    <h1>Calificaciones de mis cursos</h1>
+    {% for message in messages %}<p role="status" class="{{ message.tags }}">{{ message }}</p>{% endfor %}
+    <form method="get">
+        <label for="curso">Curso</label>
+        <select name="curso" id="curso" required>
+            <option value="">Seleccione un curso</option>
+            {% for item in cursos %}<option value="{{ item.pk }}" {% if curso.pk == item.pk %}selected{% endif %}>{{ item }}</option>{% endfor %}
+        </select>
+        <button type="submit">Consultar curso</button>
+    </form>
+    {% if not cursos %}<p>No hay cursos asignados a su cuenta docente.</p>{% endif %}
+    {% if curso %}
+        <h2>Estudiantes inscritos</h2>
+        <table>
+            <thead><tr><th>Estudiante</th><th>Nota final</th><th>Estado</th><th>Acción</th></tr></thead>
+            <tbody>
+                {% for item in inscripciones %}
+                    <tr>
+                        <td>{{ item.matricula.estudiante }}</td>
+                        <td>{{ item.calificacion.nota_final|default_if_none:"Pendiente"|default:"Pendiente" }}</td>
+                        <td>{{ item.calificacion.get_estado_display|default:"Sin registro" }}</td>
+                        <td><a href="?curso={{ curso.pk }}&amp;inscripcion={{ item.pk }}">Consultar / editar</a></td>
+                    </tr>
+                {% empty %}<tr><td colspan="4">Este curso no tiene estudiantes inscritos.</td></tr>{% endfor %}
+            </tbody>
+        </table>
+        {% if form and seleccionada %}
+            <h2>Registrar o modificar calificación</h2>
+            <p>Fórmula existente: (apreciación con extras, hasta 100, + tareas y exámenes) / 5. Se aprueba desde 70.</p>
+            <p>Una evaluación registrada con cero reprueba. “Sin registro” indica que aún no se ha guardado una calificación.</p>
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="curso" value="{{ curso.pk }}">
+                <input type="hidden" name="inscripcion" value="{{ seleccionada.pk }}">
+                {{ form.non_field_errors }}
+                {% for field in form %}
+                    <div>{{ field.label_tag }}{{ field }}{% if field.help_text %}<p>{{ field.help_text }}</p>{% endif %}{{ field.errors }}</div>
+                {% endfor %}
+                <button type="submit">Guardar calificación</button>
+            </form>
+        {% else %}<p>Seleccione un estudiante para consultar o registrar su calificación.</p>{% endif %}
+    {% endif %}
 </body>
 </html>

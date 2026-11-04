@@ -2,7 +2,7 @@ from typing import ClassVar, cast
 
 from django import forms
 
-from .models import Asistencia, Calificacion, SesionClase
+from .models import Asistencia, Calificacion, InscripcionCurso, SesionClase
 
 
 class AsistenciaForm(forms.ModelForm):
@@ -80,6 +80,27 @@ class SesionExtraordinariaForm(forms.ModelForm):
 
 
 class CalificacionForm(forms.ModelForm):
+    def __init__(self, *args, inscripciones=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Por defecto no expone estudiantes; la vista proporciona el ámbito autorizado.
+        self.fields["inscripcion"].queryset = (
+            inscripciones if inscripciones is not None else
+            InscripcionCurso.objects.none()
+        )
+        self.fields["inscripcion"].error_messages["invalid_choice"] = (
+            "Seleccione un estudiante inscrito en el curso elegido."
+        )
+        for campo, limite in Calificacion.LIMITES_COMPONENTES.items():
+            self.fields[campo].widget.attrs.update(min="0", max=str(limite), step="0.01")
+        self.fields["puntos_extras"].help_text = (
+            "Opcional, a consideración del docente. Solo cubre puntaje faltante "
+            "en la apreciación, sin superar 100 puntos."
+        )
+        self.fields["puntos_extras"].required = False
+
+    def clean_puntos_extras(self):
+        return self.cleaned_data.get("puntos_extras") or 0
+
     class Meta:
         model = Calificacion
         fields: ClassVar[list[str]] = [
