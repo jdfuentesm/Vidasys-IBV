@@ -7,6 +7,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
 
+from .forms import UsuarioChangeForm, UsuarioCreationForm
 from .models import Usuario
 
 
@@ -16,6 +17,9 @@ class UsuarioAdmin(BaseUserAdmin):
     Panel de administración personalizado para el modelo Usuario.
     """
     
+    add_form = UsuarioCreationForm
+    form = UsuarioChangeForm
+
     # ---- Lista de usuarios ----
     list_display = (
         'numero_usuario',
