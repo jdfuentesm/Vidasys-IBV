@@ -4,70 +4,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Libro de calificaciones — VidaSys-IBV</title>
+    <title>Libro de Calificaciones — VIDASYS-IBV</title>
     <link rel="stylesheet" href="{% static 'css/calificaciones.css' %}">
     <script src="{% static 'js/calificaciones.js' %}" defer></script>
 </head>
 <body>
-<main>
-    <a href="{% url 'dashboard' %}">← Volver al inicio</a>
-    <h1>Libro de calificaciones</h1>
-    <p>1. Abra su curso. 2. Escriba las notas. 3. Pulse <strong>Guardar todas las calificaciones</strong>.</p>
+<a class="saltar" href="#contenido">Ir al libro de calificaciones</a>
+<header class="encabezado">
+    <div class="encabezado-interior">
+        <div><strong class="marca">VIDASYS-IBV</strong><span class="institucion">Instituto Bíblico Vida</span></div>
+        <a href="{% url 'dashboard' %}">← Volver al inicio</a>
+    </div>
+</header>
+<main id="contenido">
+    <div class="titulo"><p class="seccion">GESTIÓN ACADÉMICA</p><h1>Libro de Calificaciones</h1>
+        <p>Seleccione su curso, escriba las notas y guarde los cambios.</p></div>
     {% for message in messages %}<p role="status" class="mensaje {{ message.tags }}">{{ message }}</p>{% endfor %}
-    <form method="get" id="seleccion-curso">
-        <label for="curso">Mi curso</label>
-        <select name="curso" id="curso" required>
-            <option value="">Seleccione un curso</option>
-            {% for item in cursos %}<option value="{{ item.pk }}" {% if curso.pk == item.pk %}selected{% endif %}>{{ item }}</option>{% endfor %}
-        </select>
-        <button type="submit">Abrir libro</button>
-    </form>
-    {% if not cursos %}<p>No hay cursos asignados a su cuenta docente.</p>{% endif %}
+    <section class="panel-curso" aria-label="Selección de curso">
+        <form method="get" id="seleccion-curso">
+            <div class="selector"><label for="curso">Mi curso</label>
+                <select name="curso" id="curso" required>
+                    <option value="">Seleccione un curso</option>
+                    {% for item in cursos %}<option value="{{ item.pk }}" {% if curso.pk == item.pk %}selected{% endif %}>{{ item }}</option>{% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="boton-secundario">Abrir libro</button>
+        </form>
+        {% if not cursos %}<p>No hay cursos asignados a su cuenta docente.</p>{% endif %}
+    </section>
     {% if curso %}
-        <h2>{{ curso }}</h2>
-        <details>
-            <summary>¿Cómo se calcula la nota?</summary>
-            <p>(Apreciación con extras, máximo 100, + tarea 1 + examen 1 + tarea 2 + examen 2) / 5. Se aprueba desde 70.</p>
-            <p>Los extras son opcionales: hasta 10 puntos para completar la apreciación, a consideración del docente.</p>
-        </details>
-        <p id="ayuda-libro">Una fila nueva vacía queda <strong>pendiente</strong>. Complete todos sus componentes para registrar una evaluación; use <strong>0</strong> cuando corresponda. Los extras vacíos valen 0. Puede desplazarse hacia los lados o usar Tab para avanzar.</p>
+        <section class="cabecera-libro" aria-label="Curso abierto">
+            <div><p class="seccion">CURSO SELECCIONADO</p><h2>{{ curso }}</h2>
+                <p>{{ filas|length }} estudiante{{ filas|length|pluralize:"s" }} en el libro</p></div>
+            <details>
+                <summary>Ayuda con las notas</summary>
+                <p>Una fila nueva vacía queda pendiente. Complete sus componentes para registrar una evaluación; use 0 cuando corresponda.</p>
+                <p>Fórmula: (apreciación con extras, máximo 100, + tarea 1 + examen 1 + tarea 2 + examen 2) / 5. Se aprueba desde 70.</p>
+                <p>Extras opcionales: hasta 10 puntos para completar la apreciación, a consideración del docente. Vacíos equivalen a 0.</p>
+            </details>
+        </section>
         {% if filas %}
         <form method="post" id="libro" data-unsaved="{% if request.method == 'POST' %}true{% else %}false{% endif %}" data-preview-url="{% url 'registrar_calificacion' %}">
             {% csrf_token %}<input type="hidden" name="curso" value="{{ curso.pk }}">
             <div class="guardar">
-                <p id="estado-guardado" role="status">{% if request.method == "POST" %}Hay notas sin guardar. Revise los errores y vuelva a guardar.{% else %}Las notas mostradas son las últimas guardadas.{% endif %}</p>
-                <button type="submit">Guardar todas las calificaciones</button>
+                <div><span class="etiqueta-guardado" id="etiqueta-guardado">{% if request.method == "POST" %}Cambios sin guardar{% else %}Datos guardados{% endif %}</span>
+                    <p id="estado-guardado" role="status">{% if request.method == "POST" %}Revise las filas señaladas y vuelva a guardar.{% else %}Las notas mostradas son las últimas guardadas.{% endif %}</p></div>
+                <button type="submit">Guardar calificaciones</button>
             </div>
+            <div class="instruccion-tabla"><p id="ayuda-libro">Escriba en las casillas. Use Tab para avanzar y deslice la tabla para ver más columnas.</p>
+                <span>Los rangos aparecen bajo cada componente.</span></div>
             <div class="tabla-scroll" tabindex="0" role="region" aria-label="Notas de todos los estudiantes" aria-describedby="ayuda-libro">
             <table>
-                <caption>Todos los estudiantes del curso. Los resultados se confirman al guardar.</caption>
-                <thead><tr><th scope="col" class="estudiante">Estudiante</th>
-                    {% for campo, nombre, limite in columnas %}<th scope="col">{{ nombre|capfirst }}<small>0 a {{ limite }}</small></th>{% endfor %}
-                    <th scope="col">Observaciones</th><th scope="col">Nota final</th><th scope="col">Estado académico</th>
-                </tr></thead>
+                <caption class="solo-lectores">Libro completo de {{ curso }}. Los resultados de vista previa solo se guardan al pulsar Guardar calificaciones.</caption>
+                <thead>
+                    <tr class="grupos">
+                        <th scope="col" rowspan="2" class="estudiante">Estudiante</th>
+                        <th scope="colgroup" colspan="5">Apreciación</th>
+                        <th scope="colgroup" colspan="2">Tareas</th>
+                        <th scope="colgroup" colspan="2">Exámenes</th>
+                        <th scope="col" rowspan="2">Observaciones</th>
+                        <th scope="colgroup" colspan="2" class="grupo-resultado">Resultado</th>
+                    </tr>
+                    <tr class="componentes">
+                        {% for campo, nombre, limite in columnas %}{% if forloop.counter <= 5 %}<th scope="col">{{ nombre|capfirst }}<small>0 a {{ limite }}</small></th>{% endif %}{% endfor %}
+                        {% for campo, nombre, limite in columnas %}{% if campo == 'tarea_1' or campo == 'tarea_2' %}<th scope="col">{{ nombre|capfirst }}<small>0 a {{ limite }}</small></th>{% endif %}{% endfor %}
+                        {% for campo, nombre, limite in columnas %}{% if campo == 'examen_1' or campo == 'examen_2' %}<th scope="col">{{ nombre|capfirst }}<small>0 a {{ limite }}</small></th>{% endif %}{% endfor %}
+                        <th scope="col" class="grupo-resultado">Nota final</th><th scope="col" class="grupo-resultado">Estado académico</th>
+                    </tr>
+                </thead>
                 <tbody>
                 {% for fila in filas %}
                     <tr data-inscripcion="{{ fila.inscripcion.pk }}" {% if fila.form.bloqueada %}class="bloqueada"{% endif %}>
                         <th scope="row" class="estudiante">
-                            {{ fila.inscripcion.matricula.estudiante.nombres }} {{ fila.inscripcion.matricula.estudiante.apellidos }}
+                            <span class="nombre-estudiante">{{ fila.inscripcion.matricula.estudiante.nombres }} {{ fila.inscripcion.matricula.estudiante.apellidos }}</span>
                             <small>{{ fila.inscripcion.matricula.estudiante.codigo_estudiante }}</small>
                             <input type="hidden" name="inscripciones" value="{{ fila.inscripcion.pk }}">
                             {{ fila.form.inscripcion }}{{ fila.form.revision }}{{ fila.form.revision.errors }}
                             {{ fila.form.non_field_errors }}
                             {% if fila.form.bloqueada %}<small>No editable: reprobada por inasistencia.</small>{% endif %}
                         </th>
-                        {% for field in fila.form.componentes %}<td>{{ field }}{{ field.errors }}</td>{% endfor %}
+                        {% for field in fila.form.componentes %}{% if forloop.counter <= 5 %}<td>{{ field }}{{ field.errors }}</td>{% endif %}{% endfor %}
+                        {% for field in fila.form.componentes %}{% if field.name == 'tarea_1' or field.name == 'tarea_2' %}<td>{{ field }}{{ field.errors }}</td>{% endif %}{% endfor %}
+                        {% for field in fila.form.componentes %}{% if field.name == 'examen_1' or field.name == 'examen_2' %}<td>{{ field }}{{ field.errors }}</td>{% endif %}{% endfor %}
                         <td>{{ fila.form.observaciones }}{{ fila.form.observaciones.errors }}</td>
-                        <td class="resultado" data-nota>{% if fila.nota.nota_final != None %}{{ fila.nota.nota_final|floatformat:2 }}{% else %}Pendiente{% endif %}</td>
-                        <td data-estado>{% if fila.form.bloqueada %}Bloqueada por inasistencia{% elif fila.nota %}{{ fila.nota.get_estado_display }}{% else %}Pendiente{% endif %}</td>
+                        <td class="resultado"><span data-nota>{% if fila.nota.nota_final != None %}{{ fila.nota.nota_final|floatformat:2 }}{% else %}Pendiente{% endif %}</span></td>
+                        <td><span data-estado class="estado {% if fila.form.bloqueada %}estado--bloqueada{% elif fila.nota.estado == 'APROBADA' %}estado--aprobada{% elif fila.nota.estado == 'REPROBADA_ACADEMICAMENTE' %}estado--reprobada{% else %}estado--pendiente{% endif %}">{% if fila.form.bloqueada %}Bloqueada por inasistencia{% elif fila.nota %}{{ fila.nota.get_estado_display }}{% else %}Pendiente{% endif %}</span><small class="sin-guardar-fila" data-preview hidden>Vista previa · sin guardar</small></td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
             </div>
-
+            <p class="pie-libro">Una fila vacía queda pendiente. Una evaluación registrada con 0 es una nota cero.</p>
         </form>
-        {% else %}<p>Este curso no tiene estudiantes inscritos.</p>{% endif %}
+        {% else %}<p class="mensaje">Este curso no tiene estudiantes inscritos.</p>{% endif %}
     {% endif %}
 </main>
 </body>
