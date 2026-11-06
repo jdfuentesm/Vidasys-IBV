@@ -1,25 +1,11 @@
+{% extends 'core/aplicacion.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Libro de Calificaciones — VIDASYS-IBV</title>
-    <link rel="stylesheet" href="{% static 'css/calificaciones.css' %}">
-    <script src="{% static 'js/calificaciones.js' %}" defer></script>
-</head>
-<body>
-<a class="saltar" href="#contenido">Ir al libro de calificaciones</a>
-<header class="encabezado">
-    <div class="encabezado-interior">
-        <div><strong class="marca">VIDASYS-IBV</strong><span class="institucion">Instituto Bíblico Vida</span></div>
-        <a href="{% url 'dashboard' %}">← Volver al inicio</a>
-    </div>
-</header>
-<main id="contenido">
+{% block title %}Libro de Calificaciones{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/calificaciones.css' %}">{% endblock %}
+{% block extra_js %}<script src="{% static 'js/calificaciones.js' %}" defer></script>{% endblock %}
+{% block content %}
     <div class="titulo"><p class="seccion">GESTIÓN ACADÉMICA</p><h1>Libro de Calificaciones</h1>
         <p>Seleccione su curso, escriba las notas y guarde los cambios.</p></div>
-    {% for message in messages %}<p role="status" class="mensaje {{ message.tags }}">{{ message }}</p>{% endfor %}
     <section class="panel-curso" aria-label="Selección de curso">
         <form method="get" id="seleccion-curso">
             <div class="selector"><label for="curso">Mi curso</label>
@@ -98,6 +84,5 @@
         </form>
         {% else %}<p class="mensaje">Este curso no tiene estudiantes inscritos.</p>{% endif %}
     {% endif %}
-</main>
-</body>
-</html>
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Inicio{% endblock %} — VIDASYS-IBV</title>
+    <link rel="stylesheet" href="{% static 'css/institucional.css' %}">
+    {% block extra_css %}{% endblock %}
+    <script src="{% static 'js/navegacion.js' %}" defer></script>
+    {% block extra_js %}{% endblock %}
+</head>
+<body>
+<a class="saltar" href="#contenido">Ir al contenido principal</a>
+<header class="app-header">
+    <a class="app-marca" href="{% url 'dashboard' %}"><img src="{% static 'img/logo.png' %}" alt="Instituto Bíblico Vida" width="52" height="52">
+        <span><strong>VIDASYS-IBV</strong><small>Instituto Bíblico Vida</small></span></a>
+    <div class="app-identidad"><span>{{ request.user.get_full_name }}<small>{{ request.user.get_rol_display }}</small></span>
+        <a class="app-salir" href="{% url 'logout' %}">Cerrar sesión</a></div>
+    <button type="button" class="nav-toggle" aria-controls="menu-app" aria-expanded="false">Menú</button>
+</header>
+<div class="app-frame">
+    {% include 'core/partials/sidebar.html' %}
+    <main id="contenido" class="app-main">
+        {% if curso and request.user.rol == 'MAESTRO' %}
+            <nav class="contexto-curso" aria-label="Navegación del curso">
+                <a href="{% url 'mis_cursos' %}">← Mis cursos</a><strong>{{ curso }}</strong>
+                <div class="tareas-curso">
+                    <a href="{% url 'registrar_asistencia' %}?curso={{ curso.pk }}" {% if request.resolver_match.url_name == 'registrar_asistencia' %}aria-current="page"{% endif %}>Asistencia</a>
+                    <a href="{% url 'registrar_calificacion' %}?curso={{ curso.pk }}" {% if request.resolver_match.url_name == 'registrar_calificacion' %}aria-current="page"{% endif %}>Calificaciones</a>
+                    <a href="{% url 'programar_sesiones' curso.pk %}" {% if request.resolver_match.url_name == 'programar_sesiones' %}aria-current="page"{% endif %}>Programación</a>
+                    <a href="{% url 'cierre_curso' curso.pk %}" {% if request.resolver_match.url_name == 'cierre_curso' %}aria-current="page"{% endif %}>Cierre del curso</a>
+                </div>
+            </nav>
+        {% endif %}
+        {% for message in messages %}<p role="status" class="mensaje {{ message.tags }}">{{ message }}</p>{% endfor %}
+        {% block content %}{% endblock %}
+    </main>
+</div>
+<footer class="app-footer">Instituto Bíblico Vida · Gestión académica</footer>
+</body>
+</html>

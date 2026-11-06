@@ -103,8 +103,7 @@ def logout_view(request):
 @login_required
 def dashboard(request):
     """
-    Vista del dashboard principal.
-    TEMPORAL: por ahora solo muestra un mensaje.
-    Se reemplazará por el dashboard real de cada rol.
+    Inicio institucional con accesos a las funciones disponibles para cada rol.
+    No muestra estadísticas demostrativas ni amplía permisos de otras vistas.
     """
     return render(request, "core/dashboard.html", {"usuario": request.user})

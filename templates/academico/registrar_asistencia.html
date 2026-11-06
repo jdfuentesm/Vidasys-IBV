@@ -1,23 +1,11 @@
+{% extends 'core/aplicacion.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Control de Asistencia — VIDASYS-IBV</title>
-    <link rel="stylesheet" href="{% static 'css/calificaciones.css' %}">
-    <link rel="stylesheet" href="{% static 'css/asistencia.css' %}">
-    <script src="{% static 'js/asistencia.js' %}" defer></script>
-</head>
-<body>
-<a class="saltar" href="#contenido">Ir al control de asistencia</a>
-<header class="encabezado"><div class="encabezado-interior">
-    <div><strong class="marca">VIDASYS-IBV</strong><span class="institucion">Instituto Bíblico Vida</span></div>
-    <a href="{% url 'dashboard' %}">← Volver al inicio</a>
-</div></header>
-<main id="contenido">
+{% block title %}Control de Asistencia{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/asistencia.css' %}">{% endblock %}
+{% block extra_js %}<script src="{% static 'js/asistencia.js' %}" defer></script>{% endblock %}
+{% block content %}
     <div class="titulo"><p class="seccion">GESTIÓN ACADÉMICA</p><h1>Control de Asistencia</h1>
     <p>Abra su curso, seleccione la sesión y registre la asistencia.</p></div>
-    {% for message in messages %}<p class="mensaje {{ message.tags }}" role="status">{{ message }}</p>{% endfor %}
     <section class="panel-curso">
         <form method="get" class="seleccion-asistencia" data-seleccion>
             <div class="selector"><label for="curso">Mi curso</label>
@@ -76,6 +64,5 @@
         </form>
         {% else %}<p class="mensaje">No hay estudiantes habilitados ni asistencias anteriores para esta sesión.</p>{% endif %}
     {% endif %}
-</main>
-</body>
-</html>
+
+{% endblock %}

@@ -1,72 +1,18 @@
-{% load static %}
-<aside class="sidebar">
-    <div class="sidebar-logo">
-    <div class="logo-circle">
-        <img src="{% static 'img/logo.png' %}" alt="IBV">
-    </div>
-    <div class="sidebar-brand">
-        <span>INSTITUTO</span>
-        <span>BÍBLICO VIDA</span>
-    </div>
-</div>
-</div>
-    <nav class="sidebar-nav">
+<aside id="menu-app" class="app-sidebar" data-abierto="false">
+    <nav aria-label="Menú principal">
+        <p class="menu-titulo">MI ESPACIO</p>
         <ul>
-            <li><a href="{% url 'dashboard' %}" class="sidebar-item {% if request.path == '/' %}active{% endif %}">
-                <i class="bi bi-house-door"></i>
-                <span>Inicio</span>
-            </a></li>
-
-            {% if usuario.rol == 'ADMINISTRADOR' or usuario.rol == 'SECRETARIA' or usuario.rol == 'DIRECTORA' %}
-            <li><a href="#" class="sidebar-item">
-                <i class="bi bi-people"></i>
-                <span>Estudiantes</span>
-            </a></li>
+            <li><a href="{% url 'dashboard' %}" {% if request.resolver_match.url_name == 'dashboard' %}aria-current="page"{% endif %}>Inicio</a></li>
+            {% if request.user.rol == 'SECRETARIA' or request.user.rol == 'DIRECTORA' or request.user.rol == 'ADMINISTRADOR' %}
+                <li><a href="{% url 'matricula_secretaria' %}" {% if request.resolver_match.url_name == 'matricula_secretaria' %}aria-current="page"{% endif %}>Matricular estudiante</a></li>
             {% endif %}
-
-            {% if usuario.rol == 'ADMINISTRADOR' or usuario.rol == 'SECRETARIA' or usuario.rol == 'DIRECTORA' %}
-            <li><a href="{% url 'matricula_secretaria' %}" class="sidebar-item">
-                <i class="bi bi-file-text"></i>
-                <span>Matrículas</span>
-            </a></li>
+            {% if request.user.rol == 'MAESTRO' %}
+                <li><a href="{% url 'mis_cursos' %}" {% if request.resolver_match.url_name == 'mis_cursos' or curso %}aria-current="page"{% endif %}>Mis cursos</a></li>
             {% endif %}
-
-            {% if usuario.rol == 'ADMINISTRADOR' or usuario.rol == 'SECRETARIA' or usuario.rol == 'DIRECTORA' or usuario.rol == 'MAESTRO' %}
-            <li><a href="{% if usuario.rol == 'MAESTRO' %}{% url 'mis_cursos' %}{% else %}#{% endif %}" class="sidebar-item">
-                <i class="bi bi-book"></i>
-                <span>Académico</span>
-            </a></li>
+            {% if request.user.rol == 'DIRECTORA' %}
+                <li><a href="{% url 'autorizar_clase_extraordinaria' %}" {% if request.resolver_match.url_name == 'autorizar_clase_extraordinaria' %}aria-current="page"{% endif %}>Autorizar extraordinarias</a></li>
             {% endif %}
-
-            {% if usuario.rol == 'ADMINISTRADOR' or usuario.rol == 'SECRETARIA' or usuario.rol == 'DIRECTORA' or usuario.rol == 'MAESTRO' %}
-            <li><a href="{% if usuario.rol == 'MAESTRO' %}{% url 'registrar_asistencia' %}{% else %}#{% endif %}" class="sidebar-item">
-                <i class="bi bi-calendar-check"></i>
-                <span>Asistencia</span>
-            </a></li>
-            {% endif %}
-
-            {% if usuario.rol == 'ADMINISTRADOR' or usuario.rol == 'SECRETARIA' or usuario.rol == 'DIRECTORA' %}
-            <li><a href="#" class="sidebar-item">
-                <i class="bi bi-cash-stack"></i>
-                <span>Finanzas</span>
-            </a></li>
-            {% endif %}
-
-            {% if usuario.rol == 'ADMINISTRADOR' or usuario.rol == 'SECRETARIA' or usuario.rol == 'DIRECTORA' or usuario.rol == 'PASTOR_PRINCIPAL' %}
-            <li><a href="#" class="sidebar-item">
-                <i class="bi bi-bar-chart"></i>
-                <span>Reportes</span>
-            </a></li>
-            {% endif %}
-
-            {% if usuario.rol == 'ADMINISTRADOR' or usuario.rol == 'DIRECTORA' %}
-            <li><a href="#" class="sidebar-item">
-                <i class="bi bi-person-gear"></i>
-                <span>Usuarios</span>
-            </a></li>
-            {% endif %}
-
-            {% if usuario.rol == 'DIRECTORA' %}<li><a href="{% url 'autorizar_clase_extraordinaria' %}" class="sidebar-item">Autorizar extraordinarias</a></li>{% endif %}
         </ul>
     </nav>
+    <p class="menu-ayuda">{{ request.user.get_rol_display }}<small>Accesos disponibles para su cuenta.</small></p>
 </aside>
