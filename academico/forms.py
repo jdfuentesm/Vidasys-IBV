@@ -214,3 +214,74 @@ class FilaCalificacionForm(CalificacionForm):
         # Una fila nueva vacía no representa una evaluación: no crear un registro con ceros.
         if not self.omitir:
             super()._post_clean()
+
+
+class FilaAsistenciaForm(AsistenciaForm):
+    revision = forms.CharField(widget=forms.HiddenInput)
+
+    def __init__(self, *args, inscripcion, sesion, **kwargs):
+        from django.core import signing
+        from hashlib import sha256
+        import json
+        from .asistencia import motivo_bloqueo
+
+        super().__init__(*args, **kwargs)
+        self.motivo_bloqueo = motivo_bloqueo(inscripcion, sesion)
+        self.omitir = False
+        self.fields["inscripcion"].queryset = InscripcionCurso.objects.filter(pk=inscripcion.pk)
+        self.fields["sesion"].queryset = SesionClase.objects.filter(pk=sesion.pk)
+        for nombre, pk in (("inscripcion", inscripcion.pk), ("sesion", sesion.pk)):
+            self.fields[nombre].disabled = True
+            self.fields[nombre].widget = forms.HiddenInput()
+            self.initial[nombre] = pk
+        self.fields["estado_asistencia"].required = False
+        self.fields["estado_asistencia"].choices = [("", "Pendiente · sin registrar"), *Asistencia.ESTADOS_ASISTENCIA]
+        self.fields["estado_asistencia"].widget.attrs["aria-label"] = f"Asistencia: {inscripcion.matricula.estudiante}"
+        self.fields["observaciones"].widget = forms.TextInput(attrs={
+            "aria-label": f"Observaciones: {inscripcion.matricula.estudiante}",
+            "placeholder": "Observación opcional",
+        })
+        datos = {
+            "inscripcion": inscripcion.pk, "estado_inscripcion": inscripcion.estado,
+            "cierre": str(inscripcion.fecha_cierre), "motivo": inscripcion.motivo_cierre,
+            "matricula": inscripcion.matricula_id, "estado_matricula": inscripcion.matricula.estado,
+            "ciclo_matricula": inscripcion.matricula.ciclo_id, "curso": inscripcion.curso_id,
+            "ciclo_curso": inscripcion.curso.ciclo_id, "docente": inscripcion.curso.maestro_id,
+            "sesion": sesion.pk, "estado_sesion": sesion.estado, "curso_sesion": sesion.curso_id,
+            "fecha_sesion": str(sesion.fecha), "asistencia": self.instance.pk,
+            "estado_asistencia": self.instance.estado_asistencia,
+            "observaciones": self.instance.observaciones,
+        }
+        digest = sha256(json.dumps(datos, sort_keys=True).encode()).hexdigest()
+        self.revision_actual = signing.Signer(salt="vidasys-asistencia").sign(digest)
+        self.initial["revision"] = self.revision_actual
+        if self.motivo_bloqueo:
+            self.fields["estado_asistencia"].disabled = True
+            self.fields["observaciones"].disabled = True
+
+    def clean(self):
+        from django.utils.crypto import constant_time_compare
+
+        datos = super().clean()
+        if not constant_time_compare(datos.get("revision", ""), self.revision_actual):
+            self.omitir = True
+            raise forms.ValidationError("Esta fila o su habilitación cambió. Recargue la sesión y revise los datos antes de guardar.")
+        if self.motivo_bloqueo:
+            self.omitir = True
+            for campo in ("estado_asistencia", "observaciones"):
+                recibido = self.data.get(self.add_prefix(campo))
+                anterior = getattr(self.instance, campo) or ""
+                if recibido is not None and recibido != anterior:
+                    raise forms.ValidationError(self.motivo_bloqueo)
+            return datos
+        if not datos.get("estado_asistencia"):
+            if self.instance.pk:
+                self.add_error("estado_asistencia", "Seleccione un estado. Dejarlo vacío no elimina una asistencia registrada.")
+            elif datos.get("observaciones"):
+                self.add_error("estado_asistencia", "Seleccione un estado para guardar la observación.")
+            self.omitir = True
+        return datos
+
+    def _post_clean(self):
+        if not self.omitir:
+            super()._post_clean()

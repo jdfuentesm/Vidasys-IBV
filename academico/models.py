@@ -505,54 +505,58 @@ class Asistencia(models.Model):
     observaciones = models.TextField(null=True, blank=True)
 
     def clean(self):
+        from .asistencia import motivo_bloqueo
+
         super().clean()
         errores = {}
-
-        estados_validos = {codigo for codigo, nombre in self.ESTADOS_ASISTENCIA}
-
-        if self.estado_asistencia not in estados_validos:
+        if self.estado_asistencia not in dict(self.ESTADOS_ASISTENCIA):
             errores["estado_asistencia"] = "Seleccione un estado de asistencia válido."
-
-        inscripcion = None
-        sesion = None
-
-        if self.__dict__.get("inscripcion_id") is not None:
-            inscripcion = self.inscripcion
-
-        if self.__dict__.get("sesion_id") is not None:
-            sesion = self.sesion
-
-        if (
-            inscripcion is not None
-            and sesion is not None
-            and inscripcion.curso.pk != sesion.curso.pk
-        ):
-            errores["sesion"] = (
-                "La sesión seleccionada no pertenece al curso de esta inscripción."
-            )
-
+        if self.inscripcion_id is not None and self.sesion_id is not None:
+            try:
+                motivo = motivo_bloqueo(self.inscripcion, self.sesion)
+            except (InscripcionCurso.DoesNotExist, SesionClase.DoesNotExist):
+                motivo = "La inscripción o sesión seleccionada ya no existe."
+            if motivo:
+                errores["__all__"] = motivo
+        if self.pk:
+            anterior = Asistencia.objects.using(self._state.db or "default").filter(pk=self.pk).values(
+                "inscripcion_id", "sesion_id"
+            ).first()
+            if anterior and (anterior["inscripcion_id"] != self.inscripcion_id or anterior["sesion_id"] != self.sesion_id):
+                errores["__all__"] = "No se puede trasladar una asistencia a otra inscripción o sesión."
         if errores:
             raise ValidationError(errores)
 
     def save(self, *args, **kwargs):
-        self.full_clean()
-
-        with transaction.atomic():
+        database = kwargs.get("using") or self._state.db or "default"
+        with transaction.atomic(using=database):
+            # Mismo orden que el registro masivo: curso, sesión, matrículas, inscripciones.
+            sesion_previa = SesionClase.objects.using(database).get(pk=self.sesion_id)
+            curso = Curso.objects.using(database).select_for_update().get(pk=sesion_previa.curso_id)
+            sesion = SesionClase.objects.using(database).select_for_update().get(pk=self.sesion_id)
+            inscripcion_previa = InscripcionCurso.objects.using(database).get(pk=self.inscripcion_id)
+            matricula = Matricula.objects.using(database).select_for_update().get(pk=inscripcion_previa.matricula_id)
+            inscripcion = InscripcionCurso.objects.using(database).select_for_update().get(pk=self.inscripcion_id)
+            if sesion.curso_id != curso.pk or inscripcion.matricula_id != matricula.pk:
+                raise ValidationError("Las relaciones cambiaron. Recargue la asistencia antes de guardar.")
+            sesion.curso = curso
+            inscripcion.matricula = matricula
+            if inscripcion.curso_id == curso.pk:
+                inscripcion.curso = curso
+            self.inscripcion = inscripcion
+            self.sesion = sesion
+            self.full_clean()
             super().save(*args, **kwargs)
-
             if self.estado_asistencia == "AUSENTE_INJUSTIFICADA":
-                cantidad_ausencias = Asistencia.objects.filter(
-                    inscripcion=self.inscripcion,
-                    estado_asistencia="AUSENTE_INJUSTIFICADA",
+                cantidad = Asistencia.objects.using(database).filter(
+                    inscripcion_id=inscripcion.pk, estado_asistencia="AUSENTE_INJUSTIFICADA"
                 ).count()
-
-                if cantidad_ausencias >= 2:
-                    InscripcionCurso.objects.filter(pk=self.inscripcion.pk).exclude(
-                        estado="REPROBADA_POR_INASISTENCIA"
-                    ).update(
-                        estado="REPROBADA_POR_INASISTENCIA",
-                        fecha_cierre=self.sesion.fecha,
-                        motivo_cierre=("Acumuló dos ausencias injustificadas."),
+                if cantidad >= 2:
+                    if inscripcion.fecha_cierre is not None or inscripcion.motivo_cierre:
+                        raise ValidationError("Existe un cierre previo. Se requiere revisión de Dirección; no se modificó la asistencia.")
+                    InscripcionCurso.objects.using(database).filter(pk=inscripcion.pk, estado="CURSANDO").update(
+                        estado="REPROBADA_POR_INASISTENCIA", fecha_cierre=sesion.fecha,
+                        motivo_cierre="Acumuló dos ausencias injustificadas.",
                     )
 
     class Meta:

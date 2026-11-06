@@ -1,0 +1,16 @@
+.seleccion-asistencia { display: flex; align-items: end; gap: .85rem; max-width: 1100px; }
+.seleccion-asistencia + .seleccion-asistencia { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #d4dce6; }
+#asistencia { background: white; border: 1px solid #cbd5e1; border-radius: 10px; overflow: clip; }
+.tabla-asistencia th { min-width: 10rem; }
+.tabla-asistencia .estudiante { min-width: 14rem; }
+.tabla-asistencia select { min-width: 17rem; font-size: 1rem; }
+.tabla-asistencia td:last-child { min-width: 16rem; max-width: 24rem; font-size: .85rem; overflow-wrap: anywhere; }
+.tabla-asistencia td:last-child small { line-height: 1.5; }
+.tabla-asistencia thead th { background: #233f60; color: white; }
+.tabla-asistencia td:nth-child(7), .tabla-asistencia td:nth-child(9), .tabla-asistencia td:nth-child(12) { border-left: 0; }
+.tabla-asistencia .estado { text-align: center; min-width: 3rem; }
+@media(max-width: 700px) {
+    .seleccion-asistencia { flex-wrap: wrap; }
+    .seleccion-asistencia .selector { flex-basis: 100%; }
+    .tabla-asistencia .estudiante { min-width: 10rem; max-width: 11rem; }
+}
