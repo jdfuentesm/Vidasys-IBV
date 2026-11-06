@@ -9,7 +9,8 @@ from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
-from .forms import FilaAsistenciaForm, FilaCalificacionForm, SesionExtraordinariaForm
+from .forms import FilaAsistenciaForm, FilaCalificacionForm
+from .flujo_views import autorizar_clase_extraordinaria
 from .models import Asistencia, Calificacion, Curso, Estudiante, InscripcionCurso, Maestro, Matricula, SesionClase
 
 
@@ -120,30 +121,6 @@ def registrar_asistencia(request):
         messages.error(request, "No se pudo completar la operación. No se guardaron cambios; contacte a la administración para revisar la base de datos.")
         return render(request, "academico/registrar_asistencia.html", contexto, status=503)
     return render(request, "academico/registrar_asistencia.html", contexto)
-
-
-def autorizar_clase_extraordinaria(request):
-    if request.method == "POST":
-        form = SesionExtraordinariaForm(request.POST)
-        if form.is_valid():
-            try:
-                sesion = form.save()
-                messages.success(
-                    request,
-                    f"✅ Clase {sesion.numero_clase} autorizada correctamente por {sesion.usuario_autoriza}.",
-                )
-                return redirect("autorizar_clase_extraordinaria")
-            except IntegrityError as e:
-                # Aquí caen los errores de tu clean() (ej: falta motivo o no es directora)
-                messages.error(request, f"❌ Error al autorizar: {e}")
-        else:
-            messages.error(
-                request, "❌ El formulario tiene errores. Revisa los campos."
-            )
-    else:
-        form = SesionExtraordinariaForm()
-
-    return render(request, "academico/autorizar_clase.html", {"form": form})
 
 
 @login_required

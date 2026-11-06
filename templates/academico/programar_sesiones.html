@@ -1,0 +1,12 @@
+{% extends 'academico/flujo_base.html' %}{% block title %}Programar sesiones{% endblock %}
+{% block content %}<a href="{% url 'mis_cursos' %}">← Mis cursos</a><h1>Programar sesiones</h1><h2>{{ curso }}</h2>
+<p>Elija la frecuencia, hora y duración. Revise las seis clases ordinarias antes de confirmar. Las sesiones existentes no se sobrescriben.</p>
+{% if curso.estado == 'FINALIZADO' or curso.estado == 'CANCELADO' %}<p class="mensaje">Curso cerrado o cancelado: calendario solo para consulta.</p>{% else %}<form method="post" class="panel-curso formulario-academico">{% csrf_token %}<input type="hidden" name="accion" value="proponer">{{ configuracion.non_field_errors }}
+{% for field in configuracion %}<div>{{ field.label_tag }}{{ field }}{{ field.errors }}</div>{% endfor %}<button type="submit">Generar propuesta editable</button></form>{% endif %}
+{% if error_general %}<p role="alert" class="mensaje error">{{ error_general }}</p>{% endif %}
+{% if filas %}<section class="panel-curso"><h2>Revisar y confirmar</h2><p>La fecha inicial representa la clase 1. Puede ajustar cada clase nueva; no se desplazan automáticamente feriados ni otras fechas.</p>
+<form method="post">{% csrf_token %}<input type="hidden" name="accion" value="guardar"><input type="hidden" name="revision" value="{{ revision }}">
+<div class="tabla-scroll"><table><thead><tr><th>Clase</th><th>Fecha</th><th>Inicio</th><th>Fin</th><th>Situación</th></tr></thead><tbody>
+{% for fila in filas %}<tr><th>{{ fila.numero_clase }}{{ fila.initial.numero_clase }}{{ fila.non_field_errors }}</th><td>{{ fila.fecha }}{{ fila.fecha.errors }}</td><td>{{ fila.hora_inicio }}{{ fila.hora_inicio.errors }}</td><td>{{ fila.hora_fin }}{{ fila.hora_fin.errors }}</td><td>{% if fila.existente %}Existente · no se modificará{% else %}Nueva · PROGRAMADA{% endif %}</td></tr>{% endfor %}
+</tbody></table></div><button type="submit">Confirmar sesiones ordinarias</button></form></section>{% endif %}
+<section class="panel-curso"><h2>Calendario guardado</h2><ul>{% for sesion in sesiones %}<li>Clase {{ sesion.numero_clase }} · {{ sesion.fecha|date:"d/m/Y" }} · {{ sesion.hora_inicio|time:"H:i" }}–{{ sesion.hora_fin|time:"H:i" }} · {{ sesion.get_estado_display }}</li>{% empty %}<li>No hay sesiones guardadas.</li>{% endfor %}</ul><p>Las clases 7 y 8 solo pueden ser autorizadas por Dirección.</p></section>{% endblock %}

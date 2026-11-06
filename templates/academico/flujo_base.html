@@ -1,0 +1,6 @@
+{% load static %}
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Gestión académica{% endblock %} — VIDASYS-IBV</title>
+<link rel="stylesheet" href="{% static 'css/calificaciones.css' %}"><link rel="stylesheet" href="{% static 'css/flujo_academico.css' %}"></head><body>
+<header class="encabezado"><div class="encabezado-interior"><div><strong class="marca">VIDASYS-IBV</strong><span class="institucion">Instituto Bíblico Vida</span></div><a href="{% url 'dashboard' %}">← Volver al inicio</a></div></header>
+<main>{% for message in messages %}<p class="mensaje {{ message.tags }}" role="status">{{ message }}</p>{% endfor %}{% block content %}{% endblock %}</main></body></html>

@@ -1,0 +1,8 @@
+.formulario-academico { max-width: 850px; }
+.formulario-academico > div { margin-bottom: 1rem; }
+.formulario-academico input, .formulario-academico textarea { max-width: 100%; width: 100%; font: inherit; }
+.formulario-academico textarea { border: 1px solid #8a9aad; border-radius: 6px; padding: .6rem; }
+.formulario-academico button, .panel-curso form > button { margin-top: 1rem; }
+.acciones-academicas { display: flex; flex-wrap: wrap; gap: .8rem; margin-block: 1rem; }
+.acciones-academicas a { padding: .75rem 1rem; background: #edf2f8; border: 1px solid #a8bbcf; border-radius: 6px; font-weight: 650; }
+.panel-curso li { margin-block: .6rem; }

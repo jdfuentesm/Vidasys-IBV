@@ -10,6 +10,8 @@
 
   {# Contenido principal #}
   <main class="main-content">
+    {% if usuario.rol == 'MAESTRO' %}<div class="container py-3"><a class="btn btn-primary" href="{% url 'mis_cursos' %}">Mis cursos: asistencia, calificaciones y programación</a></div>{% endif %}
+    {% if usuario.rol == 'SECRETARIA' or usuario.rol == 'DIRECTORA' or usuario.rol == 'ADMINISTRADOR' %}<div class="container py-3"><a class="btn btn-primary" href="{% url 'matricula_secretaria' %}">Matricular estudiante en el ciclo</a></div>{% endif %}
     {# Header con saludo y versículo #}
     <section class="dashboard-header py-4">
       <div class="container">

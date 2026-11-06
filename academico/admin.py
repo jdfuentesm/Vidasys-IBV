@@ -1,6 +1,10 @@
-from django.contrib import admin
+from django.contrib import admin, messages
+from django.core.exceptions import ValidationError
+from django.db import DatabaseError
+from django.http import HttpResponseRedirect
 from django.utils import timezone
 
+from .flujo_forms import MatriculaAutomaticaAdminForm
 from .models import (
     Asistencia,
     Calificacion,
@@ -147,6 +151,30 @@ class CursoAdmin(admin.ModelAdmin):
 
 @admin.register(Matricula)
 class MatriculaAdmin(admin.ModelAdmin):
+    form = MatriculaAutomaticaAdminForm
+
+    def changeform_view(self, request, object_id=None, form_url="", extra_context=None):
+        try:
+            return super().changeform_view(request, object_id, form_url, extra_context)
+        except ValidationError as error:
+            self.message_user(request, "No se guardó la matrícula. " + " ".join(error.messages), level=messages.ERROR)
+            return HttpResponseRedirect(request.path)
+        except DatabaseError:
+            self.message_user(request, "No se pudo guardar la matrícula; recargue y revise la configuración. No se guardó parcialmente.", level=messages.ERROR)
+            return HttpResponseRedirect(request.path)
+
+    def save_model(self, request, obj, form, change):
+        if not change and obj.estado == "ACTIVA":
+            from .flujo import matricular
+            matricula, _, _ = matricular(estudiante=obj.estudiante, ciclo=obj.ciclo,
+                numero_matricula=obj.numero_matricula, fecha_matricula=obj.fecha_matricula,
+                observaciones=obj.observaciones)
+            obj.pk = matricula.pk
+            obj._state.adding = False
+            obj._state.db = matricula._state.db
+        else:
+            super().save_model(request,obj,form,change)
+
     list_display = (
         "numero_matricula",
         "estudiante",

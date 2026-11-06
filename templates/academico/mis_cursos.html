@@ -1,0 +1,8 @@
+{% extends 'academico/flujo_base.html' %}{% block title %}Mis cursos{% endblock %}
+{% block content %}<h1>Mis cursos</h1><p>Seleccione la tarea que necesita realizar.</p>
+{% for curso in cursos %}<section class="panel-curso"><h2>{{ curso }}</h2><p>{{ curso.get_estado_display }}</p><nav class="acciones-academicas" aria-label="Acciones de {{ curso }}">
+<a href="{% url 'registrar_asistencia' %}?curso={{ curso.pk }}">Asistencia</a>
+<a href="{% url 'registrar_calificacion' %}?curso={{ curso.pk }}">Calificaciones</a>
+<a href="{% url 'programar_sesiones' curso.pk %}">Programar sesiones</a>
+<a href="{% url 'cierre_curso' curso.pk %}">Revisar cierre del curso</a></nav></section>
+{% empty %}<p>No tiene cursos asignados.</p>{% endfor %}{% endblock %}

@@ -25,21 +25,21 @@
             {% endif %}
 
             {% if usuario.rol == 'ADMINISTRADOR' or usuario.rol == 'SECRETARIA' or usuario.rol == 'DIRECTORA' %}
-            <li><a href="#" class="sidebar-item">
+            <li><a href="{% url 'matricula_secretaria' %}" class="sidebar-item">
                 <i class="bi bi-file-text"></i>
                 <span>Matrículas</span>
             </a></li>
             {% endif %}
 
             {% if usuario.rol == 'ADMINISTRADOR' or usuario.rol == 'SECRETARIA' or usuario.rol == 'DIRECTORA' or usuario.rol == 'MAESTRO' %}
-            <li><a href="#" class="sidebar-item">
+            <li><a href="{% if usuario.rol == 'MAESTRO' %}{% url 'mis_cursos' %}{% else %}#{% endif %}" class="sidebar-item">
                 <i class="bi bi-book"></i>
                 <span>Académico</span>
             </a></li>
             {% endif %}
 
             {% if usuario.rol == 'ADMINISTRADOR' or usuario.rol == 'SECRETARIA' or usuario.rol == 'DIRECTORA' or usuario.rol == 'MAESTRO' %}
-            <li><a href="#" class="sidebar-item">
+            <li><a href="{% if usuario.rol == 'MAESTRO' %}{% url 'registrar_asistencia' %}{% else %}#{% endif %}" class="sidebar-item">
                 <i class="bi bi-calendar-check"></i>
                 <span>Asistencia</span>
             </a></li>
@@ -66,6 +66,7 @@
             </a></li>
             {% endif %}
 
+            {% if usuario.rol == 'DIRECTORA' %}<li><a href="{% url 'autorizar_clase_extraordinaria' %}" class="sidebar-item">Autorizar extraordinarias</a></li>{% endif %}
         </ul>
     </nav>
 </aside>

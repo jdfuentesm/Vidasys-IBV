@@ -1,0 +1,7 @@
+{% extends 'academico/flujo_base.html' %}{% block title %}Cierre de curso{% endblock %}
+{% block content %}<a href="{% url 'mis_cursos' %}">← Mis cursos</a><h1>Revisar cierre del curso</h1><h2>{{ curso }}</h2><p>Estado actual: {{ curso.get_estado_display }}</p>
+<section class="panel-curso"><p>Se requieren entre cinco y ocho clases impartidas y ninguna sesión programada o suspendida. Esta pantalla no cambia estados de sesiones ni autoriza extraordinarias.</p>
+{% if errores %}<h2>Requisitos pendientes</h2><ul>{% for error in errores %}<li>{{ error }}</li>{% endfor %}</ul>
+{% elif curso.estado == 'FINALIZADO' %}<p>El curso ya está finalizado.</p>
+{% else %}<p>Se cumplen los requisitos actuales. Al confirmar, el curso quedará FINALIZADO.</p><form method="post">{% csrf_token %}<input type="hidden" name="revision" value="{{ revision }}"><button type="submit">Confirmar cierre del curso</button></form>{% endif %}</section>
+<section class="panel-curso"><h2>Sesiones del curso</h2><ul>{% for sesion in sesiones %}<li>Clase {{ sesion.numero_clase }} · {{ sesion.fecha|date:"d/m/Y" }} · {{ sesion.get_estado_display }}</li>{% empty %}<li>No hay sesiones.</li>{% endfor %}</ul></section>{% endblock %}
