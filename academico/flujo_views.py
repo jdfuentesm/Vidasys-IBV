@@ -9,7 +9,7 @@ from .flujo import (autorizar_extra, cerrar_curso, firma_calendario, guardar_cal
                     matricular, propuesta, requisitos_cierre)
 from .flujo_forms import (ExtraordinariaDireccionForm, MatriculaSecretariaForm,
                           PropuestaCalendarioForm, SesionPropuestaForm)
-from .models import Curso, SesionClase
+from .models import Curso, Estudiante, SesionClase
 
 
 def permitido(usuario, roles):
@@ -24,10 +24,15 @@ def mostrar_error(form, error):
 
 
 @login_required
-def matricula_secretaria(request):
+def matricula_secretaria(request, estudiante_id=None):
     if not permitido(request.user, ('SECRETARIA','DIRECTORA','ADMINISTRADOR')):
         return HttpResponseForbidden('La matrícula requiere Secretaría o un rol administrativo autorizado.')
-    form = MatriculaSecretariaForm(request.POST or None)
+    estudiante = get_object_or_404(Estudiante, pk=estudiante_id) if estudiante_id else None
+    form = MatriculaSecretariaForm(request.POST if request.method == 'POST' else None)
+    if estudiante:
+        form.fields['estudiante'].queryset = Estudiante.objects.filter(pk=estudiante.pk)
+        form.fields['estudiante'].initial = estudiante.pk
+        form.fields['estudiante'].disabled = True
     confirmacion = None
     if request.method == 'POST' and form.is_valid():
         try:
@@ -36,7 +41,7 @@ def matricula_secretaria(request):
             messages.success(request, 'Matrícula registrada con sus seis materias.' if creada else 'Matrícula existente verificada. Se conservaron sus registros y cierres.')
         except (ValidationError, DatabaseError) as error:
             mostrar_error(form,error)
-    return render(request,'academico/matricula_secretaria.html',{'form':form,'confirmacion':confirmacion})
+    return render(request,'academico/matricula_secretaria.html',{'form':form,'confirmacion':confirmacion,'estudiante':estudiante})
 
 
 @login_required

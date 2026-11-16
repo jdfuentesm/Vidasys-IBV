@@ -1,0 +1,12 @@
+{% extends 'academico/estudiantes/base.html' %}
+{% block title %}{% if estudiante %}Editar estudiante{% else %}Registrar estudiante{% endif %}{% endblock %}
+{% block content %}
+<nav aria-label="Ruta de navegación"><a href="{% url 'estudiantes' %}">Estudiantes</a>{% if estudiante %} / <a href="{% url 'estudiante_expediente' estudiante.pk %}">Expediente</a>{% endif %}</nav>
+<h1>{% if estudiante %}Editar estudiante{% else %}Registrar estudiante{% endif %}</h1>
+<p>Los campos marcados con * son obligatorios. Esta pantalla administra información personal; la matrícula se realiza desde el expediente.</p>
+<form method="post" class="panel-curso est-formulario">{% csrf_token %}
+{% if form.errors %}<div role="alert" class="mensaje error"><p>Revise los campos indicados. La información no se guardó.</p>{{ form.non_field_errors }}</div>{% endif %}
+<div class="est-campos">{% for field in form %}<div><label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} *{% endif %}</label>{{ field }}{% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}{{ field.errors }}</div>{% endfor %}</div>
+<div class="est-acciones"><button type="submit">{% if estudiante %}Guardar cambios{% else %}Registrar estudiante{% endif %}</button>{% if estudiante %}<a href="{% url 'estudiante_expediente' estudiante.pk %}">Cancelar</a>{% else %}<a href="{% url 'estudiantes' %}">Cancelar</a>{% endif %}</div>
+</form>
+{% endblock %}

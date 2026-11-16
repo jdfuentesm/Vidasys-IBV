@@ -1,0 +1,17 @@
+{% extends 'academico/estudiantes/base.html' %}
+{% block title %}Estudiantes{% endblock %}
+{% block content %}
+<div class="est-cabecera"><div><p class="seccion">GESTIÓN ACADÉMICA</p><h1>Estudiantes</h1><p>Encuentre un estudiante y continúe desde su expediente.</p></div><a class="est-boton" href="{% url 'estudiante_nuevo' %}">Registrar estudiante</a></div>
+<form method="get" class="panel-curso est-filtros" role="search" aria-label="Buscar estudiantes">
+<div><label for="busqueda">Nombre, apellido o código</label><input id="busqueda" name="q" value="{{ q }}" type="search" maxlength="150" placeholder="Buscar estudiante"></div>
+<div><label for="estado">Estado personal</label><select id="estado" name="estado"><option value="">Todos los estados</option>{% for opcion in estados %}<option {% if estado == opcion %}selected{% endif %}>{{ opcion }}</option>{% endfor %}</select></div>
+<div><label for="ciclo">Con matrícula en ciclo</label><select id="ciclo" name="ciclo"><option value="">Todos los ciclos</option>{% for item in ciclos %}<option value="{{ item.pk }}" {% if ciclo == item.pk|stringformat:'s' %}selected{% endif %}>{{ item }}</option>{% endfor %}</select></div>
+<button type="submit">Buscar</button><a href="{% url 'estudiantes' %}">Limpiar filtros</a>
+</form>
+<p class="est-conteo" role="status">{{ pagina.paginator.count }} estudiante{{ pagina.paginator.count|pluralize:'s' }} encontrado{{ pagina.paginator.count|pluralize:'s' }}.</p>
+<div class="est-lista">
+{% for item in pagina %}<article class="panel-curso est-fila"><div><small>{{ item.codigo_estudiante }}</small><h2><a href="{% url 'estudiante_expediente' item.pk %}">{{ item.apellidos }}, {{ item.nombres }}</a></h2><p>Ingreso: {{ item.fecha_ingreso|date:'d/m/Y' }}</p></div><span class="estado">{{ item.estado }}</span><a href="{% url 'estudiante_expediente' item.pk %}" aria-label="Ver expediente de {{ item.nombres }} {{ item.apellidos }}">Ver expediente →</a></article>
+{% empty %}<section class="estado-vacio"><h2>No se encontraron estudiantes</h2><p>Pruebe otro nombre o quite los filtros. Antes de registrar uno nuevo, compruebe su código.</p></section>{% endfor %}
+</div>
+{% if pagina.has_other_pages %}<nav class="est-acciones" aria-label="Páginas de estudiantes">{% if pagina.has_previous %}<a href="?{{ parametros }}&amp;page={{ pagina.previous_page_number }}">← Anterior</a>{% endif %}<span>Página {{ pagina.number }} de {{ pagina.paginator.num_pages }}</span>{% if pagina.has_next %}<a href="?{{ parametros }}&amp;page={{ pagina.next_page_number }}">Siguiente →</a>{% endif %}</nav>{% endif %}
+{% endblock %}

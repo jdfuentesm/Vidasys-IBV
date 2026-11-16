@@ -43,9 +43,9 @@ class FrontendInstitucionalTests(TestCase):
     def test_menu_exacto_por_rol_sin_enlaces_ficticios(self):
         esperados={
             'MAESTRO':['dashboard','mis_cursos'],
-            'SECRETARIA':['dashboard','matricula_secretaria'],
-            'DIRECTORA':['dashboard','matricula_secretaria','autorizar_clase_extraordinaria'],
-            'ADMINISTRADOR':['dashboard','matricula_secretaria'],
+            'SECRETARIA':['dashboard','estudiantes','matricula_secretaria'],
+            'DIRECTORA':['dashboard','estudiantes','matricula_secretaria','autorizar_clase_extraordinaria'],
+            'ADMINISTRADOR':['dashboard','estudiantes','matricula_secretaria'],
             'ESTUDIANTE':['dashboard'], 'PASTOR_PRINCIPAL':['dashboard'],
         }
         for rol,usuario in self.usuarios.items():
@@ -65,7 +65,7 @@ class FrontendInstitucionalTests(TestCase):
         respuesta=self.client.get(reverse('dashboard'))
         for texto in ('Dashboard en construcción','>284<','>12<','92%','+12%','Teologia Sistematica','08:00 PM'):
             self.assertNotContains(respuesta,texto)
-        for modulo in ('Finanzas','Reportes','Usuarios','Estudiantes'):
+        for modulo in ('Finanzas','Reportes','Usuarios'):
             self.assertNotIn(modulo,self.sidebar(respuesta))
 
     def test_roles_sin_modulo_tienen_estado_vacio_honesto(self):

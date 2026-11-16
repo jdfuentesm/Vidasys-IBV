@@ -1,0 +1,33 @@
+.est-cabecera { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin:1.2rem 0; }
+.est-boton { display:inline-flex; align-items:center; justify-content:center; min-height:48px; padding:.7rem 1rem; border-radius:6px; background:#1e3a5f; color:white; text-decoration:none; font-weight:700; }
+.est-boton:hover { background:#2b507b; }
+.est-filtros { display:flex; flex-wrap:wrap; align-items:end; gap:1rem; }
+.est-filtros > div { flex:1 1 200px; min-width:0; }
+.est-filtros > div:first-child { flex-grow:2; }
+.est-filtros input { width:100%; }
+.est-conteo { margin:1.2rem 0; color:#52677f; }
+.est-fila { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-top:.7rem; }
+.est-fila > div { flex:1; min-width:0; }
+.est-fila h2 { margin:.4rem 0; }
+.est-fila p { font-size:.85rem; }
+.est-acciones { display:flex; align-items:center; gap:1rem; flex-wrap:wrap; margin:1.2rem 0; }
+.est-campos, .est-datos { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.2rem; }
+.est-campos input, .est-campos textarea { width:100%; font:inherit; border:1px solid #8a9aad; border-radius:6px; padding:.65rem; }
+.est-campos input:disabled { color:#47556b; }
+.est-campos small { color:#52677f; }
+.est-formulario { max-width:1000px; }
+.est-datos dt { font-size:.85rem; color:#52677f; }
+.est-datos dd { margin:.4rem 0; }
+.est-historial { margin-top:2rem; }
+.est-materias { padding:0; list-style:none; }
+.est-materias li { display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:.9rem 0; border-bottom:1px solid #e1e7ef; }
+.est-materias li:last-child { border-bottom:0; }
+.est-fila, .est-datos, .est-materias, .est-cabecera { overflow-wrap:anywhere; }
+@media(max-width:650px) {
+ .est-campos, .est-datos { grid-template-columns:1fr; }
+ .est-fila { flex-wrap:wrap; }
+ .est-fila > div { flex-basis:100%; }
+ .est-materias li { align-items:start; flex-direction:column; }
+ .est-cabecera > .est-acciones { width:100%; }
+ .est-acciones .est-boton, .est-filtros button { width:100%; }
+}
