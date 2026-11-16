@@ -13,6 +13,9 @@
         <a class="acceso-tarjeta" href="{% url 'estudiantes' %}"><span class="acceso-etiqueta">GESTIÓN ACADÉMICA</span><h3>Estudiantes</h3><p>Busque, registre o actualice estudiantes y consulte su expediente para matricularlos.</p><span class="acceso-enlace">Abrir estudiantes →</span></a>
         <a class="acceso-tarjeta" href="{% url 'matricula_secretaria' %}"><span class="acceso-etiqueta">MATRÍCULA</span><h3>Matricular estudiante</h3><p>Registre una matrícula del ciclo y confirme sus seis materias, conservando las inscripciones existentes.</p><span class="acceso-enlace">Abrir matrícula →</span></a>
     {% endif %}
+    {% if request.user.rol == 'ADMINISTRADOR' %}
+        <a class="acceso-tarjeta" href="{% url 'usuarios' %}"><span class="acceso-etiqueta">ADMINISTRACIÓN</span><h3>Usuarios y accesos</h3><p>Administre cuentas, estados y vínculos verificados con expedientes estudiantiles.</p><span class="acceso-enlace">Administrar usuarios →</span></a>
+    {% endif %}
     {% if request.user.rol == 'DIRECTORA' %}
         <a class="acceso-tarjeta" href="{% url 'autorizar_clase_extraordinaria' %}"><span class="acceso-etiqueta">DIRECCIÓN</span><h3>Autorizar extraordinarias</h3><p>Revise y autorice una clase 7 u 8. La autorización quedará vinculada a su cuenta.</p><span class="acceso-enlace">Abrir autorización →</span></a>
     {% endif %}

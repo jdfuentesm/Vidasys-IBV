@@ -1,0 +1,28 @@
+/* Tema del módulo de cuentas: no cambia la presentación de otros módulos. */
+.app-header { background:white; color:#172f4e; border-bottom:1px solid #d4dce6; }
+.app-marca, .app-salir { color:#172f4e; }
+.app-marca small, .app-identidad small { color:#52677f; }
+.app-salir:hover { background:#edf2f8; }
+.app-sidebar { background:#172f4e; border-right:0; }
+.app-sidebar a, .menu-titulo, .menu-ayuda { color:#e3eaf4; }
+.app-sidebar a:hover { background:#2a4a70; }
+.app-sidebar a[aria-current=page] { background:#2a4a70; color:white; box-shadow:inset 3px 0 #f0bd55; }
+.menu-ayuda { border-top-color:#55708d; }
+.nav-toggle { background:#172f4e; }
+.usuarios-tabla { background:white; border:1px solid #d4dce6; border-radius:8px; margin:1rem 0; }
+.usuarios-tabla td, .usuarios-tabla th { overflow-wrap:anywhere; }
+.usuarios-tabla thead th { min-width:0; }
+.usuarios-acciones { display:flex; flex-wrap:wrap; gap:.8rem; }
+.usuarios-acciones a { display:inline-flex; align-items:center; min-height:44px; }
+.usuarios-campo { margin-bottom:1.2rem; }
+.usuarios-campo input:not([type=checkbox]), .usuarios-campo select { width:100%; min-width:0; }
+.usuarios-campo input[type=checkbox] { min-height:24px; width:24px; }
+.usuarios-campo small { color:#52677f; }
+.usuarios-campo ul { padding-left:1.2rem; }
+@media(max-width:800px) {
+ .usuarios-tabla, .usuarios-tabla tbody, .usuarios-tabla tr, .usuarios-tabla td, .usuarios-tabla tbody th { display:block; width:100%; }
+ .usuarios-tabla thead { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+ .usuarios-tabla tr { padding:.8rem; border-bottom:1px solid #d4dce6; }
+ .usuarios-tabla td, .usuarios-tabla tbody th { border:0; padding:.35rem; }
+ .usuarios-tabla td[data-label]::before { content:attr(data-label) ": "; font-weight:700; }
+}

@@ -47,7 +47,7 @@ class FrontendInstitucionalTests(TestCase):
             'MAESTRO':['dashboard','mis_cursos'],
             'SECRETARIA':['dashboard','finanzas_panel','estudiantes','matricula_secretaria'],
             'DIRECTORA':['dashboard','finanzas_panel','estudiantes','matricula_secretaria','autorizar_clase_extraordinaria'],
-            'ADMINISTRADOR':['dashboard','finanzas_panel','estudiantes','matricula_secretaria'],
+            'ADMINISTRADOR':['dashboard','finanzas_panel','estudiantes','matricula_secretaria','usuarios'],
             'ESTUDIANTE':['dashboard','portal_academico','portal_cuenta'], 'PASTOR_PRINCIPAL':['dashboard'],
         }
         for rol,usuario in self.usuarios.items():

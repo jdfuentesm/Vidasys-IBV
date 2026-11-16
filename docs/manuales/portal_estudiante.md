@@ -30,7 +30,8 @@ acceso con un mensaje de verificación. No hay asociación automática ni autose
 
 Antes de habilitar una cuenta real, Administración debe comprobar presencialmente o por
 su procedimiento institucional la identidad, el número de usuario y el expediente correcto,
-y confirmar manualmente el vínculo existente desde la administración autorizada de Estudiante.
+y confirmar manualmente el vínculo desde **Usuarios y accesos → cuenta de rol ESTUDIANTE →
+Vincular expediente**. Esta operación es exclusiva de ADMINISTRADOR y exige confirmación explícita.
 Esta entrega no asignó ninguna cuenta real ni creó credenciales. No se recomienda vincular
 por coincidencias de nombre/correo ni hacer vinculaciones masivas.
 

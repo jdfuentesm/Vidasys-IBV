@@ -21,6 +21,9 @@ from .models import (
 
 @admin.register(Estudiante)
 class EstudianteAdmin(admin.ModelAdmin):
+    # Los vínculos se confirman desde Usuarios y accesos; no se reasignan aquí.
+    readonly_fields = ('usuario',)
+
     list_display = (
         "codigo_estudiante",
         "nombres",

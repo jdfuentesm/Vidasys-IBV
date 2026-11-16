@@ -17,6 +17,19 @@ class UsuarioAdmin(BaseUserAdmin):
     Panel de administración personalizado para el modelo Usuario.
     """
     
+    # La escritura se centraliza en el módulo institucional con las mismas protecciones.
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_view_permission(self, request, obj=None):
+        return request.user.is_active and request.user.rol == 'ADMINISTRADOR' and super().has_view_permission(request, obj)
+
     add_form = UsuarioCreationForm
     form = UsuarioChangeForm
 
