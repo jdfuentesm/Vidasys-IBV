@@ -21,7 +21,7 @@ services:
       - key: DB_NAME
         value: vidasys_demo
       - key: DB_USER
-        value: vidasys_demo
+        value: vidasys_demo_limitado
       - key: DB_HOST
         sync: false
       - key: DB_PASSWORD
