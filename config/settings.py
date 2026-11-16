@@ -152,3 +152,8 @@ MAILERS = {
         "BACKEND": "django.core.mail.backends.console.EmailBackend",
     },
 }
+
+# Carpeta de configuración financiera; en despliegue debe ser un volumen persistente.
+FINANCIERO_CONFIG_DIR = Path(config('FINANCIERO_CONFIG_DIR', default=str(BASE_DIR / '.financiero-local')))
+
+FINANCIERO_CALENDARIO_BACKEND = config('FINANCIERO_CALENDARIO_BACKEND', default='archivo')

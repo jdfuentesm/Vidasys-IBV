@@ -1253,3 +1253,16 @@ class Donacion(models.Model):
 
     def __str__(self):
         return f"Donación {self.id_donacion} - {self.donante}"
+
+
+class CalendarioFinanciero(models.Model):
+    """Configuración de demo compartida en BD; no modifica tablas financieras históricas."""
+    ciclo = models.OneToOneField(
+        'academico.CicloAcademico', on_delete=models.PROTECT,
+        db_column='id_ciclo', primary_key=True, related_name='calendario_financiero')
+    datos = models.JSONField()
+    fecha_actualizacion = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        managed = False
+        db_table = 'calendario_financiero'

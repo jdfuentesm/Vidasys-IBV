@@ -1,0 +1,24 @@
+.git
+.env
+.env.*
+!.env.example
+venv
+env
+__pycache__
+*.pyc
+*.log
+.financiero-local
+staticfiles
+*.sqlite3
+database/backups
+artifacts
+
+# Excluir secretos y respaldos también en subdirectorios.
+**/.env
+**/.env.*
+!**/.env.example
+!**/.env.*.example
+deploy/.env.demo
+**/*demo-credenciales*.json
+**/*.dump
+**/*.sql.gz

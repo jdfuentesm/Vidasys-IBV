@@ -13,3 +13,6 @@ import shutil
 import tempfile
 FINANCIERO_CONFIG_DIR = tempfile.mkdtemp(prefix="vidasys-fin-test-")
 atexit.register(shutil.rmtree, FINANCIERO_CONFIG_DIR, ignore_errors=True)
+
+# Las baterías funcionales previas conservan su backend de archivo efímero.
+FINANCIERO_CALENDARIO_BACKEND = 'archivo'

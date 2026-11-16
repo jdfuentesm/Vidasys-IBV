@@ -6,8 +6,10 @@ from django.contrib import admin
 from django.urls import include, path
 
 from academico import views
+from core.health import healthz
 
 urlpatterns = [
+    path("healthz/", healthz, name="healthz"),
     # Panel de administración de Django
     path("admin/", admin.site.urls),
     # URLs de la aplicación core (login, logout, dashboard)

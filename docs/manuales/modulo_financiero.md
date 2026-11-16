@@ -163,3 +163,11 @@ del repositorio. No se repitió la batería académica completa.
   `academico/test_settings.py`, `academico/test_flujo.py`, `core/test_frontend.py`:
   pruebas esenciales, aislamiento y expectativas de navegación actualizadas.
 - `.gitignore` y este documento: protección de configuración local e instrucciones.
+
+## Actualización para la demo gratuita
+
+La preparación de despliegue sobre `5672d03` incorpora el calendario compartido en
+PostgreSQL JSONB para no depender de disco web persistente. El backend de archivo se
+conserva para desarrollo; no es el backend de la demo web. La tabla nueva se inicializa
+solo en una base demo vacía, sin migrar la base real ni esquemas existentes. Véase
+[demo_gratuita.md](../despliegue/demo_gratuita.md) antes de publicar.

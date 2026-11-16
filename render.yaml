@@ -1,0 +1,45 @@
+# Preparación únicamente. No aplicar sin autorización de publicación y revisar plan gratuito vigente.
+services:
+  - type: web
+    name: vidasys-ibv-demo
+    runtime: docker
+    plan: free
+    branch: semana-9-rutas-calificaciones
+    autoDeploy: false
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /healthz/
+    envVars:
+      - key: VIDASYS_DEMO
+        value: "1"
+      - key: DJANGO_SETTINGS_MODULE
+        value: config.settings_demo_pg
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: DB_NAME
+        value: vidasys_demo
+      - key: DB_USER
+        value: vidasys_demo
+      - key: DB_HOST
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_PORT
+        value: "5432"
+      - key: DB_SSLMODE
+        value: verify-full
+      - key: DB_SSLROOTCERT
+        value: /etc/ssl/certs/ca-certificates.crt
+      - key: FINANCIERO_CALENDARIO_BACKEND
+        value: postgresql
+      # Solo tras confirmar proxy de Render que sobrescribe el encabezado y backend privado.
+      - key: TRUST_PROXY_HTTPS
+        value: "True"
+      - key: PROXY_ALLOWED_IPS
+        value: "*"
+      - key: WEB_CONCURRENCY
+        value: "1"
+# ALLOWED_HOSTS / CSRF se derivan de RENDER_EXTERNAL_HOSTNAME si no se fijan explícitamente.
+# No contiene recursos de base de datos, discos ni servicios de pago.

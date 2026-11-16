@@ -1,0 +1,19 @@
+# Solo prepara el contenedor web; no crea servicios externos ni de pago.
+services:
+  web:
+    build:
+      context: ..
+    env_file: .env.demo
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings_demo_pg
+      FINANCIERO_CALENDARIO_BACKEND: postgresql
+      # Volumen conservado para instalaciones antiguas; la demo usa calendario en BD.
+      FINANCIERO_CONFIG_DIR: /data/calendarios
+    ports:
+      - "127.0.0.1:8001:8000"
+    volumes:
+      - calendarios:/data/calendarios
+    restart: unless-stopped
+volumes:
+  calendarios:
+    name: vidasys_calendarios_demo

@@ -55,3 +55,15 @@ database/scripts/17_prueba_pago_solvencia.sql
 
 # Calendarios financieros locales (configuración operativa sin credenciales)
 .financiero-local/
+
+# Configuración y secretos locales de despliegue
+deploy/.env.demo
+
+# Secretos y respaldos de demostración; conservar plantillas sin valores reales.
+**/.env
+**/.env.*
+!**/.env.example
+!**/.env.*.example
+*.demo-credenciales.json
+*.dump
+*.sql.gz

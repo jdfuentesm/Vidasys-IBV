@@ -1,4 +1,4 @@
-"""Configuración explícita por ciclo, sin DDL ni campos ajenos al esquema."""
+"""Configuración explícita por ciclo: archivo local o PostgreSQL compartido."""
 import json
 import os
 import tempfile
@@ -6,11 +6,11 @@ from datetime import date
 from pathlib import Path
 
 from django.conf import settings
-from django.core.exceptions import ValidationError
-from django.db import transaction
+from django.core.exceptions import ValidationError, ImproperlyConfigured
+from django.db import transaction, connection
 
 from academico.models import CicloAcademico
-from .models import ConceptoCobro
+from .models import ConceptoCobro, CalendarioFinanciero
 
 
 def ruta(ciclo):
@@ -37,10 +37,20 @@ def validar(ciclo, datos):
     return emision, matricula, meses, conceptos
 
 
+def usa_postgresql():
+    backend = getattr(settings, 'FINANCIERO_CALENDARIO_BACKEND', 'archivo')
+    if backend not in ('archivo', 'postgresql'):
+        raise ImproperlyConfigured('Backend de calendario financiero no reconocido.')
+    if backend == 'postgresql' and connection.vendor != 'postgresql':
+        raise ImproperlyConfigured('El calendario compartido requiere PostgreSQL.')
+    return backend == 'postgresql'
+
+
 def leer(ciclo):
     try:
-        datos = json.loads(ruta(ciclo).read_text())
-    except (FileNotFoundError, ValueError) as error:
+        datos = (CalendarioFinanciero.objects.get(ciclo_id=ciclo.pk).datos
+                 if usa_postgresql() else json.loads(ruta(ciclo).read_text()))
+    except (FileNotFoundError, ValueError, CalendarioFinanciero.DoesNotExist) as error:
         raise ValidationError('Configure el calendario financiero de este ciclo antes de matricular.') from error
     if datos.get('periodo') != [str(ciclo.fecha_inicio), str(ciclo.fecha_fin)]:
         raise ValidationError('Las fechas del ciclo cambiaron. Revise su calendario financiero.')
@@ -54,9 +64,14 @@ def guardar(ciclo, datos):
         ciclo = CicloAcademico.objects.select_for_update().get(pk=ciclo.pk)
         validar(ciclo, datos)
         from academico.models import Matricula
-        if ruta(ciclo).exists() and Matricula.objects.filter(ciclo=ciclo).exists():
+        postgres = usa_postgresql()
+        existe = (CalendarioFinanciero.objects.filter(ciclo=ciclo).exists() if postgres else ruta(ciclo).exists())
+        if existe and Matricula.objects.filter(ciclo=ciclo).exists():
             raise ValidationError('El ciclo ya tiene matrículas. Su calendario no se puede reemplazar desde esta pantalla.')
         datos = dict(datos, periodo=[str(ciclo.fecha_inicio), str(ciclo.fecha_fin)])
+        if postgres:
+            CalendarioFinanciero.objects.update_or_create(ciclo=ciclo, defaults={'datos': datos})
+            return
         destino = ruta(ciclo)
         destino.parent.mkdir(parents=True, exist_ok=True)
         temporal = None
