@@ -1,0 +1,12 @@
+{% extends 'financiero/base.html' %}{% block title %}Registrar pago{% endblock %}
+{% block content %}
+<p><a href="{% url 'finanzas_cuenta' estudiante.pk %}">← Estado de cuenta</a></p><h1>Registrar pago</h1><p>{{ estudiante.codigo_estudiante }} · {{ estudiante.nombres }} {{ estudiante.apellidos }}</p>
+{% if error_pago %}<p role="alert" class="mensaje error">{{ error_pago }}</p>{% else %}
+<p>Moneda: USD. Escriba el importe que desea aplicar a cada obligación; deje las demás vacías. El total se calcula a partir de los importes aplicados. No se aceptan excedentes.</p>
+<form method="post" class="panel-curso est-formulario">{% csrf_token %}{{ form.token }}
+{% if form.errors %}<div role="alert" class="mensaje error">Revise los errores. No se registró un pago nuevo.{{ form.non_field_errors }}{{ form.token.errors }}</div>{% endif %}
+<div class="est-campos">{% for field in form.visible_fields %}<div>{{ field.label_tag }}{{ field }}{% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}{{ field.errors }}</div>{% endfor %}</div>
+<div class="est-acciones"><button type="submit">Confirmar y emitir recibo</button><a href="{% url 'finanzas_cuenta' estudiante.pk %}">Cancelar</a></div></form>
+<p>Las obligaciones con convenio no se cobran desde esta pantalla. Los recibos emitidos se conservan; aquí no se modifican ni anulan pagos.</p>
+{% endif %}
+{% endblock %}

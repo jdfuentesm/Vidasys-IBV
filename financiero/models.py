@@ -149,30 +149,22 @@ class Obligacion(models.Model):
             raise ValidationError(errores)
 
     def actualizar_estado(self):
-        # Sumamos todos los pagos aplicados a esta obligación
-        total_pagado = sum(
-            detalle.monto_aplicado
-            for detalle in DetallePago.objects.filter(obligacion_id=self.pk)
-        )
-
-        # 🔥 EL TRUCO: Le preguntamos a la base de datos cuánto es el monto_final
         from django.db import connection
-
-        with connection.cursor() as cursor:
-            cursor.execute(
-                "SELECT monto_final FROM obligacion WHERE id_obligacion = %s", [self.pk]
-            )
-            monto_final_bd = cursor.fetchone()[0]
-
-        if total_pagado == 0:
-            self.estado = "PENDIENTE"
-        elif total_pagado < monto_final_bd:  # <-- Usamos el valor de la BD
-            self.estado = "PARCIAL"
+        if connection.vendor == 'postgresql':
+            # Función ya utilizada por los scripts 14 y 16; conserva las reglas de BD.
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT recalcular_estado_obligacion(%s)", [self.pk])
+            self.refresh_from_db(fields=['estado'])
         else:
-            self.estado = "PAGADA"
-
-        # Guardamos solo el estado
-        self.save(update_fields=["estado"])
+            # SQLite aislado: mismos importes que la vista SQL; no toca PostgreSQL.
+            from .consultas import importes
+            if self.estado == 'ANULADA':
+                return
+            pagado, donado, saldo = importes(self)
+            self.estado = ('PAGADA' if saldo == 0 else
+                           'VENCIDA' if self.fecha_vencimiento < timezone.localdate() else
+                           'PARCIAL' if pagado + donado > 0 else 'PENDIENTE')
+            self.save(update_fields=['estado'])
 
     def __str__(self):
         return f"{self.matricula} - {self.concepto} - {self.fecha_vencimiento}"

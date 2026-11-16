@@ -1,0 +1,19 @@
+.fin-resumen { display:flex; flex-wrap:wrap; gap:2rem; justify-content:space-between; }
+.fin-resumen strong { display:block; font-size:1.65rem; margin-top:.5rem; }
+.fin-importes { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:1rem; }
+.fin-importes dt { font-size:.8rem; color:#52677f; }
+.fin-importes dd { margin:.4rem 0; font-weight:650; }
+.fin-historial { margin-top:2rem; }
+.fin-calendario { padding:1rem 0; border-bottom:1px solid #d4dce6; }
+.fin-total { font-size:1.6rem; font-weight:750; text-align:right; }
+.fin-recibo { max-width:1000px; }
+.fin-recibo h1 { overflow-wrap:anywhere; }
+@media print {
+ .app-header, .app-sidebar, .app-footer, .fin-no-imprimir, .saltar, .mensaje { display:none !important; }
+ .app-frame { display:block; min-height:0; }
+ .app-main { padding:0; }
+ body { background:white; color:black; }
+ .fin-recibo { box-shadow:none; border:0; padding:0; margin:0; max-width:none; }
+ .fin-recibo h1 { font-size:1.6rem; }
+ .fin-recibo .est-materias li { break-inside:avoid; }
+}

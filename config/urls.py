@@ -12,6 +12,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     # URLs de la aplicación core (login, logout, dashboard)
     path("", include("core.urls")),
+    path("finanzas/", include("financiero.urls")),
     # Formularios académicos
     path("", include("academico.urls")),
     # Comprobación de conexión existente

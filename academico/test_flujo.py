@@ -23,6 +23,8 @@ class FlujoAcademicoTests(TestCase):
             fecha_inicio=date(2026,1,1),fecha_fin=date(2026,12,31),estado='ACTIVO')
         cls.estudiante = Estudiante.objects.create(codigo_estudiante='FLUJO-E1',nombres='Estudiante ficticio',
             apellidos='Prueba',fecha_ingreso=date(2026,1,1),estado='ACTIVO')
+        from financiero.test_sqlite import calendario_ficticio
+        calendario_ficticio(cls.ciclo)
         cls.cursos = []
         for i in range(6):
             materia = Materia.objects.create(codigo_materia=f'FLUJO-{i}',nombre=f'Materia {i}',numero_ciclo_formativo=1,estado='ACTIVA')

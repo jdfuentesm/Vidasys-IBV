@@ -1,0 +1,8 @@
+{% extends 'financiero/base.html' %}{% block title %}Calendario financiero{% endblock %}
+{% block content %}
+<p><a href="{% url 'finanzas_panel' %}">← Finanzas</a></p><h1>Calendario financiero por ciclo</h1>
+<p>Indique las fechas oficiales. No se asumirán meses ni vencimientos. Cada mensualidad vence el día 10 del mes seleccionado.</p>
+<p>Las seis obligaciones suman USD 120.00. Esta configuración se conserva por ciclo y no puede reemplazarse cuando ya existen matrículas.</p>
+<form method="post" class="panel-curso est-formulario">{% csrf_token %}{{ form.non_field_errors }}<div class="est-campos">{% for field in form %}<div>{{ field.label_tag }}{{ field }}{{ field.errors }}</div>{% endfor %}</div><div class="est-acciones"><button type="submit">Guardar calendario financiero</button></div></form>
+<section class="panel-curso"><h2>Conceptos de cobro iniciales</h2><p>Si faltan MATRÍCULA o MENSUALIDAD en el catálogo, créelos indicando expresamente si admiten abonos. Un concepto previo nunca se reemplaza desde aquí.</p><form action="{% url 'finanzas_concepto' %}" method="post">{% csrf_token %}{{ conceptos.non_field_errors }}<div class="est-campos">{% for field in conceptos %}<div>{{ field.label_tag }}{{ field }}{{ field.errors }}</div>{% endfor %}</div><div class="est-acciones"><button type="submit">Crear concepto faltante</button></div></form></section>
+{% endblock %}

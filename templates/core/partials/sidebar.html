@@ -4,6 +4,7 @@
         <ul>
             <li><a href="{% url 'dashboard' %}" {% if request.resolver_match.url_name == 'dashboard' %}aria-current="page"{% endif %}>Inicio</a></li>
             {% if request.user.rol == 'SECRETARIA' or request.user.rol == 'DIRECTORA' or request.user.rol == 'ADMINISTRADOR' %}
+                <li><a href="{% url 'finanzas_panel' %}" {% if 'finanzas' in request.resolver_match.url_name %}aria-current="page"{% endif %}>Finanzas</a></li>
                 <li><a href="{% url 'estudiantes' %}" {% if 'estudiante' in request.resolver_match.url_name %}aria-current="page"{% endif %}>Estudiantes</a></li>
                 <li><a href="{% url 'matricula_secretaria' %}" {% if request.resolver_match.url_name == 'matricula_secretaria' %}aria-current="page"{% endif %}>Matricular estudiante</a></li>
             {% endif %}

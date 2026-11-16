@@ -134,6 +134,16 @@ class DetallePagoInline(admin.TabularInline):
 
 @admin.register(Pago)
 class PagoAdmin(NoEliminarAdminMixin):
+    # Un único punto de escritura: servicio transaccional institucional.
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_view_permission(self, request, obj=None):
+        return request.user.is_active and request.user.rol in ('SECRETARIA', 'ADMINISTRADOR', 'DIRECTORA') and super().has_view_permission(request, obj)
+
     list_display = (
         "numero_recibo",
         "estudiante",

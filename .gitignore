@@ -52,3 +52,6 @@ database/scripts/models_inspectdb_*.py
 # Scripts locales de datos y pruebas manuales
 database/scripts/15_usuario_estudiante_prueba.sql
 database/scripts/17_prueba_pago_solvencia.sql
+
+# Calendarios financieros locales (configuración operativa sin credenciales)
+.financiero-local/

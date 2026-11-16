@@ -3,6 +3,7 @@
 {% block content %}
 <nav aria-label="Ruta de navegación"><a href="{% url 'estudiantes' %}">← Estudiantes</a></nav>
 <div class="est-cabecera"><div><p class="seccion">EXPEDIENTE ESTUDIANTIL · {{ estudiante.codigo_estudiante }}</p><h1>{{ estudiante.nombres }} {{ estudiante.apellidos }}</h1><span class="estado">{{ estudiante.estado }}</span></div><div class="est-acciones"><a class="est-boton" href="{% url 'estudiante_matricular' estudiante.pk %}">Matricular en un ciclo</a><a href="{% url 'estudiante_editar' estudiante.pk %}">Editar información</a></div></div>
+{% if request.user.rol == 'SECRETARIA' or request.user.rol == 'ADMINISTRADOR' or request.user.rol == 'DIRECTORA' %}<p><a class="est-boton" href="{% url 'finanzas_cuenta' estudiante.pk %}">Consultar estado de cuenta</a></p>{% endif %}
 <section class="panel-curso"><h2>Información personal</h2><dl class="est-datos">
 <div><dt>Código</dt><dd>{{ estudiante.codigo_estudiante }}</dd></div>
 <div><dt>Fecha de ingreso</dt><dd>{{ estudiante.fecha_ingreso|date:'d/m/Y' }}</dd></div>

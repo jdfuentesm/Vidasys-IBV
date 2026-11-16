@@ -56,6 +56,9 @@ def matricular(*, estudiante, ciclo, numero_matricula, fecha_matricula, observac
                 inscripcion.full_clean()
                 inscripcion.save()
                 por_curso[curso.pk] = inscripcion
+        if existente is None:
+            from financiero.servicios import generar_obligaciones
+            generar_obligaciones(matricula)
         return matricula, [por_curso[c.pk] for c in cursos], existente is None
 
 

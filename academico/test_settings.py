@@ -7,3 +7,9 @@ from config.settings import *  # noqa: F403,E402
 DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memory:"}}
 TEST_RUNNER = "academico.test_runner.IsolatedAcademicRunner"
 PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
+
+import atexit
+import shutil
+import tempfile
+FINANCIERO_CONFIG_DIR = tempfile.mkdtemp(prefix="vidasys-fin-test-")
+atexit.register(shutil.rmtree, FINANCIERO_CONFIG_DIR, ignore_errors=True)
