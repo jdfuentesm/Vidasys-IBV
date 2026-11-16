@@ -239,7 +239,7 @@ class Command(BaseCommand):
             for nombre, autorizados in matriz.items():
                 self.peticion(cliente, nombre, 200 if rol in autorizados else 403)
                 if rol not in autorizados:
-                    self.peticion(cliente, nombre, 403, metodo='post')
+                    self.peticion(cliente, nombre, 405 if nombre in ('portal_academico', 'portal_cuenta') else 403, metodo='post')
         cliente.force_login(usuarios['ESTUDIANTE'])
         for nombre in ('portal_inicio', 'portal_academico', 'portal_cuenta'):
             respuesta = self.peticion(cliente, nombre, 200, datos={'estudiante': ajeno.pk, 'usuario': ajeno_usuario.pk})
