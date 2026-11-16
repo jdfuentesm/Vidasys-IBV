@@ -14,7 +14,10 @@ from .flujo_views import autorizar_clase_extraordinaria
 from .models import Asistencia, Calificacion, Curso, Estudiante, InscripcionCurso, Maestro, Matricula, SesionClase
 
 
+@login_required
 def probar_conexion(request):
+    if not request.user.is_active or request.user.rol not in ('SECRETARIA', 'DIRECTORA', 'ADMINISTRADOR'):
+        return HttpResponseForbidden('La comprobación de conexión requiere un rol administrativo autorizado.')
     # Intentamos traer todos los estudiantes
     estudiantes = Estudiante.objects.all()
     total = estudiantes.count()

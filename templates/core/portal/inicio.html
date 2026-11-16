@@ -1,0 +1,11 @@
+{% extends 'core/portal/base.html' %}{% block title %}Mi portal{% endblock %}
+{% block content %}
+<section class="inicio-cabecera"><p class="seccion">PORTAL DEL ESTUDIANTE · {{ estudiante.codigo_estudiante }}</p><h1>Bienvenido, {{ estudiante.nombres }} {{ estudiante.apellidos }}</h1><p>Consulte su información académica y su estado de cuenta.</p></section>
+{% if habilitado %}
+<section class="panel-curso"><h2>Matrícula de referencia</h2>{% if matricula %}<p>Última matrícula registrada: <strong>{{ matricula.numero_matricula }}</strong> · {{ matricula.estado }}</p><p>Ciclo académico: <strong>{{ matricula.ciclo }}</strong></p>{% else %}<p>No tiene matrículas registradas. Contacte a Secretaría si necesita verificar su inscripción.</p>{% endif %}</section>
+{% elif habilitado == False %}<section class="mensaje error" role="status"><h2>Consulta académica restringida</h2><p>{{ mensaje_solvencia }}</p><p>Su estado de cuenta y sus recibos siguen disponibles.</p></section>
+{% else %}<section class="mensaje error" role="status"><h2>No se pudo verificar el acceso académico</h2><p>Intente más tarde o contacte a Secretaría. No se mostrará información académica hasta verificar el acceso.</p></section>{% endif %}
+<div class="accesos-inicio">
+{% if habilitado %}<a class="acceso-tarjeta" href="{% url 'portal_academico' %}"><span class="acceso-etiqueta">ACADÉMICO</span><h2>Mis materias y resultados</h2><p>Consulte materias inscritas, estados, calificaciones y asistencia.</p><span class="acceso-enlace">Consultar información académica →</span></a>{% endif %}
+<a class="acceso-tarjeta" href="{% url 'portal_cuenta' %}"><span class="acceso-etiqueta">FINANCIERO</span><h2>Mi estado de cuenta</h2><p>Revise obligaciones, vencimientos, pagos y recibos propios.</p><span class="acceso-enlace">Consultar estado de cuenta →</span></a></div>
+{% endblock %}

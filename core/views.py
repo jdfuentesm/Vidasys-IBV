@@ -106,4 +106,6 @@ def dashboard(request):
     Inicio institucional con accesos a las funciones disponibles para cada rol.
     No muestra estadísticas demostrativas ni amplía permisos de otras vistas.
     """
+    if request.user.rol == 'ESTUDIANTE':
+        return redirect('portal_inicio')
     return render(request, "core/dashboard.html", {"usuario": request.user})

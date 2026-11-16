@@ -30,6 +30,8 @@ class FrontendInstitucionalTests(TestCase):
         cls.usuarios = {'MAESTRO': base.docente, 'SECRETARIA': base.secretaria, 'DIRECTORA': base.directora}
         for rol in ('ADMINISTRADOR','ESTUDIANTE','PASTOR_PRINCIPAL'):
             cls.usuarios[rol] = Usuario.objects.create_user(rol.lower()+'-ui',rol.lower()+'@example.test','clave',rol=rol)
+        base.estudiante.usuario = cls.usuarios['ESTUDIANTE']
+        base.estudiante.save(update_fields=['usuario'])
         cls.curso = base.cursos[0]
         matricular(estudiante=base.estudiante,ciclo=base.ciclo,numero_matricula='UI-M1',fecha_matricula=base.ciclo.fecha_inicio)
         from datetime import date, time
@@ -46,12 +48,12 @@ class FrontendInstitucionalTests(TestCase):
             'SECRETARIA':['dashboard','finanzas_panel','estudiantes','matricula_secretaria'],
             'DIRECTORA':['dashboard','finanzas_panel','estudiantes','matricula_secretaria','autorizar_clase_extraordinaria'],
             'ADMINISTRADOR':['dashboard','finanzas_panel','estudiantes','matricula_secretaria'],
-            'ESTUDIANTE':['dashboard'], 'PASTOR_PRINCIPAL':['dashboard'],
+            'ESTUDIANTE':['dashboard','portal_academico','portal_cuenta'], 'PASTOR_PRINCIPAL':['dashboard'],
         }
         for rol,usuario in self.usuarios.items():
             with self.subTest(rol=rol):
                 self.client.force_login(usuario)
-                respuesta=self.client.get(reverse('dashboard'))
+                respuesta=self.client.get(reverse('dashboard'),follow=True)
                 self.assertEqual(respuesta.status_code,200)
                 self.assertEqual(re.findall(r'href="([^"]+)"',self.sidebar(respuesta)),[reverse(n) for n in esperados[rol]])
                 self.assertNotContains(respuesta,'href="#"')
@@ -62,14 +64,14 @@ class FrontendInstitucionalTests(TestCase):
 
     def test_dashboard_sin_metricas_demostrativas(self):
         self.client.force_login(self.usuarios['DIRECTORA'])
-        respuesta=self.client.get(reverse('dashboard'))
+        respuesta=self.client.get(reverse('dashboard'),follow=True)
         for texto in ('Dashboard en construcción','>284<','>12<','92%','+12%','Teologia Sistematica','08:00 PM'):
             self.assertNotContains(respuesta,texto)
         for modulo in ('Reportes','Usuarios'):
             self.assertNotIn(modulo,self.sidebar(respuesta))
 
     def test_roles_sin_modulo_tienen_estado_vacio_honesto(self):
-        for rol in ('ESTUDIANTE','PASTOR_PRINCIPAL'):
+        for rol in ('PASTOR_PRINCIPAL',):
             self.client.force_login(self.usuarios[rol])
             self.assertContains(self.client.get(reverse('dashboard')),'Todavía no hay módulos de consulta habilitados para su rol')
 

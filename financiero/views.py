@@ -131,10 +131,15 @@ def pago_nuevo(request, estudiante_id):
 @require_http_methods(['GET'])
 def recibo(request, pago_id):
     pago = get_object_or_404(Pago.objects.select_related('estudiante', 'usuario').prefetch_related('detalles__obligacion__concepto', 'detalles__obligacion__matricula'), pk=pago_id)
+    return presentar_recibo(request, pago)
+
+
+def presentar_recibo(request, pago, *, portal=False):
+    """Presentación compartida; cada endpoint debe resolver antes un pago autorizado."""
     snapshot = None
     if (pago.observaciones or '').startswith('VIDASYS_RECIBO_V1\n'):
         try:
             snapshot = json.loads(pago.observaciones.split('\n', 1)[1])
         except (ValueError, IndexError):
             pass
-    return render(request, 'financiero/recibo.html', {'pago': pago, 'snapshot': snapshot})
+    return render(request, 'financiero/recibo.html', {'pago': pago, 'snapshot': snapshot, 'portal': portal})
