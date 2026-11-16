@@ -1,0 +1,32 @@
+.reportes-totales { display:flex; flex-wrap:wrap; gap:1rem; margin:1rem 0; }
+.reportes-totales .panel-curso { margin:0; flex:1 1 180px; }
+.reportes-totales strong { display:block; font-size:1.4rem; margin-top:.5rem; }
+.reportes-alcance { display:flex; flex-wrap:wrap; gap:1rem 2rem; font-size:.85rem; }
+.reportes-alcance dt { font-weight:700; }
+.reportes-alcance dd { margin:.4rem 0; }
+.reportes-scroll { max-width:100%; overflow:auto; }
+.reportes-tabla { font-size:.85rem; }
+.reportes-tabla td { vertical-align:top; }
+.reportes-tabla tbody td { border-left:0; }
+.reportes-tabla td, .reportes-tabla th { overflow-wrap:anywhere; }
+@media(max-width:800px) {
+ .reportes-tabla td { border:0; }
+ .reportes-tabla td::before { display:block; font-size:.75rem; color:#52677f; }
+ .reportes-scroll { overflow:visible; }
+}
+@media print {
+ @page { size:A4 landscape; margin:12mm; }
+ .app-header,.app-sidebar,.app-footer,.reportes-no-imprimir,.saltar,.nav-toggle { display:none !important; }
+ .app-frame,.app-main { display:block; padding:0; margin:0; min-height:0; }
+ body { background:white; color:black; }
+ h1 { font-size:20pt; }
+ .reportes-scroll { overflow:visible; }
+ .reportes-tabla { display:table; width:100%; font-size:8pt; }
+ .reportes-tabla thead { display:table-header-group; position:static; width:auto; height:auto; clip-path:none; overflow:visible; }
+ .reportes-tabla tbody { display:table-row-group; }
+ .reportes-tabla tr { display:table-row; break-inside:avoid; }
+ .reportes-tabla td,.reportes-tabla th { display:table-cell; width:auto; padding:4pt; border:1px solid #ccc; }
+ .reportes-tabla td::before { display:none; }
+ .reportes-totales .panel-curso { box-shadow:none; }
+ .mensaje { font-size:8pt; }
+}

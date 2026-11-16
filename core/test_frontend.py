@@ -44,10 +44,10 @@ class FrontendInstitucionalTests(TestCase):
 
     def test_menu_exacto_por_rol_sin_enlaces_ficticios(self):
         esperados={
-            'MAESTRO':['dashboard','mis_cursos'],
-            'SECRETARIA':['dashboard','finanzas_panel','estudiantes','matricula_secretaria'],
-            'DIRECTORA':['dashboard','finanzas_panel','estudiantes','matricula_secretaria','autorizar_clase_extraordinaria'],
-            'ADMINISTRADOR':['dashboard','finanzas_panel','estudiantes','matricula_secretaria','usuarios'],
+            'MAESTRO':['dashboard','reportes','mis_cursos'],
+            'SECRETARIA':['dashboard','finanzas_panel','estudiantes','matricula_secretaria','reportes'],
+            'DIRECTORA':['dashboard','finanzas_panel','estudiantes','matricula_secretaria','reportes','autorizar_clase_extraordinaria'],
+            'ADMINISTRADOR':['dashboard','finanzas_panel','estudiantes','matricula_secretaria','usuarios','reportes'],
             'ESTUDIANTE':['dashboard','portal_academico','portal_cuenta'], 'PASTOR_PRINCIPAL':['dashboard'],
         }
         for rol,usuario in self.usuarios.items():
@@ -67,7 +67,7 @@ class FrontendInstitucionalTests(TestCase):
         respuesta=self.client.get(reverse('dashboard'),follow=True)
         for texto in ('Dashboard en construcción','>284<','>12<','92%','+12%','Teologia Sistematica','08:00 PM'):
             self.assertNotContains(respuesta,texto)
-        for modulo in ('Reportes','Usuarios'):
+        for modulo in ('Usuarios',):
             self.assertNotIn(modulo,self.sidebar(respuesta))
 
     def test_roles_sin_modulo_tienen_estado_vacio_honesto(self):

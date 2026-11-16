@@ -1,0 +1,6 @@
+{% extends 'reportes/base.html' %}{% block title %}Reportes institucionales{% endblock %}
+{% block content %}
+<p class="seccion">CONSULTA Y GENERACIÓN</p><h1>Reportes institucionales</h1><p>Seleccione un reporte, aplique filtros y consulte o exporte los resultados registrados.</p>
+{% if request.user.rol == 'MAESTRO' %}<p class="mensaje">Su acceso está limitado a los cursos que tiene asignados y sus estudiantes. No incluye información financiera.</p>{% endif %}
+<div class="accesos-inicio">{% for item in reportes %}<a class="acceso-tarjeta" href="{% url 'reportes_consultar' item.tipo %}"><span class="acceso-etiqueta">REPORTE INSTITUCIONAL</span><h2>{{ item.titulo }}</h2><p>Filtro de fechas: {{ item.fecha }}.</p><span class="acceso-enlace">Consultar y generar →</span></a>{% empty %}<p class="estado-vacio">No tiene reportes disponibles.</p>{% endfor %}</div>
+{% endblock %}

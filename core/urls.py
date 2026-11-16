@@ -2,11 +2,12 @@
 URLs del módulo core de VidaSys-IBV.
 """
 
-from django.urls import path
+from django.urls import include, path
 
 from . import views, portal, usuarios_views
 
 urlpatterns = [
+    path("reportes/", include("reportes.urls")),
     path("usuarios/", usuarios_views.listado, name="usuarios"),
     path("usuarios/nuevo/", usuarios_views.formulario, name="usuarios_nuevo"),
     path("usuarios/<int:usuario_id>/editar/", usuarios_views.formulario, name="usuarios_editar"),

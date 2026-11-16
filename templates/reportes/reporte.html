@@ -1,0 +1,15 @@
+{% extends 'reportes/base.html' %}{% block title %}{{ titulo }}{% endblock %}
+{% block content %}
+<p class="reportes-no-imprimir"><a href="{% url 'reportes' %}">← Reportes institucionales</a></p><p class="seccion">INSTITUTO BÍBLICO VIDA · REPORTE INSTITUCIONAL</p><h1>{{ titulo }}</h1><p>Fecha del filtro: {{ fecha_filtro }}.</p>
+{% if request.user.rol == 'MAESTRO' %}<p>Alcance: únicamente sus cursos asignados.</p>{% endif %}
+<form method="get" class="panel-curso est-filtros reportes-no-imprimir">{{ form.non_field_errors }}{% for field in form %}<div>{{ field.label_tag }}{{ field }}{{ field.errors }}</div>{% endfor %}<button type="submit">Consultar reporte</button><a href="{% url 'reportes_consultar' tipo %}">Limpiar filtros</a></form>
+{% if error_reporte %}<p role="alert" class="mensaje error">{{ error_reporte }}</p>{% elif not form.errors %}
+<div class="est-acciones reportes-no-imprimir"><a class="est-boton" href="?{{ parametros }}&amp;formato=csv">Exportar CSV</a><a href="?{{ parametros }}&amp;formato=imprimir">Vista para imprimir / Guardar PDF</a>{% if imprimir %}<button type="button" data-imprimir-reporte>Imprimir / Guardar PDF</button>{% endif %}</div>
+{% if alcance %}<dl class="reportes-alcance">{% for etiqueta,valor in alcance %}<div><dt>{{ etiqueta }}</dt><dd>{{ valor }}</dd></div>{% endfor %}</dl>{% else %}<p>Sin filtros adicionales; se aplica el alcance autorizado de su rol.</p>{% endif %}
+{% if nota %}<p class="mensaje">{{ nota }}</p>{% endif %}
+<div class="reportes-totales">{% for etiqueta,valor in totales %}<div class="panel-curso"><small>{{ etiqueta }}</small><strong>{{ valor }}</strong></div>{% endfor %}</div>
+<p class="est-conteo">{{ cantidad }} fila{{ cantidad|pluralize:'s' }} encontrada{{ cantidad|pluralize:'s' }}.</p>
+{% if cantidad %}<div class="reportes-scroll" role="region" aria-label="Resultados del reporte" tabindex="0"><table class="usuarios-tabla reportes-tabla"><caption class="solo-lectores">{{ titulo }}</caption><thead><tr>{% for columna in columnas %}<th scope="col">{{ columna }}</th>{% endfor %}</tr></thead><tbody>{% for fila in filas_visibles %}<tr>{% for celda in fila %}<td data-label="{{ celda.etiqueta }}">{{ celda.valor }}</td>{% endfor %}</tr>{% endfor %}</tbody></table></div>{% else %}<section class="estado-vacio"><h2>Sin resultados</h2><p>No hay registros que coincidan con los filtros y el alcance de su cuenta.</p></section>{% endif %}
+{% if not imprimir and pagina.has_other_pages %}<nav class="est-acciones" aria-label="Páginas">{% if pagina.has_previous %}<a href="?{{ parametros }}&amp;page={{ pagina.previous_page_number }}">Anterior</a>{% endif %}<span>Página {{ pagina.number }} de {{ pagina.paginator.num_pages }}</span>{% if pagina.has_next %}<a href="?{{ parametros }}&amp;page={{ pagina.next_page_number }}">Siguiente</a>{% endif %}</nav>{% endif %}
+{% endif %}
+{% endblock %}
