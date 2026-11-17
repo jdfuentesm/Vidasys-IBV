@@ -8,26 +8,29 @@ from django.db.models import Count, Q
 from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.views.decorators.cache import never_cache
+from django.views.decorators.http import require_safe
 
 from .forms import FilaAsistenciaForm, FilaCalificacionForm
 from .flujo_views import autorizar_clase_extraordinaria
 from .models import Asistencia, Calificacion, Curso, Estudiante, InscripcionCurso, Maestro, Matricula, SesionClase
 
 
+@never_cache
 @login_required
+@require_safe
 def probar_conexion(request):
     if not request.user.is_active or request.user.rol not in ('SECRETARIA', 'DIRECTORA', 'ADMINISTRADOR'):
         return HttpResponseForbidden('La comprobación de conexión requiere un rol administrativo autorizado.')
-    # Intentamos traer todos los estudiantes
-    estudiantes = Estudiante.objects.all()
-    total = estudiantes.count()
-
-    # Armamos un texto simple para ver en el navegador
-    respuesta = f"¡Conexión exitosa! Hay {total} estudiantes en la base de datos.<br>"
-    for est in estudiantes[:5]:  # Solo mostramos los primeros 5
-        respuesta += f"- {est.codigo_estudiante}: {est.nombres} {est.apellidos}<br>"
-
-    return HttpResponse(respuesta)
+    # Diagnóstico mínimo: no expone información personal ni interpreta datos como HTML.
+    try:
+        total = Estudiante.objects.count()
+    except DatabaseError:
+        respuesta = HttpResponse('No se pudo verificar la conexión.', status=503, content_type='text/plain; charset=utf-8')
+    else:
+        respuesta = HttpResponse(f'Conexión verificada. Total de estudiantes: {total}.', content_type='text/plain; charset=utf-8')
+    respuesta['X-Content-Type-Options'] = 'nosniff'
+    return respuesta
 
 
 @login_required

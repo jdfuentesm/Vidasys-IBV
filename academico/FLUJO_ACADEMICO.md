@@ -103,3 +103,19 @@ PostgreSQL. No se inspeccionaron datos reales; no se presume que el ciclo local 
 tenga preparados sus seis cursos ni que los perfiles docentes estén vinculados a
 sus cuentas. Las incompatibilidades se informan, nunca se corrigen modificando
 usuarios/docentes, borrando pruebas o alterando restricciones automáticamente.
+
+## Pendientes confirmados en diagnóstico del MVP (sin cambios de reglas)
+
+- La interfaz programa sesiones, pero no permite cambiar las ordinarias a IMPARTIDA,
+  suspenderlas, cancelarlas o reprogramarlas; el cierre depende de esos estados.
+- Guardar una calificación calcula una nota final y cierra la inscripción, bloqueando
+  asistencia posterior. Debe acordarse la separación entre captura y evaluación definitiva.
+- El libro permite guardar notas con un curso FINALIZADO. Falta definir autorización
+  de correcciones y condiciones de reapertura; no se implementa en la etapa de seguridad.
+- El cierre de curso comprueba sesiones, no notas completas: puede finalizar con
+  inscripciones CURSANDO y sin calificaciones. La política definitiva requiere aprobación.
+- El cierre por dos injustificadas remite a Dirección, pero no hay un recorrido
+  institucional de revisión/corrección. No se reabre ni modifica automáticamente.
+
+Estos puntos se conservan como trabajo académico posterior; las correcciones de XSS
+  y pruebas de cuentas no alteran esas reglas ni las reglas financieras.

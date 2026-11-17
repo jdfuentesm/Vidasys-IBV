@@ -141,3 +141,22 @@ OneToOne ya declaradas en los modelos. La creación de cuentas institucionales i
 corrección de un vínculo previo erróneo y entrega de credenciales siguen requiriendo un
 operador autorizado y verificación de identidad; no hay autoasignación ni recuperación
 pública. Esta entrega no constituye autorización de despliegue o producción.
+
+## Actualización de auditoría y pruebas (etapa 1 del MVP)
+
+Las altas y ediciones institucionales de cuentas registran al actor autenticado,
+la cuenta y el tipo de operación en `django_admin_log` mediante el modelo existente
+`LogEntry`. En edición se enumeran los campos modificados, sin valores, contraseñas
+ni hashes. La escritura de cuenta e historial comparte transacción; un fallo del
+historial revierte el alta o edición y la interfaz muestra un error controlado.
+Los restablecimientos y vínculos no amplían su alcance de auditoría en esta etapa.
+
+Las seis pruebas que esperaban altas/ediciones desde Django Admin se adaptaron a
+`/usuarios/`: formulario, alta con auditoría, claves distintas, duplicados, edición
+con actor e historial, y reversión por fallo de auditoría. Se conserva además la
+comprobación de rechazo sin permisos. Las rutas antiguas de alta, edición por POST,
+contraseña y eliminación permanecen prohibidas incluso para superusuarios; la
+consulta de una cuenta desde Admin puede devolver 200 en modo de solo lectura.
+
+Pruebas aisladas: `python manage.py test --settings=academico.test_settings --noinput`.
+No usar la configuración de la demo ni una conexión PostgreSQL para esta comprobación.

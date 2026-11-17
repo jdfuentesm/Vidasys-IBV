@@ -1,4 +1,8 @@
 """Operaciones institucionales de cuentas: autorización y cambios atómicos."""
+import json
+
+from django.contrib.admin.models import ADDITION, CHANGE, LogEntry
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.db import transaction
@@ -33,6 +37,9 @@ def validar_identificadores(usuario):
 def guardar_cuenta(*, actor, datos, usuario_id=None, password=None):
     activos = bloquear_administracion(actor)
     usuario = Usuario.objects.select_for_update().get(pk=usuario_id) if usuario_id else Usuario()
+    nueva = usuario.pk is None
+    campos = ('numero_usuario', 'correo_acceso', 'rol', 'estado_cuenta')
+    cambios = [campo for campo in campos if getattr(usuario, campo) != datos[campo]]
     era_admin = usuario.pk and usuario.rol == 'ADMINISTRADOR' and usuario.is_active
     for nombre in ('numero_usuario', 'correo_acceso', 'rol', 'estado_cuenta'):
         setattr(usuario, nombre, datos[nombre])
@@ -61,6 +68,17 @@ def guardar_cuenta(*, actor, datos, usuario_id=None, password=None):
         usuario.full_clean()
         usuario.save(update_fields=['numero_usuario', 'correo_acceso', 'rol', 'estado_cuenta',
                                     'is_staff', 'is_superuser', 'fecha_actualizacion'])
+    # El historial pertenece a la misma transacción: un fallo revierte también la cuenta.
+    # Solo nombres de campos; nunca claves, hashes ni valores enviados por formulario.
+    if nueva or cambios:
+        LogEntry.objects.create(
+            user_id=actor.pk,
+            content_type=ContentType.objects.get_for_model(Usuario),
+            object_id=str(usuario.pk),
+            object_repr=str(usuario)[:200],
+            action_flag=ADDITION if nueva else CHANGE,
+            change_message=json.dumps([{'added': {}}] if nueva else [{'changed': {'fields': cambios}}]),
+        )
     return usuario
 
 

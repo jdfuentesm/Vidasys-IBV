@@ -14,11 +14,12 @@ comparaciones, próxima clase y mensaje general de construcción.
 
 | Rol | Menú operativo |
 | --- | --- |
-| SECRETARIA | Inicio, Matricular estudiante |
-| MAESTRO | Inicio, Mis cursos |
-| DIRECTORA | Inicio, Matricular estudiante, Autorizar extraordinarias |
-| ADMINISTRADOR | Inicio, Matricular estudiante |
-| ESTUDIANTE / PASTOR_PRINCIPAL | Inicio; estado informativo sin módulos operativos |
+| SECRETARIA | Inicio, Finanzas, Estudiantes, Matricular estudiante, Reportes institucionales |
+| MAESTRO | Inicio, Reportes institucionales de sus cursos, Mis cursos |
+| DIRECTORA | Inicio, Finanzas (consulta), Estudiantes, Matricular estudiante, Reportes institucionales, Autorizar extraordinarias |
+| ADMINISTRADOR | Inicio, Finanzas, Estudiantes, Matricular estudiante, Usuarios y accesos, Reportes institucionales |
+| ESTUDIANTE | Portal, Mis materias y resultados (según solvencia), Mi estado de cuenta y recibos propios |
+| PASTOR_PRINCIPAL | Inicio; estado informativo sin módulos operativos |
 
 Cerrar sesión está disponible en el encabezado para todos. Los accesos docentes
 son por curso: asistencia, calificaciones, programación y cierre. Al cambiar de
@@ -31,9 +32,9 @@ sus comprobaciones actuales; Administrador no recibe privilegios de Maestro.
 calificaciones.css y agrega la estructura institucional. calificaciones.css queda
 solo con estilos propios del libro. Asistencia y el flujo académico conservan sus
 hojas específicas. El área autenticada no carga el CSS demostrativo del dashboard
-ni dependencias CDN nuevas. El login conserva su estructura existente; únicamente
-se retiró el enlace de recuperación de contraseña sin destino, sustituyéndolo por
-ayuda informativa, sin implementar recuperación automática.
+ni dependencias CDN nuevas. El login reutiliza los estilos institucionales y muestra
+el logotipo original VidaSYS y el escudo IBV, conservando POST, validaciones y CSRF.
+La recuperación automática no existe: se ofrece ayuda administrativa.
 
 El menú móvil se despliega en el flujo normal, sin tapar formularios. El botón
 expone aria-expanded/aria-controls, funciona con teclado y cierra con Escape.
@@ -48,9 +49,18 @@ cambios pendientes.
 
 ## Funciones pendientes (sin enlaces operativos)
 
-- Gestión propia de estudiantes y usuarios fuera de Django Admin.
-- Interfaz financiera, reportes e indicadores institucionales reales.
-- Portal del estudiante, incluida la integración de restricciones de solvencia.
+Ya están disponibles la gestión institucional de estudiantes y usuarios, la matrícula
+con obligaciones, el cobro ordinario y recibos, ocho reportes con CSV/impresión y el
+portal estudiantil con controles de identidad y solvencia. Véanse los manuales de
+[estudiantes](../manuales/modulo_estudiantes.md), [usuarios](../manuales/administracion_usuarios.md),
+[finanzas](../manuales/modulo_financiero.md), [reportes](../manuales/reportes_institucionales.md)
+y [portal](../manuales/portal_estudiante.md).
+
+Permanecen pendientes:
+
+- Indicadores del dashboard basados en consultas y alcance institucional acordado.
+- Preparación institucional del ciclo, asignaciones docentes y operación de estados de sesiones.
+- Flujos institucionales completos de becas, cuotas de convenios y anulación de pagos.
 - Supervisión académica general de Dirección/Administrador distinta de las rutas
   docentes actualmente autorizadas.
 - Recuperación automática de contraseñas.
@@ -66,7 +76,7 @@ sustituyen valores desconocidos por cifras de demostración.
 
 ```powershell
 .\venv\Scripts\python.exe manage.py test core academico --settings=academico.test_settings --noinput
-.\venv\Scripts\python.exe manage.py check
+.\venv\Scripts\python.exe manage.py check --settings=academico.test_settings
 ```
 
 Pruebas nuevas de menú para seis roles, permisos existentes, navegación compartida,

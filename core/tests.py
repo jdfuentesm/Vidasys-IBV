@@ -50,14 +50,14 @@ class UsuarioAdminTests(TestCase):
         self.assertFalse(Usuario._meta.managed)
 
     def test_formulario_creacion_accesible(self):
-        respuesta = self.client.get(reverse("admin:core_usuario_add"))
+        respuesta = self.client.get(reverse("usuarios_nuevo"))
         self.assertEqual(respuesta.status_code, 200)
         self.assertContains(respuesta, 'name="numero_usuario"')
         self.assertContains(respuesta, 'name="password1"')
         self.assertNotContains(respuesta, 'name="username"')
 
     def test_crear_docente_y_registro_de_auditoria(self):
-        respuesta = self.client.post(reverse("admin:core_usuario_add"), self.datos())
+        respuesta = self.client.post(reverse("usuarios_nuevo"), self.datos())
         self.assertEqual(respuesta.status_code, 302, getattr(respuesta, "context", None))
         docente = Usuario.objects.get(numero_usuario="docente-prueba")
         self.assertTrue(docente.check_password("Prueba-Docente-983!"))
@@ -73,23 +73,23 @@ class UsuarioAdminTests(TestCase):
             self.assertNotIn("auth_user", connection.introspection.table_names(cursor))
 
     def test_claves_distintas_no_crean_usuario_ni_historial(self):
-        respuesta = self.client.post(reverse("admin:core_usuario_add"), self.datos(password2="Otra-983!"))
+        respuesta = self.client.post(reverse("usuarios_nuevo"), self.datos(password2="Otra-983!"))
         self.assertEqual(respuesta.status_code, 200)
-        self.assertTrue(respuesta.context["adminform"].form.errors)
+        self.assertTrue(respuesta.context["form"].errors)
         self.assertFalse(Usuario.objects.filter(numero_usuario="docente-prueba").exists())
         self.assertEqual(LogEntry.objects.count(), 0)
 
     def test_usuario_duplicado_no_crea_historial(self):
-        self.client.post(reverse("admin:core_usuario_add"), self.datos())
-        respuesta = self.client.post(reverse("admin:core_usuario_add"), self.datos())
+        self.client.post(reverse("usuarios_nuevo"), self.datos())
+        respuesta = self.client.post(reverse("usuarios_nuevo"), self.datos())
         self.assertEqual(respuesta.status_code, 200)
         self.assertEqual(Usuario.objects.filter(numero_usuario="docente-prueba").count(), 1)
         self.assertEqual(LogEntry.objects.count(), 1)
 
     def test_edicion_conserva_historial_y_registra_actor(self):
-        self.client.post(reverse("admin:core_usuario_add"), self.datos())
+        self.client.post(reverse("usuarios_nuevo"), self.datos())
         docente = Usuario.objects.get(numero_usuario="docente-prueba")
-        respuesta = self.client.post(reverse("admin:core_usuario_change", args=[docente.pk]), {
+        respuesta = self.client.post(reverse("usuarios_editar", args=[docente.pk]), {
             "numero_usuario": docente.numero_usuario,
             "correo_acceso": "docente-editado@example.test", "rol": "MAESTRO",
             "estado_cuenta": "ACTIVA", "_save": "Guardar",
@@ -99,23 +99,57 @@ class UsuarioAdminTests(TestCase):
         self.assertEqual(docente.correo_acceso, "docente-editado@example.test")
         self.assertTrue(docente.check_password("Prueba-Docente-983!"))
         self.assertEqual(LogEntry.objects.filter(object_id=str(docente.pk)).count(), 2)
-        self.assertEqual(LogEntry.objects.get(action_flag=CHANGE).user_id, self.administrador.pk)
+        registro = LogEntry.objects.get(action_flag=CHANGE)
+        self.assertEqual(registro.user_id, self.administrador.pk)
+        self.assertIn('correo_acceso', registro.change_message)
+        self.assertNotIn(docente.password, registro.change_message)
+        self.assertNotIn('Prueba-Docente-983!', registro.change_message)
 
     def test_fallo_de_auditoria_revierte_creacion_sin_desactivarla(self):
-        usuario_admin = admin.site._registry[Usuario]
-        with patch.object(usuario_admin, "log_addition", side_effect=IntegrityError("FK simulada")):
-            with self.assertRaises(IntegrityError):
-                self.client.post(reverse("admin:core_usuario_add"), self.datos())
+        with patch("core.usuarios_servicios.LogEntry.objects.create", side_effect=IntegrityError("FK simulada")):
+            respuesta = self.client.post(reverse("usuarios_nuevo"), self.datos())
+        self.assertEqual(respuesta.status_code, 200)
+        self.assertContains(respuesta, 'No se guardó la operación')
+        self.assertNotContains(respuesta, 'FK simulada')
         self.assertFalse(Usuario.objects.filter(numero_usuario="docente-prueba").exists())
         self.assertFalse(LogEntry.objects.exists())
         self.assertTrue(Usuario.objects.filter(pk=self.administrador.pk).exists())
 
     def test_creacion_rechazada_sin_permisos(self):
         self.client.force_login(self.estudiante)
-        respuesta = self.client.post(reverse("admin:core_usuario_add"), self.datos())
-        self.assertEqual(respuesta.status_code, 302)
+        respuesta = self.client.post(reverse("usuarios_nuevo"), self.datos())
+        self.assertEqual(respuesta.status_code, 403)
         self.assertFalse(Usuario.objects.filter(numero_usuario="docente-prueba").exists())
         self.assertFalse(LogEntry.objects.exists())
+
+    def test_rutas_admin_antiguas_no_permiten_escritura(self):
+        antes = list(Usuario.objects.values())
+        rutas = [reverse('admin:core_usuario_add'),
+                 reverse('admin:core_usuario_change', args=[self.estudiante.pk]),
+                 reverse('admin:auth_user_password_change', args=[self.estudiante.pk]),
+                 reverse('admin:core_usuario_delete', args=[self.estudiante.pk])]
+        for ruta in rutas:
+            for metodo in ('get', 'post'):
+                with self.subTest(ruta=ruta, metodo=metodo):
+                    respuesta = getattr(self.client, metodo)(ruta, self.datos())
+                    solo_lectura = metodo == 'get' and ruta == rutas[1]
+                    self.assertEqual(respuesta.status_code, 200 if solo_lectura else 403)
+                    if solo_lectura:
+                        self.assertNotContains(respuesta, 'name="_save"')
+        self.assertEqual(list(Usuario.objects.values()), antes)
+        self.assertFalse(LogEntry.objects.exists())
+
+    def test_error_de_auditoria_revierte_edicion(self):
+        self.client.post(reverse('usuarios_nuevo'), self.datos())
+        docente = Usuario.objects.get(numero_usuario='docente-prueba')
+        antes = Usuario.objects.values().get(pk=docente.pk)
+        with patch('core.usuarios_servicios.LogEntry.objects.create', side_effect=IntegrityError('FK simulada')):
+            respuesta = self.client.post(reverse('usuarios_editar', args=[docente.pk]), {
+                'numero_usuario': docente.numero_usuario, 'correo_acceso': 'otro@example.test',
+                'rol': 'MAESTRO', 'estado_cuenta': 'ACTIVA'})
+        self.assertEqual(respuesta.status_code, 200)
+        self.assertEqual(Usuario.objects.values().get(pk=docente.pk), antes)
+        self.assertEqual(LogEntry.objects.filter(object_id=str(docente.pk)).count(), 1)
 
     def test_fk_historial_y_permisos_apuntan_a_usuario(self):
         with connection.cursor() as cursor:
