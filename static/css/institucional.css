@@ -1,4 +1,17 @@
-:root { color-scheme: light; font-family: system-ui, -apple-system, sans-serif; font-size: 18px; color: #23364d; background: #f3f5f8; }
+:root {
+    --azul-marino: #102c50;
+    --azul-institucional: #1765a1;
+    --rojo-acento: #e21d2b;
+    --fondo: #f3f6fa;
+    --texto: #23364d;
+    --texto-suave: #52677f;
+    --borde: #dce4ee;
+    color-scheme: light;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 18px;
+    color: var(--texto);
+    background: var(--fondo);
+}
 * { box-sizing: border-box; }
 body { margin: 0; }
 .encabezado { background: #172f4e; color: white; border-bottom: 4px solid #426a96; }
@@ -83,51 +96,94 @@ input:disabled { background: #e8edf2; color: #637184; cursor: not-allowed; }
     .estudiante { min-width: 10rem; max-width: 11rem; }.tabla-scroll { max-height: 65vh; }
 }
 
-/* Estructura compartida: no carga Bootstrap ni estilos del dashboard demostrativo. */
-.app-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1.5rem; background: #172f4e; color: white; }
-.app-marca { display: flex; align-items: center; gap: .75rem; color: white; text-decoration: none; }
-.app-marca img { object-fit: contain; background: white; border-radius: 50%; padding: 3px; flex-shrink: 0; }
-.app-marca strong { letter-spacing: .08em; } .app-marca small { color: #d4e1ee; }
-.app-identidad { display: flex; align-items: center; gap: 1.4rem; font-size: .9rem; }
-.app-identidad > span { text-align: right; overflow-wrap: anywhere; }
-.app-identidad small { color: #d4e1ee; }
-.app-salir { color: white; padding: .65rem .8rem; border: 1px solid #8da4bf; border-radius: 6px; text-decoration: none; white-space: nowrap; }
-.app-salir:hover { background: #2c4c73; }
-.app-frame { display: grid; grid-template-columns: 235px minmax(0,1fr); min-height: calc(100vh - 140px); }
-.app-sidebar { background: white; border-right: 1px solid #d1dbe7; padding: 1.5rem .8rem; }
+/* Identidad y navegación compartidas por todos los módulos. */
+.app-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .9rem 1.6rem; background: white; border-bottom: 1px solid var(--borde); }
+.app-marca { display: flex; align-items: center; gap: .8rem; color: var(--azul-marino); text-decoration: none; min-width: 0; }
+.app-logotipo { display: block; width: 210px; max-width: 100%; height: auto; flex-shrink: 1; }
+.app-institucion { display: flex; align-items: center; gap: .5rem; border-left: 1px solid var(--borde); padding-left: .8rem; color: var(--texto-suave); font-size: .68rem; line-height: 1.5; }
+.app-escudo { display: block; width: 52px; height: auto; flex-shrink: 0; }
+.app-identidad { display: flex; align-items: center; gap: 1.4rem; font-size: .85rem; min-width: 0; }
+.app-identidad > span { text-align: right; overflow-wrap: anywhere; font-weight: 650; }
+.app-identidad small { color: var(--azul-institucional); font-weight: 500; }
+.app-salir { color: var(--azul-marino); padding: .65rem .8rem; border: 1px solid var(--borde); border-radius: 8px; text-decoration: none; white-space: nowrap; font-size: .8rem; }
+.app-salir:hover { background: var(--fondo); border-color: var(--azul-institucional); }
+.app-frame { display: grid; grid-template-columns: 250px minmax(0,1fr); min-height: calc(100vh - 148px); }
+.app-sidebar { background: var(--azul-marino); padding: 1.7rem .8rem; color: white; border-top: 3px solid var(--rojo-acento); }
 .app-sidebar ul { list-style: none; padding: 0; margin: 0; }
-.app-sidebar li { margin: .4rem 0; }
-.app-sidebar a { display: block; padding: .85rem .9rem; min-height: 48px; text-decoration: none; color: #314c6b; font-weight: 650; border-radius: 6px; }
-.app-sidebar a:hover { background: #eff4fa; }
-.app-sidebar a[aria-current=page] { background: #e5edf7; color: #172f4e; box-shadow: inset 3px 0 #426a96; }
-.menu-titulo { font-size: .72rem; letter-spacing: .08em; color: #52677f; padding: 0 .9rem; margin-bottom: 1rem; font-weight: 750; }
-.menu-ayuda { border-top: 1px solid #e1e7ef; margin: 1.5rem .9rem 0; padding-top: 1rem; font-size: .85rem; color: #52677f; }
-.app-main { width: 100%; min-width: 0; max-width: none; margin: 0; padding: 1.7rem; }
-.app-footer { padding: 1rem 1.5rem; font-size: .75rem; color: #52677f; border-top: 1px solid #d1dbe7; }
-.nav-toggle { display: none; color: white; border-color: #8da4bf; }
-.inicio-cabecera { margin-bottom: 2rem; }
-.inicio-cabecera > p:last-child { color: #52677f; }
-.accesos-inicio { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,330px),1fr)); gap: 1.2rem; max-width: 1150px; margin-top: 1rem; }
-.acceso-tarjeta, .estado-vacio { background: white; border: 1px solid #cad6e5; border-radius: 10px; padding: 1.5rem; }
-.acceso-tarjeta { text-decoration: none; color: #23364d; display: flex; flex-direction: column; }
-.acceso-tarjeta:hover { border-color: #426a96; box-shadow: 0 3px 10px #17365512; }
-.acceso-tarjeta h3, .estado-vacio h3 { font-size: 1.25rem; margin: .7rem 0 .3rem; }
-.acceso-tarjeta p { color: #52677f; }
-.acceso-etiqueta { color: #52677f; font-size: .72rem; letter-spacing: .09em; font-weight: 750; }
-.acceso-enlace { margin-top: auto; padding-top: 1.3rem; color: #174a85; font-weight: 700; }
+.app-sidebar li { margin: .35rem 0; }
+.app-sidebar a { display: flex; align-items: center; gap: .75rem; padding: .8rem .85rem; min-height: 48px; text-decoration: none; color: #dce7f3; font-size: .83rem; font-weight: 550; border-radius: 8px; }
+.app-sidebar a:hover { background: #ffffff12; color: white; }
+.app-sidebar a[aria-current=page] { background: #ffffff17; color: white; box-shadow: inset 3px 0 var(--rojo-acento); }
+.ui-icono { width: 23px; height: 23px; flex-shrink: 0; }
+.menu-titulo { font-size: .62rem; letter-spacing: .16em; color: #aebfd2; padding: 0 .9rem; margin-bottom: 1.2rem; font-weight: 700; }
+.menu-ayuda { border-top: 1px solid #ffffff26; margin: 2rem .9rem 0; padding-top: 1rem; font-size: .78rem; color: white; }
+.menu-ayuda small { color: #b5c7db; font-size: .7rem; line-height: 1.6; }
+.app-main { width: 100%; min-width: 0; max-width: none; margin: 0; padding: 2rem clamp(1rem,3vw,2.8rem); }
+.app-footer { padding: 1rem 1.5rem; font-size: .7rem; color: var(--texto-suave); border-top: 1px solid var(--borde); background: white; }
+.nav-toggle { display: none; color: var(--azul-marino); background: var(--fondo); border-color: var(--borde); }
+.nav-toggle:hover { color: white; }
+.inicio-cabecera { margin-bottom: 2rem; padding: 1.6rem 1.8rem; background: white; border: 1px solid var(--borde); border-left: 4px solid var(--azul-institucional); border-radius: 12px; }
+.inicio-cabecera h1 { color: var(--azul-marino); font-size: clamp(1.5rem,3vw,2rem); overflow-wrap: anywhere; }
+.inicio-cabecera > p:last-child { color: var(--texto-suave); font-size: .9rem; }
+.accesos-inicio { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,300px),1fr)); gap: 1.1rem; max-width: 1280px; margin-top: 1.2rem; }
+.acceso-tarjeta, .estado-vacio { background: white; border: 1px solid var(--borde); border-radius: 12px; padding: 1.5rem; }
+.acceso-tarjeta { text-decoration: none; color: var(--texto); display: flex; flex-direction: column; box-shadow: 0 3px 12px #102c5005; transition: border-color .15s, box-shadow .15s; }
+.acceso-tarjeta:hover { border-color: var(--azul-institucional); box-shadow: 0 6px 20px #102c5010; }
+.acceso-icono { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 12px; background: #eaf2fa; color: var(--azul-institucional); margin-bottom: 1rem; }
+.acceso-tarjeta h3, .estado-vacio h3 { font-size: 1.15rem; margin: .6rem 0 .3rem; color: var(--azul-marino); }
+.acceso-tarjeta p { color: var(--texto-suave); font-size: .85rem; line-height: 1.7; }
+.acceso-etiqueta { color: var(--texto-suave); font-size: .62rem; letter-spacing: .09em; font-weight: 750; }
+.acceso-enlace { margin-top: auto; padding-top: 1.3rem; color: var(--azul-institucional); font-size: .8rem; font-weight: 700; }
 .contexto-curso { background: #eaf0f7; padding: .9rem 1rem; border-radius: 8px; margin-bottom: 1.4rem; font-size: .85rem; }
 .contexto-curso > strong { display: block; margin-top: .45rem; }
 .tareas-curso { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .8rem; }
 .tareas-curso a { padding: .55rem .75rem; background: white; border: 1px solid #b8c9dc; border-radius: 5px; text-decoration: none; }
 .tareas-curso a[aria-current=page] { color: white; background: #233f60; border-color: #233f60; }
+/* Acceso institucional sin dependencias de fuentes, iconos o imágenes externas. */
+.login-layout { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; min-height: 100svh; max-width: none; padding: 0; }
+.login-presentacion { display: flex; flex-direction: column; justify-content: space-between; background: var(--azul-marino); color: white; padding: clamp(1.5rem,4vw,4rem); border-top: 5px solid var(--rojo-acento); }
+.login-distintivo { font-size: .65rem; font-weight: 650; letter-spacing: .2em; }
+.login-institucion { max-width: 480px; margin: 3rem 0; }
+.login-escudo { width: 150px; height: auto; display: block; background: white; margin-bottom: 2rem; }
+.login-antetitulo { font-size: .65rem; letter-spacing: .15em; color: #b9d3ee; font-weight: 700; }
+.login-institucion h2 { font-size: clamp(1.8rem,3.3vw,3rem); line-height: 1.2; letter-spacing: -.04em; margin: .8rem 0 1.2rem; }
+.login-institucion > p:last-child { color: #cedceb; font-size: .9rem; max-width: 380px; line-height: 1.8; }
+.login-dependencia { font-size: .7rem; color: #b9cee3; }
+.login-acceso { display: flex; align-items: center; justify-content: center; padding: 3rem clamp(1.3rem,5vw,5rem); background: white; }
+.login-formulario { width: 100%; max-width: 420px; }
+.login-logotipo { display: block; width: 100%; max-width: 360px; height: auto; margin: 0 auto 1.5rem; }
+.login-formulario h1 { color: var(--azul-marino); font-size: clamp(1.5rem,3vw,1.9rem); }
+.login-intro { font-size: .85rem; color: var(--texto-suave); margin-bottom: 1.7rem; }
+.login-campo { margin: 1.2rem 0; }
+.login-campo label { font-size: .8rem; font-weight: 650; }
+.login-campo input { width: 100%; border: 1px solid #a6b6c9; border-radius: 8px; padding: .85rem; font-size: .9rem; color: var(--texto); background: #fbfcfe; }
+.login-campo input::placeholder { color: #64748b; }
+.login-form button { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 1.5rem; border-radius: 8px; background: var(--azul-institucional); border-color: var(--azul-institucional); font-size: .85rem; padding: .85rem 1rem; }
+.login-form button:hover { background: var(--azul-marino); }
+.login-ayuda { font-size: .75rem; color: var(--texto-suave); text-align: center; line-height: 1.7; margin-top: 1.5rem; }
+.login-pie { font-size: .65rem; color: var(--texto-suave); border-top: 1px solid var(--borde); padding-top: 1.3rem; margin-top: 2rem; text-align: center; }
 @media(max-width: 900px) {
     .app-header { flex-wrap: wrap; padding: .8rem; }.app-identidad { margin-left: auto; gap: .75rem; }
-    .app-frame { display: block; }.app-sidebar { border-right: 0; border-bottom: 1px solid #d1dbe7; padding: .7rem; }
+    .app-frame { display: block; }.app-sidebar { padding: .7rem; }
     .js .app-sidebar[data-abierto=false] { display: none; }.js .nav-toggle { display: block; width: 100%; text-align: left; }
-    .app-main { padding: 1rem .7rem; }.app-marca { font-size: .85rem; }.app-marca img { width: 44px; height: 44px; }
+    .app-main { padding: 1.2rem .8rem; }.app-marca { font-size: .85rem; }.app-logotipo { width: 180px; }
     .app-identidad { font-size: .8rem; }.app-identidad > span { text-align: left; }
+    .inicio-cabecera { padding: 1.2rem; }
+}
+@media(max-width: 700px) {
+    .login-layout { grid-template-columns: 1fr; }
+    .login-presentacion { padding: 1.3rem; }
+    .login-distintivo, .login-antetitulo, .login-institucion h2, .login-institucion > p:last-child, .login-dependencia { display: none; }
+    .login-institucion { margin: 0; }
+    .login-escudo { width: 90px; margin: 0 auto; }
+    .login-acceso { padding: 2rem 1.3rem; }
+    .login-logotipo { max-width: 300px; margin-bottom: 1rem; }
 }
 @media(max-width: 520px) {
+    .app-marca { width: 100%; justify-content: space-between; gap: .5rem; }
+    .app-institucion { padding-left: .5rem; font-size: .6rem; }
+    .app-escudo { width: 40px; }
     .app-identidad { margin-left: 0; width: 100%; justify-content: space-between; }
     .acceso-tarjeta, .estado-vacio { padding: 1.2rem; }.tareas-curso a { flex: 1 1 42%; text-align: center; }
 }
+@media(prefers-reduced-motion: reduce) { .acceso-tarjeta { transition: none; } }

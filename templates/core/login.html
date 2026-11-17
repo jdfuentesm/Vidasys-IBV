@@ -1,98 +1,40 @@
 {% extends 'core/base.html' %}
-
-{% block title %}Iniciar Sesión — VidaSys-IBV{% endblock %}
-
+{% load static %}
+{% block title %}Iniciar sesión — VidaSYS-IBV{% endblock %}
 {% block content %}
-<div class="container">
-    <div class="row justify-content-center align-items-center min-vh-100">
-        <div class="col-11 col-sm-8 col-md-6 col-lg-4">
-
-            <!-- Card del login -->
-            <div class="card shadow-sm border-0" style="border-radius: 16px;">
-                <div class="card-body p-4 p-md-5">
-
-                    <!-- Logo y título -->
-                    <div class="text-center mb-4">
-                        <div class="mb-3">
-                            <!-- Placeholder para el escudo del IBV -->
-                            <div style="width: 80px; height: 80px; margin: 0 auto; background: linear-gradient(135deg, #1E3A5F, #2563EB); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                <i class="bi bi-book" style="font-size: 40px; color: white;"></i>
-                            </div>
-                        </div>
-                        <h1 style="font-size: 22px; font-weight: 700; color: var(--color-primario); margin-bottom: 4px;">
-                            Instituto Bíblico Vida
-                        </h1>
-                        <p style="font-size: 14px; color: var(--color-texto-secundario); margin: 0;">
-                            VidaSys-IBV
-                        </p>
-                    </div>
-
-                    <!-- Mensaje de error (si existe) -->
-                    {% if error %}
-                    <div class="alert alert-danger" role="alert" style="border-radius: 8px;">
-                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                        {{ error }}
-                    </div>
-                    {% endif %}
-
-                    <!-- Formulario de login -->
-                    <form method="post">
-                        {% csrf_token %}
-
-                        <!-- Campo usuario -->
-                        <div class="mb-3">
-                            <label for="numero_usuario">Usuario o correo</label>
-                            <input
-                                type="text"
-                                class="form-control"
-                                id="numero_usuario"
-                                name="numero_usuario"
-                                placeholder="Ej: admin o admin@ibv.local"
-                                required
-                                autofocus
-                            >
-                        </div>
-
-                        <!-- Campo contraseña -->
-                        <div class="mb-4">
-                            <label for="password">Contraseña</label>
-                            <input
-                                type="password"
-                                class="form-control"
-                                id="password"
-                                name="password"
-                                placeholder="Tu contraseña"
-                                required
-                            >
-                        </div>
-
-                        <!-- Botón de login -->
-                        <button type="submit" class="btn btn-primario w-100">
-                            <i class="bi bi-box-arrow-in-right me-2"></i>
-                            Iniciar Sesión
-                        </button>
-                    </form>
-
-                    <!-- Ayuda informativa: no existe una recuperación automática de contraseña. -->
-                    <div class="text-center mt-3">
-                        <p style="color: var(--color-texto-secundario); font-size: 14px;">
-                            ¿Olvidó su contraseña? Solicite ayuda a la administración.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Pie de página -->
-            <div class="text-center mt-4">
-                <p style="font-size: 12px; color: var(--color-texto-secundario); margin: 0;">
-                    © 2026 Instituto Bíblico Vida
-                </p>
-                <p style="font-size: 12px; color: var(--color-texto-secundario); margin: 0;">
-                    Dependencia de Ministerios Vida El Salvador
-                </p>
-            </div>
-
+<main class="login-layout" id="contenido">
+    <section class="login-presentacion" aria-labelledby="institucion-titulo">
+        <span class="login-distintivo">INSTITUTO BÍBLICO VIDA</span>
+        <div class="login-institucion">
+            <img class="login-escudo" src="{% static 'img/logo.png' %}" alt="Escudo del Instituto Bíblico Vida, fundado en 2022" width="180" height="179">
+            <p class="login-antetitulo">FORMACIÓN CON PROPÓSITO</p>
+            <h2 id="institucion-titulo">Una comunidad.<br>Un mismo propósito.</h2>
+            <p>Gestión académica, administrativa y financiera al servicio del Instituto Bíblico Vida.</p>
         </div>
-    </div>
-</div>
+        <p class="login-dependencia">Dependencia de Ministerios Vida El Salvador</p>
+    </section>
+    <section class="login-acceso" aria-labelledby="login-titulo">
+        <div class="login-formulario">
+            <img class="login-logotipo" src="{% static 'img/vidasys.png' %}" alt="VidaSYS — Sistema de gestión del Instituto Bíblico Vida" width="1536" height="1024">
+            <h1 id="login-titulo">Bienvenido de nuevo</h1>
+            <p class="login-intro">Ingrese sus credenciales para acceder a su espacio de trabajo.</p>
+            {% if error %}<div class="mensaje error" id="login-error" role="alert">{{ error }}</div>{% endif %}
+            {% for message in messages %}<p class="mensaje {{ message.tags }}" role="status">{{ message }}</p>{% endfor %}
+            <form method="post" class="login-form">
+                {% csrf_token %}
+                <div class="login-campo">
+                    <label for="numero_usuario">Usuario o correo</label>
+                    <input type="text" id="numero_usuario" name="numero_usuario" placeholder="Ingrese su usuario o correo" autocomplete="username" required autofocus {% if error %}aria-describedby="login-error"{% endif %}>
+                </div>
+                <div class="login-campo">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" placeholder="Ingrese su contraseña" autocomplete="current-password" required {% if error %}aria-describedby="login-error"{% endif %}>
+                </div>
+                <button type="submit">Iniciar sesión <span aria-hidden="true">→</span></button>
+            </form>
+            <p class="login-ayuda">¿Olvidó su contraseña?<br>Solicite ayuda a la administración.</p>
+            <p class="login-pie">© {% now "Y" %} Instituto Bíblico Vida</p>
+        </div>
+    </section>
+</main>
 {% endblock %}

@@ -2,27 +2,27 @@
     <nav aria-label="Menú principal">
         <p class="menu-titulo">MI ESPACIO</p>
         <ul>
-            <li><a href="{% url 'dashboard' %}" {% if request.resolver_match.url_name == 'dashboard' or request.resolver_match.url_name == 'portal_inicio' %}aria-current="page"{% endif %}>Inicio</a></li>
+            <li><a href="{% url 'dashboard' %}" {% if request.resolver_match.url_name == 'dashboard' or request.resolver_match.url_name == 'portal_inicio' %}aria-current="page"{% endif %}>{% include 'core/partials/icono.html' with nombre='inicio' %}<span>Inicio</span></a></li>
             {% if request.user.rol == 'SECRETARIA' or request.user.rol == 'DIRECTORA' or request.user.rol == 'ADMINISTRADOR' %}
-                <li><a href="{% url 'finanzas_panel' %}" {% if 'finanzas' in request.resolver_match.url_name %}aria-current="page"{% endif %}>Finanzas</a></li>
-                <li><a href="{% url 'estudiantes' %}" {% if 'estudiante' in request.resolver_match.url_name %}aria-current="page"{% endif %}>Estudiantes</a></li>
-                <li><a href="{% url 'matricula_secretaria' %}" {% if request.resolver_match.url_name == 'matricula_secretaria' %}aria-current="page"{% endif %}>Matricular estudiante</a></li>
+                <li><a href="{% url 'finanzas_panel' %}" {% if 'finanzas' in request.resolver_match.url_name %}aria-current="page"{% endif %}>{% include 'core/partials/icono.html' with nombre='finanzas' %}<span>Finanzas</span></a></li>
+                <li><a href="{% url 'estudiantes' %}" {% if 'estudiante' in request.resolver_match.url_name %}aria-current="page"{% endif %}>{% include 'core/partials/icono.html' with nombre='estudiantes' %}<span>Estudiantes</span></a></li>
+                <li><a href="{% url 'matricula_secretaria' %}" {% if request.resolver_match.url_name == 'matricula_secretaria' %}aria-current="page"{% endif %}>{% include 'core/partials/icono.html' with nombre='matricula' %}<span>Matricular estudiante</span></a></li>
             {% endif %}
             {% if request.user.rol == 'ADMINISTRADOR' %}
-                <li><a href="{% url 'usuarios' %}" {% if 'usuarios' in request.resolver_match.url_name %}aria-current="page"{% endif %}>Usuarios y accesos</a></li>
+                <li><a href="{% url 'usuarios' %}" {% if 'usuarios' in request.resolver_match.url_name %}aria-current="page"{% endif %}>{% include 'core/partials/icono.html' with nombre='usuarios' %}<span>Usuarios y accesos</span></a></li>
             {% endif %}
             {% if request.user.rol == 'ADMINISTRADOR' or request.user.rol == 'DIRECTORA' or request.user.rol == 'SECRETARIA' or request.user.rol == 'MAESTRO' %}
-                <li><a href="{% url 'reportes' %}" {% if 'reportes' in request.resolver_match.url_name %}aria-current="page"{% endif %}>Reportes institucionales</a></li>
+                <li><a href="{% url 'reportes' %}" {% if 'reportes' in request.resolver_match.url_name %}aria-current="page"{% endif %}>{% include 'core/partials/icono.html' with nombre='reportes' %}<span>Reportes institucionales</span></a></li>
             {% endif %}
             {% if request.user.rol == 'ESTUDIANTE' %}
-                <li><a href="{% url 'portal_academico' %}" {% if request.resolver_match.url_name == 'portal_academico' %}aria-current="page"{% endif %}>Mis materias y resultados</a></li>
-                <li><a href="{% url 'portal_cuenta' %}" {% if request.resolver_match.url_name == 'portal_cuenta' or request.resolver_match.url_name == 'portal_recibo' %}aria-current="page"{% endif %}>Mi estado de cuenta</a></li>
+                <li><a href="{% url 'portal_academico' %}" {% if request.resolver_match.url_name == 'portal_academico' %}aria-current="page"{% endif %}>{% include 'core/partials/icono.html' with nombre='cursos' %}<span>Mis materias y resultados</span></a></li>
+                <li><a href="{% url 'portal_cuenta' %}" {% if request.resolver_match.url_name == 'portal_cuenta' or request.resolver_match.url_name == 'portal_recibo' %}aria-current="page"{% endif %}>{% include 'core/partials/icono.html' with nombre='cuenta' %}<span>Mi estado de cuenta</span></a></li>
             {% endif %}
             {% if request.user.rol == 'MAESTRO' %}
-                <li><a href="{% url 'mis_cursos' %}" {% if request.resolver_match.url_name == 'mis_cursos' or curso %}aria-current="page"{% endif %}>Mis cursos</a></li>
+                <li><a href="{% url 'mis_cursos' %}" {% if request.resolver_match.url_name == 'mis_cursos' or curso %}aria-current="page"{% endif %}>{% include 'core/partials/icono.html' with nombre='cursos' %}<span>Mis cursos</span></a></li>
             {% endif %}
             {% if request.user.rol == 'DIRECTORA' %}
-                <li><a href="{% url 'autorizar_clase_extraordinaria' %}" {% if request.resolver_match.url_name == 'autorizar_clase_extraordinaria' %}aria-current="page"{% endif %}>Autorizar extraordinarias</a></li>
+                <li><a href="{% url 'autorizar_clase_extraordinaria' %}" {% if request.resolver_match.url_name == 'autorizar_clase_extraordinaria' %}aria-current="page"{% endif %}>{% include 'core/partials/icono.html' with nombre='autorizar' %}<span>Autorizar extraordinarias</span></a></li>
             {% endif %}
         </ul>
     </nav>
