@@ -9,5 +9,5 @@
 {% else %}<p class="mensaje">Solo consulta: el curso no está activo o la sesión ya fue impartida/cancelada. Solicite revisión de Dirección; no hay reapertura automática.</p>{% endif %}
 {% if not bloqueo_cancelacion %}<p><a href="{% url 'solicitar_cancelacion' sesion.pk %}">Solicitar cancelación a Dirección</a></p>{% else %}<p>No puede solicitar cancelación: {{ bloqueo_cancelacion }}</p>{% endif %}
 <p><a href="{% url 'solicitudes_academicas' %}">Consultar solicitudes y resoluciones</a></p>
-<p>Solo Dirección puede aprobar cancelaciones. Las correcciones posteriores al cierre siguen sin estar habilitadas.</p>
+<p>Solo Dirección puede aprobar cancelaciones. Las correcciones excepcionales de notas definitivas se solicitan desde Calificaciones. Las correcciones de asistencia siguen sin estar habilitadas.</p>
 {% endblock %}

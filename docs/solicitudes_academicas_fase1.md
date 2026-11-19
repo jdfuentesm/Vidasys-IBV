@@ -1,5 +1,9 @@
 # Solicitudes académicas — Semana 11, fase 1
 
+La fase 2 amplía este alcance con correcciones definitivas: ver
+[documentación de fase 2](solicitudes_academicas_fase2.md). Este documento describe la
+entrega original de cancelaciones; las correcciones de asistencia siguen excluidas.
+
 ## Alcance implementado
 
 Desde Mis cursos → Programar sesiones → Gestionar sesión, el maestro solicita

@@ -1,10 +1,16 @@
 {% extends 'academico/flujo_base.html' %}{% block content %}
 <p><a href="{% url 'solicitudes_academicas' %}">← Solicitudes académicas</a></p><h1>Solicitud #{{ solicitud.pk }}</h1>
-<section class="panel-curso"><h2>{{ solicitud.curso }} · Clase {{ solicitud.sesion.numero_clase }}</h2><p>{{ solicitud.get_estado_display }}</p>
+<section class="panel-curso"><h2>{{ solicitud.curso }} · {{ solicitud.get_tipo_display }}{% if solicitud.sesion_id %} · Clase {{ solicitud.sesion.numero_clase }}{% else %} · {{ solicitud.inscripcion.matricula.estudiante }}{% endif %}</h2><p>{{ solicitud.get_estado_display }}</p>
 <p>Solicitante: {{ solicitud.solicitante }} · {{ solicitud.fecha_solicitud }}</p><p>Motivo: {{ solicitud.motivo|linebreaksbr }}</p>
-<h3>Datos al solicitar</h3><p>Estado: {{ solicitud.anteriores.sesion.estado }} · Fecha: {{ solicitud.anteriores.sesion.fecha }} · Horario: {{ solicitud.anteriores.sesion.hora_inicio }}–{{ solicitud.anteriores.sesion.hora_fin }}</p>
+{% if solicitud.tipo == 'CORRECCION_CALIFICACION' %}
+{% include 'academico/comparacion_nota.html' %}
+<p>Nota actual al solicitar: {{ solicitud.anteriores.calificacion.nota_final }} · {{ solicitud.anteriores.inscripcion.estado }}.</p>
+<p>Nota registrada actualmente: {% if nota_vigente %}{{ nota_vigente.nota_final }} · {{ solicitud.inscripcion.estado }}{% else %}Sin calificación: la aprobación está bloqueada.{% endif %}</p>
+<p>Nota propuesta: {{ solicitud.propuestos.nota_final }} · {{ solicitud.propuestos.estado }}. La aprobación puede cambiar el resultado académico en ambos sentidos.</p>
+<p>El curso permanece finalizado. No se modifican asistencias ni fechas originales.</p>
+{% else %}<h3>Datos al solicitar</h3><p>Estado: {{ solicitud.anteriores.sesion.estado }} · Fecha: {{ solicitud.anteriores.sesion.fecha }} · Horario: {{ solicitud.anteriores.sesion.hora_inicio }}–{{ solicitud.anteriores.sesion.hora_fin }}</p>
 <p>Estado actual: {{ solicitud.sesion.get_estado_display }} · {{ solicitud.sesion.fecha }} · {{ solicitud.sesion.hora_inicio }}–{{ solicitud.sesion.hora_fin }}. Curso: {{ solicitud.curso.get_estado_display }}.</p><p>Cambio propuesto: cancelar esta sesión.</p>
-<p>No se elimina asistencia ni se modifican notas. El curso no se cierra automáticamente.</p>
+<p>No se elimina asistencia ni se modifican notas. El curso no se cierra automáticamente.</p>{% endif %}
 {% if solicitud.estado == 'PENDIENTE' %}{% if request.user.rol == 'DIRECTORA' %}<form method="post" class="formulario-academico">{% csrf_token %}{{ form.as_p }}<button type="submit">Confirmar decisión</button></form>{% else %}<p>Pendiente de resolución de Dirección.</p>{% endif %}
-{% else %}<p>Resuelta por {{ solicitud.directora }} · {{ solicitud.fecha_decision }}</p><p>{{ solicitud.motivo_decision|linebreaksbr }}</p><h3>Resultado aplicado</h3>{% if solicitud.estado == 'APROBADA' %}<p>Sesión cancelada. Fecha y horario conservados: {{ solicitud.aplicados.sesion.fecha }} · {{ solicitud.aplicados.sesion.hora_inicio }}–{{ solicitud.aplicados.sesion.hora_fin }}.</p>{% else %}<p>No se modificaron los registros académicos.</p>{% endif %}{% endif %}
+{% else %}<p>Resuelta por {{ solicitud.directora }} · {{ solicitud.fecha_decision }}</p><p>{{ solicitud.motivo_decision|linebreaksbr }}</p><h3>Resultado aplicado</h3>{% if solicitud.estado == 'APROBADA' %}{% if solicitud.tipo == 'CORRECCION_CALIFICACION' %}<p>Nota aplicada: {{ solicitud.aplicados.calificacion.nota_final }} · {{ solicitud.aplicados.inscripcion.estado }}.</p>{% else %}<p>Sesión cancelada. Fecha y horario conservados: {{ solicitud.aplicados.sesion.fecha }} · {{ solicitud.aplicados.sesion.hora_inicio }}–{{ solicitud.aplicados.sesion.hora_fin }}.</p>{% endif %}{% else %}<p>No se modificaron los registros académicos.</p>{% endif %}{% endif %}
 {% if form.errors and solicitud.estado != 'PENDIENTE' %}{{ form.errors }}{% endif %}</section>{% endblock %}

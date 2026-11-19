@@ -3,6 +3,7 @@ from django.urls import path
 from . import views, flujo_views, estudiante_views, solicitudes_views
 
 urlpatterns = [
+    path('inscripciones/<int:inscripcion_id>/solicitar-correccion/', solicitudes_views.nueva_correccion, name='solicitar_correccion'),
     path('solicitudes-academicas/', solicitudes_views.bandeja, name='solicitudes_academicas'),
     path('solicitudes-academicas/<int:solicitud_id>/', solicitudes_views.detalle, name='solicitud_academica'),
     path('sesiones/<int:sesion_id>/solicitar-cancelacion/', solicitudes_views.nueva_solicitud, name='solicitar_cancelacion'),

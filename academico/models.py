@@ -739,9 +739,12 @@ class Calificacion(models.Model):
 
 class SolicitudAcademica(models.Model):
     """Historial de cancelaciones; las decisiones solo se escriben desde el servicio."""
+    TIPOS = [("CANCELACION_SESION", "Cancelación de sesión"), ("CORRECCION_CALIFICACION", "Corrección de calificación")]
+    tipo = models.CharField(max_length=30, choices=TIPOS, default="CANCELACION_SESION")
+    inscripcion = models.ForeignKey(InscripcionCurso, null=True, blank=True, on_delete=models.PROTECT)
     clave = models.UUIDField(unique=True, editable=False)
     curso = models.ForeignKey(Curso, on_delete=models.PROTECT)
-    sesion = models.ForeignKey(SesionClase, on_delete=models.PROTECT)
+    sesion = models.ForeignKey(SesionClase, null=True, blank=True, on_delete=models.PROTECT)
     solicitante = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="solicitudes_academicas")
     motivo = models.TextField()
     estado = models.CharField(max_length=12, default="PENDIENTE", choices=[(s, s.title()) for s in ("PENDIENTE", "APROBADA", "RECHAZADA")])
@@ -758,7 +761,7 @@ class SolicitudAcademica(models.Model):
             anterior = type(self).objects.get(pk=self.pk)
             if anterior.estado != "PENDIENTE":
                 raise ValidationError("Las resoluciones académicas son inmutables.")
-            campos = ("clave", "curso_id", "sesion_id", "solicitante_id", "motivo",
+            campos = ("tipo", "inscripcion_id", "clave", "curso_id", "sesion_id", "solicitante_id", "motivo",
                       "fecha_solicitud", "anteriores", "propuestos")
             if any(getattr(self, campo) != getattr(anterior, campo) for campo in campos):
                 raise ValidationError("No se puede modificar una solicitud presentada.")
@@ -771,7 +774,13 @@ class SolicitudAcademica(models.Model):
         db_table = "solicitud_academica"
         ordering = ["-fecha_solicitud", "-pk"]
         indexes = [models.Index(fields=["estado", "fecha_solicitud"], name="sol_acad_bandeja")]
-        constraints = [models.CheckConstraint(condition=(
+        constraints = [
+            models.CheckConstraint(condition=(
+                models.Q(tipo="CANCELACION_SESION", sesion__isnull=False, inscripcion__isnull=True) |
+                models.Q(tipo="CORRECCION_CALIFICACION", sesion__isnull=True, inscripcion__isnull=False)
+            ), name="sol_acad_destino_por_tipo"),
+            models.UniqueConstraint(fields=["inscripcion"], condition=models.Q(estado="PENDIENTE", tipo="CORRECCION_CALIFICACION"), name="sol_acad_nota_pendiente"),
+            models.CheckConstraint(condition=(
             models.Q(estado="PENDIENTE", directora__isnull=True, fecha_decision__isnull=True) |
             models.Q(estado__in=["APROBADA", "RECHAZADA"], directora__isnull=False, fecha_decision__isnull=False)
         ), name="sol_acad_decision_coherente"),

@@ -1,5 +1,10 @@
 # Propuesta mínima: solicitudes y decisiones de Dirección
 
+Actualización fase 2: se implementaron correcciones excepcionales de notas según
+las reglas confirmadas en [fase 2](../solicitudes_academicas_fase2.md), con migración
+0002 preparada y sin ejecución persistente. El diseño histórico siguiente no autoriza
+correcciones de asistencia ni cancelaciones de sesiones impartidas.
+
 Estado actualizado — Semana 11, fase 1: implementadas solicitudes y decisiones
 para cancelar sesiones PROGRAMADA/SUSPENDIDA sin asistencia en cursos ACTIVO.
 Se preparó `academico/migrations/0001_initial.py`; no se ejecutó contra bases

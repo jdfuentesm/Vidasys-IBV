@@ -1,8 +1,10 @@
 """Cancelaciones autorizadas: bloqueos ordenados y decisión atómica, sin reapertura."""
 from django.core.exceptions import ValidationError
-from django.db import transaction
+from decimal import Decimal
+
+from django.db import transaction, connection
 from django.utils import timezone
-from .models import Curso, SesionClase, Asistencia, SolicitudAcademica, Maestro
+from .models import Curso, SesionClase, Asistencia, SolicitudAcademica, Maestro, Calificacion, InscripcionCurso
 from .bloqueos import bloquear_usuarios
 from .flujo import docente_del_curso
 
@@ -65,13 +67,44 @@ def decidir(*, solicitud_id, usuario, decision, motivo=""):
         curso.maestro = Maestro.objects.select_for_update().get(pk=curso.maestro_id)
         if not actor.is_active or actor.rol != "DIRECTORA":
             raise ValidationError("Solo Dirección activa puede resolver solicitudes.")
-        sesion = SesionClase.objects.select_for_update().get(pk=referencia.sesion_id)
+        correccion = referencia.tipo == 'CORRECCION_CALIFICACION'
+        if correccion:
+            from .correcciones import cargar_destino, instantanea_nota, validar_destino, propuesta_nota
+            inscripcion, nota = cargar_destino(curso, referencia.inscripcion_id)
+            sesion = None
+        else:
+            sesion = SesionClase.objects.select_for_update().get(pk=referencia.sesion_id)
         solicitud = SolicitudAcademica.objects.select_for_update().get(pk=solicitud_id)
         if solicitud.estado != "PENDIENTE":
             if solicitud.estado != decision or solicitud.motivo_decision != motivo:
                 raise ValidationError("La solicitud ya fue resuelta con otros datos.")
             return solicitud
-        if decision == "APROBADA":
+        if decision == "APROBADA" and correccion:
+            # Único punto de escritura excepcional: registros obtenidos y bloqueados
+            # dentro de esta transacción, sin aceptar instancias aportadas por un llamador.
+            if (not connection.in_atomic_block or solicitud.estado != 'PENDIENTE' or
+                    not actor.is_active or actor.rol != 'DIRECTORA' or
+                    solicitud.tipo != 'CORRECCION_CALIFICACION' or
+                    solicitud.inscripcion_id != inscripcion.pk or solicitud.curso_id != curso.pk):
+                raise ValidationError('No se cumplen las precondiciones de la decisión autorizada.')
+            docente_del_curso(curso, usuarios[solicitud.solicitante_id])
+            if nota is None or solicitud.anteriores != instantanea_nota(curso, inscripcion, nota):
+                raise ValidationError('Solicitud obsoleta: los datos cambiaron. Rechace y presente una nueva solicitud.')
+            validar_destino(curso, inscripcion, nota)
+            propuesta = propuesta_nota(nota, solicitud.propuestos.get('componentes', {}))
+            if propuesta != solicitud.propuestos:
+                raise ValidationError('La propuesta no coincide con el cálculo del servidor.')
+            cambios = {c: Decimal(v) for c, v in propuesta['componentes'].items()}
+            cambios.update(nota_final=Decimal(propuesta['nota_final']), estado=propuesta['estado'])
+            if Calificacion.objects.filter(pk=nota.pk, inscripcion=inscripcion).update(**cambios) != 1:
+                raise ValidationError('No se pudo actualizar la calificación esperada.')
+            if InscripcionCurso.objects.filter(pk=inscripcion.pk, curso=curso).update(estado=propuesta['estado']) != 1:
+                raise ValidationError('No se pudo actualizar la inscripción esperada.')
+            nota.refresh_from_db()
+            inscripcion.refresh_from_db()
+            solicitud.aplicados = instantanea_nota(curso, inscripcion, nota)
+            solicitud.aplicados['ultima_correccion'] = solicitud.pk
+        elif decision == "APROBADA":
             solicitante = usuarios[solicitud.solicitante_id]
             docente_del_curso(curso, solicitante)
             if solicitud.anteriores != instantanea(curso, sesion):

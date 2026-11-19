@@ -67,6 +67,7 @@
                             <input type="hidden" name="inscripciones" value="{{ fila.inscripcion.pk }}">
                             {{ fila.form.inscripcion }}{{ fila.form.revision }}{{ fila.form.revision.errors }}
                             {{ fila.form.non_field_errors }}
+                            {% if curso.estado == 'FINALIZADO' %}<a href="{% url 'solicitar_correccion' fila.inscripcion.pk %}">Revisar corrección excepcional</a>{% endif %}
                             {% if fila.form.bloqueada %}<small>{{ fila.form.motivo_bloqueo }}</small>{% endif %}
                         </th>
                         {% for field in fila.form.componentes %}{% if forloop.counter <= 5 %}<td>{{ field }}{{ field.errors }}</td>{% endif %}{% endfor %}

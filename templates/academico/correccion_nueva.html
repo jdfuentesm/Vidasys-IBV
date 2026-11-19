@@ -1,0 +1,7 @@
+{% extends 'academico/flujo_base.html' %}{% block title %}Corrección excepcional{% endblock %}{% block content %}
+<p><a href="{% url 'registrar_calificacion' %}?curso={{ inscripcion.curso_id }}">← Calificaciones del curso</a> · <a href="{% url 'solicitudes_academicas' %}">Mis solicitudes</a></p>
+<h1>Solicitar corrección excepcional</h1><h2>{{ inscripcion.curso }} · {{ inscripcion.matricula.estudiante }}</h2>
+{% if bloqueo %}<p class="mensaje">No puede solicitar corrección: {{ bloqueo }}</p>{{ form.non_field_errors }}{% if solicitud_pendiente %}<p><a href="{% url 'solicitud_academica' solicitud_pendiente.pk %}">Consultar solicitud pendiente #{{ solicitud_pendiente.pk }}</a></p>{% endif %}{% else %}
+<p>Nota definitiva vigente: {{ nota.nota_final }} · {{ inscripcion.estado }}. El curso seguirá finalizado. No se cambian asistencias ni fechas originales.</p>
+<form method="post" class="formulario-academico">{% csrf_token %}{{ form.as_p }}<button type="submit" name="accion" value="comparar">Comparar propuesta</button>
+{% if propuesta %}{% include 'academico/comparacion_nota.html' %}<p>Resultado propuesto: {{ propuesta.nota_final }} · {{ propuesta.estado }}. Se permiten aumentos y reducciones, incluso cambiar aprobación por reprobación.</p><p>Enviar no cambia la nota; requiere aprobación de Dirección.</p><button type="submit" name="accion" value="enviar">Enviar solicitud a Dirección</button>{% endif %}</form>{% endif %}{% endblock %}
