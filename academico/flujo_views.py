@@ -6,9 +6,9 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .flujo import (autorizar_extra, cerrar_curso, firma_calendario, guardar_calendario,
-                    matricular, propuesta, requisitos_cierre)
+                    matricular, propuesta, requisitos_cierre, firma_cierre, resumen_docente, actualizar_sesion)
 from .flujo_forms import (ExtraordinariaDireccionForm, MatriculaSecretariaForm,
-                          PropuestaCalendarioForm, SesionPropuestaForm)
+                          PropuestaCalendarioForm, SesionPropuestaForm, GestionSesionForm)
 from .models import Curso, Estudiante, SesionClase
 
 
@@ -49,7 +49,7 @@ def mis_cursos(request):
     if not permitido(request.user, ('MAESTRO',)):
         return HttpResponseForbidden('Esta pantalla corresponde a docentes activos.')
     cursos = Curso.objects.filter(maestro__usuario=request.user).select_related('materia','ciclo')
-    return render(request,'academico/mis_cursos.html',{'cursos':cursos})
+    return render(request,'academico/mis_cursos.html',{'cursos':cursos, 'resumenes': [resumen_docente(c) for c in cursos]})
 
 
 @login_required
@@ -100,17 +100,17 @@ def cierre_curso(request, curso_id):
         return HttpResponseForbidden('Solo el docente del curso puede solicitar su cierre.')
     curso = get_object_or_404(Curso.objects.filter(maestro__usuario=request.user),pk=curso_id)
     sesiones = list(SesionClase.objects.filter(curso=curso).order_by('numero_clase'))
-    revision = firma_calendario(curso,sesiones)
+    revision = firma_cierre(curso,sesiones)
     if request.method == 'POST':
         try:
             cerrar_curso(curso.pk,request.user,request.POST.get('revision',''))
-            messages.success(request,'Curso finalizado. No se modificaron sesiones, matrículas ni calificaciones.')
+            messages.success(request,'Cierre académico completado. Se fijaron los resultados definitivos; las reprobaciones por inasistencia se conservaron.')
             return redirect('cierre_curso',curso_id=curso.pk)
         except (ValidationError,DatabaseError) as error:
             messages.error(request,' '.join(error.messages) if isinstance(error,ValidationError) else 'No se pudo finalizar; recargue y revise el curso.')
     errores = requisitos_cierre(curso)
     if curso.estado == 'CANCELADO': errores.append('El curso está cancelado y no puede finalizarse desde aquí.')
-    return render(request,'academico/cierre_curso.html',{'curso':curso,'sesiones':sesiones,'errores':errores,'revision':revision})
+    return render(request,'academico/cierre_curso.html',{'curso':curso,'sesiones':sesiones,'errores':errores,'revision':revision, 'resumen': resumen_docente(curso)})
 
 
 @login_required
@@ -126,3 +126,27 @@ def autorizar_clase_extraordinaria(request):
         except (ValidationError,DatabaseError) as error:
             mostrar_error(form,error)
     return render(request,'academico/autorizar_clase.html',{'form':form})
+
+
+@login_required
+def gestionar_sesion(request, curso_id, sesion_id):
+    if not permitido(request.user, ('MAESTRO',)):
+        return HttpResponseForbidden('Solo el docente del curso puede gestionar sesiones.')
+    curso = get_object_or_404(Curso.objects.filter(maestro__usuario=request.user), pk=curso_id)
+    sesion = get_object_or_404(SesionClase, pk=sesion_id, curso=curso)
+    revision = firma_calendario(curso, list(SesionClase.objects.filter(curso=curso).order_by('numero_clase')))
+    form = GestionSesionForm(request.POST if request.method == 'POST' else None, instance=sesion, initial={'revision': revision})
+    editable = curso.estado == 'ACTIVO' and sesion.estado in ('PROGRAMADA', 'SUSPENDIDA')
+    if request.method == 'POST':
+        if not editable:
+            return HttpResponseForbidden('Sesión solo para consulta. Solicite revisión de Dirección.')
+        if form.is_valid():
+            try:
+                actualizar_sesion(curso.pk, sesion.pk, request.user, form.cleaned_data, form.cleaned_data['revision'])
+                messages.success(request, 'Sesión actualizada. Puede continuar con la asistencia o revisar el cierre.')
+                return redirect('programar_sesiones', curso_id=curso.pk)
+            except (ValidationError, DatabaseError) as error:
+                mostrar_error(form, error)
+    from .solicitudes import bloqueo_cancelacion
+    bloqueo = bloqueo_cancelacion(curso, sesion)
+    return render(request, 'academico/gestionar_sesion.html', {'curso': curso, 'sesion': sesion, 'form': form, 'editable': editable, 'bloqueo_cancelacion': bloqueo})

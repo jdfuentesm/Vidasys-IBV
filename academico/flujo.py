@@ -9,7 +9,8 @@ from django.db import transaction
 from django.utils import timezone
 
 from core.models import Usuario
-from .models import CicloAcademico, Curso, Estudiante, InscripcionCurso, Materia, Matricula, SesionClase
+from .bloqueos import bloquear_usuarios
+from .models import Asistencia, Calificacion, Maestro, CicloAcademico, Curso, Estudiante, InscripcionCurso, Materia, Matricula, SesionClase
 
 
 def cursos_del_ciclo(ciclo, bloquear=False):
@@ -119,39 +120,181 @@ def guardar_calendario(curso_id, usuario, filas, revision):
         return len(nuevas)
 
 
+def pendientes_asistencia(curso):
+    """Solo sesiones impartidas durante la vigencia de cada inscripción.
+
+    Un cierre por inasistencia no habilita registros posteriores. Sus pendientes
+    anteriores se informan para revisión de Dirección, sin reabrir la inscripción.
+    """
+    sesiones = list(SesionClase.objects.filter(curso=curso, estado='IMPARTIDA').order_by('fecha', 'numero_clase'))
+    inscripciones = list(InscripcionCurso.objects.filter(curso=curso).select_related('matricula__estudiante'))
+    registros = {(a.inscripcion_id, a.sesion_id): a.estado_asistencia
+                 for a in Asistencia.objects.filter(inscripcion__curso=curso, sesion__curso=curso)}
+    filas = []
+    errores = []
+    estados_validos = dict(Asistencia.ESTADOS_ASISTENCIA)
+    for inscripcion in inscripciones:
+        injustificadas = sum(estado == 'AUSENTE_INJUSTIFICADA'
+                             for (pk, _), estado in registros.items() if pk == inscripcion.pk)
+        cerrada = inscripcion.estado == 'REPROBADA_POR_INASISTENCIA'
+        if cerrada and (inscripcion.fecha_cierre is None or injustificadas < 2):
+            errores.append(f'{inscripcion.matricula.estudiante}: cierre por inasistencia inconsistente; requiere revisión de Dirección.')
+        if inscripcion.estado == 'CURSANDO' and injustificadas >= 2:
+            errores.append(f'{inscripcion.matricula.estudiante}: dos ausencias injustificadas sin cierre correspondiente; requiere revisión de Dirección.')
+    for sesion in sesiones:
+        faltantes = []
+        for inscripcion in inscripciones:
+            cerrada = inscripcion.estado == 'REPROBADA_POR_INASISTENCIA'
+            if inscripcion.estado != 'CURSANDO' and not cerrada:
+                continue  # Otros cierres se rechazan en requisitos_cierre, sin reabrirlos.
+            if inscripcion.matricula.estado != 'ACTIVA' and not cerrada:
+                continue
+            inicio = max(inscripcion.fecha_inscripcion, inscripcion.matricula.fecha_matricula)
+            if sesion.fecha < inicio:
+                continue
+            if cerrada and inscripcion.fecha_cierre and sesion.fecha > inscripcion.fecha_cierre:
+                continue
+            estado = registros.get((inscripcion.pk, sesion.pk))
+            if estado not in estados_validos:
+                faltantes.append({'inscripcion': inscripcion,
+                                  'requiere_direccion': cerrada,
+                                  'sin_registro': estado is None})
+        if faltantes:
+            filas.append({'sesion': sesion, 'faltantes': faltantes, 'cantidad': len(faltantes)})
+    return {'sesiones': filas, 'cantidad': sum(f['cantidad'] for f in filas), 'errores': errores}
+
+
 def requisitos_cierre(curso):
+    if curso.estado == 'FINALIZADO':
+        return []
+    asistencia = pendientes_asistencia(curso)
+    errores = list(asistencia['errores'])
+    for fila in asistencia['sesiones']:
+        errores.append(f"Clase {fila['sesion'].numero_clase} ({fila['sesion'].fecha}): faltan {fila['cantidad']} registros válidos de asistencia. Revise los pendientes por estudiante.")
+    if curso.estado != 'ACTIVO':
+        errores.append('El curso debe estar ACTIVO para finalizar.')
     anterior = curso.estado
     try:
         curso.estado = 'FINALIZADO'
         curso.full_clean()
-        return []
     except ValidationError as error:
-        return error.messages
+        errores.extend(error.messages)
     finally:
         curso.estado = anterior
+    for inscripcion in InscripcionCurso.objects.filter(curso=curso).select_related('matricula__estudiante'):
+        if inscripcion.matricula.ciclo_id != curso.ciclo_id:
+            errores.append(f'{inscripcion.matricula.estudiante}: matrícula de otro ciclo; requiere revisión de Dirección.')
+            continue
+        if inscripcion.estado == 'REPROBADA_POR_INASISTENCIA':
+            continue
+        if inscripcion.estado != 'CURSANDO' or inscripcion.matricula.estado != 'ACTIVA':
+            errores.append(f'{inscripcion.matricula.estudiante}: cierre previo o matrícula no activa; requiere revisión de Dirección.')
+            continue
+        nota = Calificacion.objects.filter(inscripcion=inscripcion).first()
+        if nota is None:
+            errores.append(f'{inscripcion.matricula.estudiante}: faltan calificaciones obligatorias. Complete el libro.')
+        else:
+            try:
+                nota.full_clean(exclude=['nota_final', 'estado', 'fecha_registro'])
+            except ValidationError:
+                errores.append(f'{inscripcion.matricula.estudiante}: revise los componentes de calificación obligatorios.')
+    return errores
+
+
+def firma_cierre(curso, sesiones):
+    datos = {'calendario': firma_calendario(curso, sesiones),
+             'inscripciones': list(InscripcionCurso.objects.filter(curso=curso).order_by('pk').values()),
+             'notas': list(Calificacion.objects.filter(inscripcion__curso=curso).order_by('pk').values()),
+             'asistencias': list(Asistencia.objects.filter(inscripcion__curso=curso).order_by('pk').values())}
+    return signing.Signer(salt='vidasys-cierre').sign(hashlib.sha256(json.dumps(datos, default=str, sort_keys=True).encode()).hexdigest())
 
 
 def cerrar_curso(curso_id, usuario, revision):
     with transaction.atomic():
         curso = Curso.objects.select_for_update().get(pk=curso_id)
         docente_del_curso(curso, usuario)
+        Maestro.objects.select_for_update().get(pk=curso.maestro_id, usuario=usuario)
+        if curso.estado == 'FINALIZADO':
+            return curso
+        sesiones = list(SesionClase.objects.select_for_update().filter(curso=curso).order_by('numero_clase'))
+        matriculas = InscripcionCurso.objects.filter(curso=curso).values_list('matricula_id', flat=True)
+        list(Matricula.objects.filter(pk__in=matriculas).order_by('pk').select_for_update())
+        inscripciones = list(InscripcionCurso.objects.filter(curso=curso).order_by('pk').select_for_update())
+        list(Asistencia.objects.filter(inscripcion__curso=curso).order_by('pk').select_for_update())
+        notas = {n.inscripcion_id: n for n in Calificacion.objects.filter(inscripcion__curso=curso).order_by('pk').select_for_update()}
+        if firma_cierre(curso, sesiones) != revision:
+            raise ValidationError('El curso, las sesiones, la asistencia o las notas cambiaron. Revise nuevamente el cierre.')
+        errores = requisitos_cierre(curso)
+        if errores:
+            raise ValidationError(errores)
+        for inscripcion in inscripciones:
+            if inscripcion.estado == 'REPROBADA_POR_INASISTENCIA':
+                continue
+            nota = notas[inscripcion.pk]
+            resultado = nota.calcular_nota()
+            estado = Calificacion.estado_para_nota(resultado)
+            # Solo el cierre fija resultados definitivos; save() conserva notas provisionales.
+            Calificacion.objects.filter(pk=nota.pk).update(nota_final=resultado, estado=estado)
+            inscripcion.estado = estado
+            inscripcion.fecha_cierre = timezone.localdate()
+            inscripcion.motivo_cierre = 'Resultado académico definitivo al cerrar el curso.'
+            inscripcion.save(update_fields=['estado', 'fecha_cierre', 'motivo_cierre'])
+        curso.estado = 'FINALIZADO'
+        curso.save()
+        return curso
+
+
+def resumen_docente(curso):
+    sesiones = list(SesionClase.objects.filter(curso=curso).order_by('numero_clase'))
+    inscripciones = list(InscripcionCurso.objects.filter(curso=curso, estado='CURSANDO', matricula__estado='ACTIVA'))
+    asistencia = pendientes_asistencia(curso)
+    notas = Calificacion.objects.filter(inscripcion_id__in=[i.pk for i in inscripciones]).count()
+    return {'curso': curso, 'sesiones_pendientes': sum(s.estado in ('PROGRAMADA','SUSPENDIDA') for s in sesiones),
+            'sin_programar': max(0, 6-sum(s.numero_clase <= 6 for s in sesiones)),
+            'asistencias_pendientes': asistencia['cantidad'] if curso.estado != 'FINALIZADO' else 0,
+            'detalle_asistencia': asistencia['sesiones'] if curso.estado != 'FINALIZADO' else [],
+            'notas_pendientes': len(inscripciones)-notas, 'errores': requisitos_cierre(curso)}
+
+
+def actualizar_sesion(curso_id, sesion_id, usuario, datos, revision):
+    with transaction.atomic():
+        curso = Curso.objects.select_for_update().get(pk=curso_id)
+        docente_del_curso(curso, usuario)
+        Maestro.objects.select_for_update().get(pk=curso.maestro_id, usuario=usuario)
+        if curso.estado != 'ACTIVO':
+            raise ValidationError('Solo puede gestionar sesiones de un curso activo.')
         sesiones = list(SesionClase.objects.select_for_update().filter(curso=curso).order_by('numero_clase'))
         if firma_calendario(curso, sesiones) != revision:
-            raise ValidationError('El curso o las sesiones cambiaron. Revise nuevamente el cierre.')
-        if curso.estado == 'CANCELADO':
-            raise ValidationError('No se puede finalizar un curso cancelado.')
-        if curso.estado != 'FINALIZADO':
-            curso.estado = 'FINALIZADO'
-            curso.save()
-        return curso
+            raise ValidationError('El calendario cambió. Recargue antes de guardar.')
+        sesion = next((s for s in sesiones if s.pk == sesion_id), None)
+        if sesion is None or sesion.estado not in ('PROGRAMADA','SUSPENDIDA'):
+            raise ValidationError('La sesión no está disponible para cambios ordinarios. Solicite revisión de Dirección.')
+        estado = datos['estado']
+        if estado not in ('PROGRAMADA','SUSPENDIDA','IMPARTIDA'):
+            raise ValidationError('Estado no autorizado.')
+        cambio_fecha = any(getattr(sesion, f) != datos[f] for f in ('fecha','hora_inicio','hora_fin'))
+        if (cambio_fecha or estado == 'SUSPENDIDA') and Asistencia.objects.filter(sesion=sesion).exists():
+            raise ValidationError('La sesión ya tiene asistencia: no se puede suspender ni reprogramar sin revisión de Dirección.')
+        if not curso.fecha_inicio <= datos['fecha'] <= curso.fecha_fin:
+            raise ValidationError('La sesión debe quedar dentro del período del curso.')
+        if estado == 'IMPARTIDA' and datos['fecha'] > timezone.localdate():
+            raise ValidationError('No se puede marcar impartida una sesión futura.')
+        if estado == 'IMPARTIDA' and (sesion.estado == 'SUSPENDIDA' or cambio_fecha):
+            raise ValidationError('Primero confirme la reprogramación en estado PROGRAMADA; después registre que fue impartida.')
+        for campo in ('estado','fecha','hora_inicio','hora_fin'):
+            setattr(sesion, campo, datos[campo])
+        sesion.save()
+        return sesion
 
 
 def autorizar_extra(sesion, usuario):
     with transaction.atomic():
-        actor = Usuario.objects.select_for_update().get(pk=usuario.pk)
+        actor = bloquear_usuarios(usuario.pk)[usuario.pk]
         if not actor.is_active or actor.rol != 'DIRECTORA':
             raise ValidationError('Solo Dirección autenticada y activa puede autorizar clases extraordinarias.')
         curso = Curso.objects.select_for_update().get(pk=sesion.curso_id)
+        if sesion.estado == 'CANCELADA':
+            raise ValidationError('La cancelación requiere una solicitud y decisión trazable de Dirección; su implementación está pendiente de aprobación técnica.')
         if curso.estado in ('FINALIZADO','CANCELADO') or sesion.pk or sesion.numero_clase not in (7,8):
             raise ValidationError('No se puede crear esta clase extraordinaria ni sobrescribir sesiones existentes.')
         sesion.usuario_autoriza = actor

@@ -63,6 +63,8 @@ def registrar_asistencia(request):
             if request.method == "POST":
                 get_object_or_404(Maestro.objects.select_for_update(), pk=curso.maestro_id, usuario=request.user)
             contexto["curso"] = curso
+            if request.method == "POST" and curso.estado in ("FINALIZADO", "CANCELADO"):
+                return HttpResponseForbidden("Curso cerrado: asistencia solo para consulta. Solicite revisión de Dirección.")
             contexto["sesiones"] = list(SesionClase.objects.filter(curso=curso).order_by("numero_clase"))
             if not sesion_id:
                 if request.method == "POST":
@@ -150,8 +152,15 @@ def registrar_calificacion(request):
             return HttpResponseForbidden("El curso seleccionado no está disponible.")
         curso = get_object_or_404(cursos, pk=curso_id)
         contexto["curso"] = curso
+        if request.method == "POST" and curso.estado != "ACTIVO":
+            return HttpResponseForbidden("Curso no activo: calificaciones solo para consulta. Solicite revisión de Dirección.")
         # El bloqueo y el guardado completo comparten transacción. Nunca cambia el esquema.
         with transaction.atomic():
+            if request.method == "POST":
+                curso = get_object_or_404(Curso.objects.select_for_update(), pk=curso.pk)
+                get_object_or_404(Maestro.objects.select_for_update(), pk=curso.maestro_id, usuario=request.user)
+                if curso.estado != "ACTIVO":
+                    return HttpResponseForbidden("El curso dejó de estar activo. Recargue el libro.")
             inscripciones = InscripcionCurso.objects.filter(curso=curso).order_by("pk")
             if request.method == "POST":
                 inscripciones = inscripciones.select_for_update()
@@ -190,9 +199,9 @@ def registrar_calificacion(request):
                         form = fila["form"]
                         nota = (form.instance.nota_final if form.bloqueada else
                                 form.instance.calcular_nota() if valida and not form.omitir else None)
-                        estado = ("Bloqueada por inasistencia" if form.bloqueada else
+                        estado = (form.motivo_bloqueo if form.bloqueada else
                                   "Revise esta fila" if not valida else
-                                  dict(Calificacion.ESTADOS_CALIFICACION)[Calificacion.estado_para_nota(nota)])
+                                  "Provisional · pendiente de cierre")
                         resultados.append({"id": fila["inscripcion"].pk,
                                            "nota": str(nota) if nota is not None else "Pendiente",
                                            "estado": estado})

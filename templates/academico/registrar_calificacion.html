@@ -5,7 +5,7 @@
 {% block extra_js %}<script src="{% static 'js/calificaciones.js' %}" defer></script>{% endblock %}
 {% block content %}
     <div class="titulo"><p class="seccion">GESTIÓN ACADÉMICA</p><h1>Libro de Calificaciones</h1>
-        <p>Seleccione su curso, escriba las notas y guarde los cambios.</p></div>
+        <p>Las notas son provisionales mientras el curso está activo. El resultado definitivo se establece únicamente al cerrar el curso.</p></div>
     <section class="panel-curso" aria-label="Selección de curso">
         <form method="get" id="seleccion-curso">
             <div class="selector"><label for="curso">Mi curso</label>
@@ -35,7 +35,7 @@
             <div class="guardar">
                 <div><span class="etiqueta-guardado" id="etiqueta-guardado">{% if request.method == "POST" %}Cambios sin guardar{% else %}Datos guardados{% endif %}</span>
                     <p id="estado-guardado" role="status">{% if request.method == "POST" %}Revise las filas señaladas y vuelva a guardar.{% else %}Las notas mostradas son las últimas guardadas.{% endif %}</p></div>
-                <button type="submit">Guardar calificaciones</button>
+                {% if curso.estado == 'ACTIVO' %}<button type="submit">Guardar calificaciones provisionales</button>{% else %}<p>Solo consulta: curso no activo. Solicite revisión de Dirección.</p>{% endif %}
             </div>
             <div class="instruccion-tabla"><p id="ayuda-libro">Escriba en las casillas. Use Tab para avanzar y deslice la tabla para ver más columnas.</p>
                 <span>Los rangos aparecen bajo cada componente.</span></div>
@@ -67,14 +67,14 @@
                             <input type="hidden" name="inscripciones" value="{{ fila.inscripcion.pk }}">
                             {{ fila.form.inscripcion }}{{ fila.form.revision }}{{ fila.form.revision.errors }}
                             {{ fila.form.non_field_errors }}
-                            {% if fila.form.bloqueada %}<small>No editable: reprobada por inasistencia.</small>{% endif %}
+                            {% if fila.form.bloqueada %}<small>{{ fila.form.motivo_bloqueo }}</small>{% endif %}
                         </th>
                         {% for field in fila.form.componentes %}{% if forloop.counter <= 5 %}<td>{{ field }}{{ field.errors }}</td>{% endif %}{% endfor %}
                         {% for field in fila.form.componentes %}{% if field.name == 'tarea_1' or field.name == 'tarea_2' %}<td>{{ field }}{{ field.errors }}</td>{% endif %}{% endfor %}
                         {% for field in fila.form.componentes %}{% if field.name == 'examen_1' or field.name == 'examen_2' %}<td>{{ field }}{{ field.errors }}</td>{% endif %}{% endfor %}
                         <td>{{ fila.form.observaciones }}{{ fila.form.observaciones.errors }}</td>
                         <td class="resultado"><span data-nota>{% if fila.nota.nota_final != None %}{{ fila.nota.nota_final|floatformat:2 }}{% else %}Pendiente{% endif %}</span></td>
-                        <td><span data-estado class="estado {% if fila.form.bloqueada %}estado--bloqueada{% elif fila.nota.estado == 'APROBADA' %}estado--aprobada{% elif fila.nota.estado == 'REPROBADA_ACADEMICAMENTE' %}estado--reprobada{% else %}estado--pendiente{% endif %}">{% if fila.form.bloqueada %}Bloqueada por inasistencia{% elif fila.nota %}{{ fila.nota.get_estado_display }}{% else %}Pendiente{% endif %}</span><small class="sin-guardar-fila" data-preview hidden>Vista previa · sin guardar</small></td>
+                        <td><span data-estado class="estado {% if fila.form.bloqueada %}estado--bloqueada{% elif fila.nota.estado == 'APROBADA' %}estado--aprobada{% elif fila.nota.estado == 'REPROBADA_ACADEMICAMENTE' %}estado--reprobada{% else %}estado--pendiente{% endif %}">{% if fila.form.bloqueada %}Bloqueada por inasistencia{% elif fila.nota %}{% if curso.estado == 'ACTIVO' %}Provisional · pendiente de cierre{% else %}{{ fila.nota.get_estado_display }}{% endif %}{% else %}Pendiente{% endif %}</span><small class="sin-guardar-fila" data-preview hidden>Vista previa · sin guardar</small></td>
                     </tr>
                 {% endfor %}
                 </tbody>

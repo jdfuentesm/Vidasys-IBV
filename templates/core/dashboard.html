@@ -20,6 +20,7 @@
         <a class="acceso-tarjeta" href="{% url 'usuarios' %}"><span class="acceso-icono">{% include 'core/partials/icono.html' with nombre='usuarios' %}</span><span class="acceso-etiqueta">ADMINISTRACIÓN</span><h3>Usuarios y accesos</h3><p>Administre cuentas, estados y vínculos verificados con expedientes estudiantiles.</p><span class="acceso-enlace">Administrar usuarios →</span></a>
     {% endif %}
     {% if request.user.rol == 'DIRECTORA' %}
+<a class="acceso-tarjeta" href="{% url 'solicitudes_academicas' %}"><h3>Solicitudes académicas</h3><p>Revisar cancelaciones pendientes y consultar resoluciones.</p></a>
         <a class="acceso-tarjeta" href="{% url 'autorizar_clase_extraordinaria' %}"><span class="acceso-icono">{% include 'core/partials/icono.html' with nombre='autorizar' %}</span><span class="acceso-etiqueta">DIRECCIÓN</span><h3>Autorizar extraordinarias</h3><p>Revise y autorice una clase 7 u 8. La autorización quedará vinculada a su cuenta.</p><span class="acceso-enlace">Abrir autorización →</span></a>
     {% endif %}
     {% if request.user.rol == 'PASTOR_PRINCIPAL' %}

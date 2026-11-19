@@ -1,8 +1,8 @@
 {% extends 'academico/flujo_base.html' %}{% block title %}Mis cursos{% endblock %}
-{% block content %}<h1>Mis cursos</h1><p>Seleccione la tarea que necesita realizar.</p>
-{% for curso in cursos %}<section class="panel-curso"><h2>{{ curso }}</h2><p>{{ curso.get_estado_display }}</p><nav class="acciones-academicas" aria-label="Acciones de {{ curso }}">
+{% block content %}<h1>Mis cursos</h1><p><a href="{% url 'solicitudes_academicas' %}">Mis solicitudes académicas</a></p><p>Seleccione la tarea que necesita realizar.</p>
+{% for resumen in resumenes %}{% with curso=resumen.curso %}<section class="panel-curso"><h2>{{ curso }}</h2><p>{{ curso.get_estado_display }}</p>{% if curso.estado != 'FINALIZADO' %}<p>Sesiones por programar: {{ resumen.sin_programar }} · Sesiones pendientes: {{ resumen.sesiones_pendientes }} · Asistencias obligatorias pendientes: {{ resumen.asistencias_pendientes }} · Evaluaciones sin registrar: {{ resumen.notas_pendientes }}</p>{% include 'academico/pendientes_asistencia.html' with pendientes=resumen.detalle_asistencia %}{% if resumen.errores %}<details><summary>Requisitos para finalizar</summary><ul>{% for error in resumen.errores %}<li>{{ error }}</li>{% endfor %}</ul></details>{% endif %}{% else %}<p>Resultados definitivos. Asistencia y notas solo para consulta.</p>{% endif %}<nav class="acciones-academicas" aria-label="Acciones de {{ curso }}">
 <a href="{% url 'registrar_asistencia' %}?curso={{ curso.pk }}">Asistencia</a>
 <a href="{% url 'registrar_calificacion' %}?curso={{ curso.pk }}">Calificaciones</a>
 <a href="{% url 'programar_sesiones' curso.pk %}">Programar sesiones</a>
-<a href="{% url 'cierre_curso' curso.pk %}">Revisar cierre del curso</a></nav></section>
+<a href="{% url 'cierre_curso' curso.pk %}">Revisar cierre del curso</a></nav></section>{% endwith %}
 {% empty %}<p>No tiene cursos asignados.</p>{% endfor %}{% endblock %}

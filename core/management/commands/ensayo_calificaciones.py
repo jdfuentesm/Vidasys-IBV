@@ -155,8 +155,8 @@ def foto(datos):
 
 def verificar(datos):
     notas = {n.inscripcion_id: n for n in Calificacion.objects.filter(inscripcion_id__in=datos["inscripciones"])}
-    esperado = [(Decimal("80.00"), "APROBADA"), (Decimal("0.00"), "REPROBADA_ACADEMICAMENTE"), None,
-                (Decimal("69.00"), "REPROBADA_ACADEMICAMENTE")]
+    esperado = [(Decimal("80.00"), "PENDIENTE"), (Decimal("0.00"), "PENDIENTE"), None,
+                (Decimal("69.00"), "PENDIENTE")]
     for pk, resultado in zip(datos["inscripciones"], esperado):
         inscripcion = InscripcionCurso.objects.get(pk=pk)
         if resultado is None:
@@ -164,8 +164,8 @@ def verificar(datos):
         else:
             exigir(pk in notas and (notas[pk].nota_final, notas[pk].estado) == resultado,
                    "Resultado calculado distinto al esperado.")
-            exigir(inscripcion.estado == resultado[1] and inscripcion.fecha_cierre is not None,
-                   "Cierre académico incorrecto.")
+            exigir(inscripcion.estado == "CURSANDO" and inscripcion.fecha_cierre is None,
+                   "Una nota provisional no debe cerrar la inscripción.")
     exigir(len(notas) == 3, "Número de evaluaciones inesperado.")
 
 

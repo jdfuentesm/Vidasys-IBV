@@ -79,8 +79,9 @@ cursos cancelados/finalizados. Se conservan las validaciones del modelo y Admin.
 sin duplicar las reglas académicas. Confirmar vuelve a validarlas bajo bloqueo:
 entre cinco y ocho impartidas y ninguna PROGRAMADA o SUSPENDIDA. Por eso, si se
 imparten cinco de las seis ordinarias y queda otra programada, el curso todavía
-no puede finalizar. Esta interfaz NO cancela esa clase, no cambia estados de
-sesiones, no altera matrículas/calificaciones y no autoriza extraordinarias.
+no puede finalizar. La gestión de sesiones permite marcar impartida, suspender o reprogramar bajo las
+restricciones de etapa 2. El cierre no cancela clases ni autoriza extraordinarias;
+ahora también valida calificaciones y fija resultados académicos definitivos.
 Un curso CANCELADO no se transforma en FINALIZADO, y uno ya finalizado no se reabre.
 
 Las reglas de dos injustificadas, conservación de cierres por inasistencia y
@@ -104,18 +105,108 @@ tenga preparados sus seis cursos ni que los perfiles docentes estén vinculados 
 sus cuentas. Las incompatibilidades se informan, nunca se corrigen modificando
 usuarios/docentes, borrando pruebas o alterando restricciones automáticamente.
 
-## Pendientes confirmados en diagnóstico del MVP (sin cambios de reglas)
+## Etapa 2: decisión de cierre
 
-- La interfaz programa sesiones, pero no permite cambiar las ordinarias a IMPARTIDA,
-  suspenderlas, cancelarlas o reprogramarlas; el cierre depende de esos estados.
-- Guardar una calificación calcula una nota final y cierra la inscripción, bloqueando
-  asistencia posterior. Debe acordarse la separación entre captura y evaluación definitiva.
-- El libro permite guardar notas con un curso FINALIZADO. Falta definir autorización
-  de correcciones y condiciones de reapertura; no se implementa en la etapa de seguridad.
-- El cierre de curso comprueba sesiones, no notas completas: puede finalizar con
-  inscripciones CURSANDO y sin calificaciones. La política definitiva requiere aprobación.
-- El cierre por dos injustificadas remite a Dirección, pero no hay un recorrido
-  institucional de revisión/corrección. No se reabre ni modifica automáticamente.
+Antes, el cierre era operativo (5–8 sesiones impartidas, sin programadas/suspendidas),
+y guardar notas cerraba inscripciones. La regla confirmada establece un cierre único
+operativo y académico: las notas se guardan PENDIENTE y la inscripción permanece
+CURSANDO hasta confirmar el cierre. No se cambian la fórmula, el mínimo 70 ni los
+cierres por inasistencia. No se reescribe automáticamente el historial existente.
 
-Estos puntos se conservan como trabajo académico posterior; las correcciones de XSS
-  y pruebas de cuentas no alteran esas reglas ni las reglas financieras.
+### Sesiones y restricciones posteriores al cierre
+
+El calendario enlaza a `/cursos/<curso>/sesiones/<sesion>/`. Solo su docente activo
+puede gestionar una sesión de un curso ACTIVO. PROGRAMADA puede pasar a SUSPENDIDA
+o IMPARTIDA (no futura). SUSPENDIDA puede reprogramarse como PROGRAMADA. Fechas y
+horas deben quedar en el período del curso; una sesión con asistencia no se suspende
+ni reprograma. Se conserva número, curso y autorización de extraordinarias. Las
+sesiones impartidas y canceladas son de consulta. Las revisiones firmadas detectan
+calendarios obsoletos; el servicio vuelve a validar propiedad y estado bajo bloqueo.
+
+El cierre exige las reglas operativas previas y notas válidas para cada inscripción
+CURSANDO con matrícula ACTIVA. Recalcula con la fórmula vigente, fija APROBADA desde
+70 o REPROBADA_ACADEMICAMENTE y la fecha/motivo de cierre. Inscripciones reprobadas
+por inasistencia se conservan completas y no requieren otra nota. Cierres previos
+incompatibles no se reinterpretan: requieren revisión explícita. Todo se guarda en
+una transacción; un fallo revierte el lote. Repetir un cierre ya finalizado no cambia
+notas ni fechas. La revisión de cierre incluye calendario, inscripciones, notas y asistencia.
+
+Asistencia y notas se bloquean después de finalizar/cancelar, tanto en POST como en
+los métodos de persistencia. No hay reapertura. Los cursos con resultados históricos
+no se migran ni se reabren automáticamente. Los informes y portal distinguen notas
+provisionales; `nota_final` sigue siendo la columna numérica existente y `PENDIENTE`
+el estado provisional, sin añadir campos ni estados.
+
+### Finalización de etapa 2: reglas confirmadas
+
+Se conserva por confirmación explícita la regla vigente de seis clases ordinarias
+(1–6), extraordinarias 7–8 y cierre con 5–8 impartidas sin programadas/suspendidas.
+La mención de cuatro ordinarias no cambia numeración ni mínimos en esta entrega.
+
+La asistencia completa es ahora requisito obligatorio de servidor. Se comprueban
+las sesiones IMPARTIDA y los estudiantes correspondientes, desde la mayor de las
+fechas de matrícula e inscripción. En reprobación por inasistencia se exige el
+historial hasta su fecha de cierre inclusive, nunca registros posteriores. No se
+reabren inscripciones ni se inventan ausencias. Un registro con estado inválido
+cuenta como pendiente; dos injustificadas sin el cierre correspondiente o un cierre
+sin fecha/dos ausencias se informan como inconsistencias para Dirección.
+
+PROGRAMADA, SUSPENDIDA y CANCELADA no exigen registros de asistencia; las dos
+primeras conservan su bloqueo operativo del cierre. Las extraordinarias realmente
+impartidas exigen asistencia con el mismo criterio. CANCELADA ya presente se respeta
+como estado histórico; esta entrega no certifica que tenga una solicitud aprobada,
+porque tal registro todavía no existe. No se elimina información académica.
+
+Mis cursos y cierre muestran cantidad de pendientes, clase/fecha, estudiantes y
+enlaces directos a la asistencia. Si la inscripción está cerrada, el mensaje indica
+que se requiere revisión de Dirección y no ofrece una reapertura. Una evaluación
+empezada exige todos sus componentes, con extras opcionales; una fila vacía sigue
+sin registro y no se inventan notas para cerrar.
+
+Solo DIRECTORA puede aprobar cancelaciones y correcciones posteriores al cierre;
+Administrador no hereda esa autoridad. Su implementación está detenida hasta aprobar
+la [propuesta mínima de solicitudes](../docs/propuestas/autorizaciones_academicas.md).
+No se reutilizan las autorizaciones de extraordinarias para registrar cancelaciones.
+Django Admin rechaza nuevas cancelaciones y eliminaciones de sesiones; los registros
+de cursos cerrados quedan sin escritura ni borrado desde las pantallas técnicas
+protegidas. El cierre desde Admin no puede omitir el servicio institucional.
+No se habilitaron aprobación, rechazo, solicitudes persistidas ni reapertura.
+
+### Comprobación aislada
+
+`python manage.py test --settings=academico.test_settings --noinput`.
+La suite incluye frontera 70, resultado inferior, notas provisionales y asistencia
+posterior, dos ausencias, sesiones, permisos, CSRF, cierre incompleto, revisiones
+obsoletas, reintentos y rollback al final y en mitad del lote. SQLite no certifica
+bloqueos concurrentes reales de PostgreSQL. No ejecutar el ensayo contra Neon.
+
+Resultado de la verificación inicial de etapa 2: 197 pruebas aprobadas, comprobación de
+Django sin incidencias y `git diff --check` correcto. Se verificaron ocho vistas
+(cursos, sesión, cierre y libro) a 390 y 1440 píxeles, sin desbordamiento global ni
+imágenes rotas. Los campos, estados y Meta de los modelos son idénticos al commit
+base: solo se modificaron métodos. No se cambiaron reglas financieras, migraciones,
+identidad visual ni configuración de base de datos. Sin commit, push o despliegue.
+
+### Verificación de finalización
+
+Suite completa: **212 pruebas aprobadas**, usando exclusivamente SQLite en memoria.
+Se conservaron las pruebas de atomicidad, reintentos, cierres por inasistencia y
+protección posterior al cierre; se añadieron casos de asistencia pendiente, sesiones
+no impartidas, extraordinarias, fecha de inscripción, inconsistencias, permisos y
+vías administrativas. Las pruebas de decisiones trazables de cancelación/corrección
+quedan pendientes junto con la estructura propuesta, no se declaran implementadas.
+Django check y git diff --check sin incidencias. Cuatro vistas actualizadas de cursos
+y cierre comprobadas a 390 y 1440 píxeles, sin desbordamiento global. No se introdujeron
+campos, estados de modelo, migraciones ni cambios en identidad visual o finanzas.
+
+Archivos de esta finalización sobre el trabajo de etapa 2 existente:
+
+- `academico/flujo.py`: asistencia obligatoria, consistencia, bloqueo y revisión firmada.
+- `academico/admin.py`: cierre técnico y cancelaciones bloqueados; protección de registros cerrados.
+- `academico/test_ciclo_docente.py`, `academico/test_flujo.py`: cobertura nueva y fixtures completos.
+- `templates/academico/mis_cursos.html`, `cierre_curso.html`, `gestionar_sesion.html` y el
+  componente nuevo `pendientes_asistencia.html`: orientación y enlaces por sesión.
+- Este documento y `docs/propuestas/autorizaciones_academicas.md`: reglas confirmadas,
+  límites y propuesta pendiente de aprobación.
+
+No se accedió a Neon, no se ejecutaron migraciones y no se creó commit, push ni despliegue.

@@ -533,6 +533,8 @@ class Asistencia(models.Model):
             # Mismo orden que el registro masivo: curso, sesión, matrículas, inscripciones.
             sesion_previa = SesionClase.objects.using(database).get(pk=self.sesion_id)
             curso = Curso.objects.using(database).select_for_update().get(pk=sesion_previa.curso_id)
+            if curso.estado in ("FINALIZADO", "CANCELADO"):
+                raise ValidationError("Curso finalizado o cancelado: asistencia solo para consulta.")
             sesion = SesionClase.objects.using(database).select_for_update().get(pk=self.sesion_id)
             inscripcion_previa = InscripcionCurso.objects.using(database).get(pk=self.inscripcion_id)
             matricula = Matricula.objects.using(database).select_for_update().get(pk=inscripcion_previa.matricula_id)
@@ -703,30 +705,26 @@ class Calificacion(models.Model):
                 "APROBADA" if nota >= 70 else "REPROBADA_ACADEMICAMENTE")
 
     def save(self, *args, **kwargs):
-        # full_clean convierte y valida los componentes antes de operar con ellos.
-        self.full_clean(exclude=["nota_final", "estado", "fecha_registro"])
-        self.nota_final = self.calcular_nota()
-        self.estado = self.estado_para_nota(self.nota_final)
-        if self.fecha_registro is None:
-            self.fecha_registro = timezone.now()
-        # Un guardado parcial debe incluir todos los datos que determinan la nota.
-        if kwargs.get("update_fields") is not None:
-            kwargs["update_fields"] = set(kwargs["update_fields"]) | set(self.COMPONENTES) | {
-                "nota_final", "estado", "fecha_registro",
-            }
         database = kwargs.get("using") or self._state.db or "default"
         with transaction.atomic(using=database):
+            previa = InscripcionCurso.objects.using(database).get(pk=self.inscripcion_id)
+            curso = Curso.objects.using(database).select_for_update().get(pk=previa.curso_id)
             inscripcion = InscripcionCurso.objects.using(database).select_for_update().get(pk=self.inscripcion_id)
-            if inscripcion.estado == "REPROBADA_POR_INASISTENCIA":
-                raise ValidationError("No se pueden registrar notas: la inscripción está reprobada por inasistencia.")
+            if curso.estado != "ACTIVO":
+                raise ValidationError("Las calificaciones solo se modifican en un curso activo. No existe reapertura automática.")
+            if inscripcion.estado != "CURSANDO" or inscripcion.matricula.estado != "ACTIVA":
+                raise ValidationError("Inscripción cerrada o matrícula no activa. Solicite revisión de Dirección.")
+            self.inscripcion = inscripcion
+            self.full_clean(exclude=["nota_final", "estado", "fecha_registro"])
+            self.nota_final = self.calcular_nota()
+            self.estado = "PENDIENTE"
+            if self.fecha_registro is None:
+                self.fecha_registro = timezone.now()
+            if kwargs.get("update_fields") is not None:
+                kwargs["update_fields"] = set(kwargs["update_fields"]) | set(self.COMPONENTES) | {
+                    "nota_final", "estado", "fecha_registro",
+                }
             super().save(*args, **kwargs)
-            if self.nota_final is not None:
-                InscripcionCurso.objects.using(database).filter(pk=inscripcion.pk).update(
-                    estado=self.estado,
-                    fecha_cierre=timezone.localdate(),
-                    motivo_cierre=("Materia aprobada con nota final." if self.estado == "APROBADA"
-                                   else "Materia reprobada académicamente."),
-                )
 
     class Meta:
         managed = False
@@ -737,3 +735,46 @@ class Calificacion(models.Model):
     def __str__(self):
         nota = self.nota_final if self.nota_final is not None else "Pendiente"
         return f"{self.inscripcion} - Nota: {nota}"
+
+
+class SolicitudAcademica(models.Model):
+    """Historial de cancelaciones; las decisiones solo se escriben desde el servicio."""
+    clave = models.UUIDField(unique=True, editable=False)
+    curso = models.ForeignKey(Curso, on_delete=models.PROTECT)
+    sesion = models.ForeignKey(SesionClase, on_delete=models.PROTECT)
+    solicitante = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="solicitudes_academicas")
+    motivo = models.TextField()
+    estado = models.CharField(max_length=12, default="PENDIENTE", choices=[(s, s.title()) for s in ("PENDIENTE", "APROBADA", "RECHAZADA")])
+    directora = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.PROTECT, related_name="decisiones_academicas")
+    motivo_decision = models.TextField(blank=True)
+    fecha_solicitud = models.DateTimeField(default=timezone.now, editable=False)
+    fecha_decision = models.DateTimeField(null=True, blank=True)
+    anteriores = models.JSONField()
+    propuestos = models.JSONField(default=dict)
+    aplicados = models.JSONField(default=dict)
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            anterior = type(self).objects.get(pk=self.pk)
+            if anterior.estado != "PENDIENTE":
+                raise ValidationError("Las resoluciones académicas son inmutables.")
+            campos = ("clave", "curso_id", "sesion_id", "solicitante_id", "motivo",
+                      "fecha_solicitud", "anteriores", "propuestos")
+            if any(getattr(self, campo) != getattr(anterior, campo) for campo in campos):
+                raise ValidationError("No se puede modificar una solicitud presentada.")
+        return super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        raise ValidationError("Las solicitudes se conservan como historial académico.")
+
+    class Meta:
+        db_table = "solicitud_academica"
+        ordering = ["-fecha_solicitud", "-pk"]
+        indexes = [models.Index(fields=["estado", "fecha_solicitud"], name="sol_acad_bandeja")]
+        constraints = [models.CheckConstraint(condition=(
+            models.Q(estado="PENDIENTE", directora__isnull=True, fecha_decision__isnull=True) |
+            models.Q(estado__in=["APROBADA", "RECHAZADA"], directora__isnull=False, fecha_decision__isnull=False)
+        ), name="sol_acad_decision_coherente"),
+            models.UniqueConstraint(fields=["sesion"], condition=models.Q(estado="PENDIENTE"), name="sol_acad_unica_pendiente"),
+            models.CheckConstraint(condition=(~models.Q(estado="RECHAZADA") | models.Q(motivo_decision__regex=r"\S")), name="sol_acad_rechazo_motivado"),
+        ]

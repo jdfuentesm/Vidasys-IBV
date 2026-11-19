@@ -55,7 +55,7 @@ class PortalEstudianteTests(TestCase):
         self.assertIn('no-store',respuesta.headers['Cache-Control'])
         respuesta=self.client.get(reverse('portal_academico'))
         self.assertContains(respuesta, self.inscripcion.curso.materia.nombre)
-        self.assertContains(respuesta, 'Nota final registrada')
+        self.assertContains(respuesta, 'Nota provisional')
         self.assertContains(respuesta, 'Presente')
         self.assertContains(respuesta, 'Clase 1')
         self.assertNotContains(respuesta, 'AJENA-PRIVADA')
@@ -105,7 +105,7 @@ class PortalEstudianteTests(TestCase):
         convenio=ConvenioPago.objects.create(estudiante=self.estudiante,usuario_autoriza=self.secretaria,
             fecha_convenio=date(2026,1,1),monto_convenido='15',numero_cuotas=1,estado='ACTIVO')
         ConvenioObligacion.objects.create(convenio=convenio,obligacion=o,saldo_incluido='15')
-        self.assertContains(self.client.get(reverse('portal_academico')),'Nota final registrada')
+        self.assertContains(self.client.get(reverse('portal_academico')),'Nota provisional')
         ConvenioPago.objects.filter(pk=convenio.pk).update(estado='INCUMPLIDO')
         self.assertEqual(self.client.get(reverse('portal_academico')).status_code,403)
 

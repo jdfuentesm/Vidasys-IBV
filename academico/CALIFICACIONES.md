@@ -11,7 +11,7 @@ y el botón de guardar todas las calificaciones permanece visible al desplazarse
 
 Una fila nueva completamente vacía queda pendiente y no crea una calificación.
 Si se comienza una evaluación, deben completarse sus componentes (extras opcionales).
-Una evaluación con todos los componentes en cero se registra con nota 0.00 y reprueba.
+Una evaluación con todos los componentes en cero se guarda provisionalmente con 0.00; reprueba únicamente al cerrar el curso.
 No se borran evaluaciones existentes al dejar una fila vacía: se muestran errores.
 Las inscripciones reprobadas por inasistencia permanecen visibles y no editables.
 
@@ -43,12 +43,13 @@ conservan su funcionamiento existente. La ruta y su nombre no cambian.
   anterior a `8e668f5` (por ejemplo `e6d5db0`) y fue confirmada por el usuario.
 - La nota se representa con dos decimales, conforme al campo existente.
 - Según la aclaración del usuario (notas de 0–100 y menos de 70 reprueba), una
-  evaluación registrada con todos los componentes en cero ahora guarda 0.00 y
-  reprueba; no se confunde con una inscripción sin calificación registrada.
+  evaluación registrada con todos los componentes en cero guarda 0.00 y
+  reprueba al cierre; no se confunde con una inscripción sin calificación registrada.
 - Una inscripción reprobada por inasistencia no admite guardar calificaciones.
-- Se restaura el cierre de inscripción al registrar una nota final, conservando
-  la fecha original de registro de la calificación. No se revierte un cierre
-  por inasistencia.
+- Regla confirmada en etapa 2: guardar una nota conserva la inscripción CURSANDO
+  y la calificación PENDIENTE. El resultado numérico guardado es provisional; solo
+  el cierre académico fija los resultados definitivos. No se revierte un cierre
+  por inasistencia ni se reabre un curso finalizado. Véase FLUJO_ACADEMICO.md.
 
 ## Verificación sin PostgreSQL
 

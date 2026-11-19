@@ -1,0 +1,4 @@
+{% extends 'academico/flujo_base.html' %}{% block content %}<h1>Solicitudes académicas</h1>
+<p>Cancelaciones de sesiones. Las correcciones de asistencia y calificaciones posteriores al cierre todavía no están habilitadas.</p>
+<h2>Pendientes</h2>{% for item in pendientes %}<section class="panel-curso"><a href="{% url 'solicitud_academica' item.pk %}">Solicitud #{{ item.pk }} · {{ item.curso }} · Clase {{ item.sesion.numero_clase }}</a><p>{{ item.solicitante }} · {{ item.fecha_solicitud }}</p></section>{% empty %}<p>No hay solicitudes pendientes.</p>{% endfor %}
+<h2>Historial de resoluciones</h2>{% for item in resueltas %}<p><a href="{% url 'solicitud_academica' item.pk %}">#{{ item.pk }} · {{ item.curso }} · {{ item.get_estado_display }}</a></p>{% empty %}<p>No hay resoluciones registradas.</p>{% endfor %}{% endblock %}

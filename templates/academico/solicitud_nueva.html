@@ -1,0 +1,6 @@
+{% extends 'academico/flujo_base.html' %}{% block content %}
+<p><a href="{% url 'programar_sesiones' sesion.curso_id %}">← Calendario del curso</a></p>
+<h1>Solicitar cancelación</h1><section class="panel-curso"><h2>{{ sesion.curso }}</h2>
+<p>Clase {{ sesion.numero_clase }} · {{ sesion.fecha }} · {{ sesion.get_estado_display }}</p>
+<p>Solo se cancelan sesiones programadas o suspendidas, sin asistencia y de cursos activos. La solicitud no cambia la sesión hasta que Dirección la apruebe. Una cancelación puede impedir alcanzar el mínimo de cinco sesiones impartidas para cerrar.</p>
+{% if bloqueo %}<p class="mensaje">No puede solicitar cancelación: {{ bloqueo }}</p><p><a href="{% url 'solicitudes_academicas' %}">Consultar mis solicitudes</a></p>{% if form.errors %}{{ form.errors }}{% endif %}{% else %}<form method="post" class="formulario-academico">{% csrf_token %}{{ form.as_p }}<button type="submit">Enviar a Dirección</button></form>{% endif %}</section>{% endblock %}

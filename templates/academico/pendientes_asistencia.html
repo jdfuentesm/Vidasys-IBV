@@ -1,0 +1,12 @@
+{% if pendientes %}
+<details open><summary>Sesiones con asistencia incompleta</summary>
+{% for fila in pendientes %}
+<section><h3>Clase {{ fila.sesion.numero_clase }} · {{ fila.sesion.fecha|date:'d/m/Y' }} · {{ fila.cantidad }} pendiente{{ fila.cantidad|pluralize:'s' }}</h3>
+<p><a href="{% url 'registrar_asistencia' %}?curso={{ fila.sesion.curso_id }}&amp;sesion={{ fila.sesion.pk }}">Abrir asistencia de esta sesión</a></p>
+<ul>{% for item in fila.faltantes %}<li>{{ item.inscripcion.matricula.estudiante }}:
+{% if item.sin_registro %}sin asistencia registrada{% else %}estado registrado no válido{% endif %}.
+{% if item.requiere_direccion %}<strong>Requiere revisión de Dirección; la inscripción cerrada no se reabre desde esta pantalla.</strong>{% else %}Complete el registro con el estado que corresponda.{% endif %}
+</li>{% endfor %}</ul></section>
+{% endfor %}
+</details>
+{% endif %}

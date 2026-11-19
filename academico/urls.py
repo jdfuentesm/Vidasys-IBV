@@ -1,8 +1,12 @@
 from django.urls import path
 
-from . import views, flujo_views, estudiante_views
+from . import views, flujo_views, estudiante_views, solicitudes_views
 
 urlpatterns = [
+    path('solicitudes-academicas/', solicitudes_views.bandeja, name='solicitudes_academicas'),
+    path('solicitudes-academicas/<int:solicitud_id>/', solicitudes_views.detalle, name='solicitud_academica'),
+    path('sesiones/<int:sesion_id>/solicitar-cancelacion/', solicitudes_views.nueva_solicitud, name='solicitar_cancelacion'),
+    path('cursos/<int:curso_id>/sesiones/<int:sesion_id>/', flujo_views.gestionar_sesion, name='gestionar_sesion'),
     path("estudiantes/", estudiante_views.estudiantes, name="estudiantes"),
     path("estudiantes/nuevo/", estudiante_views.estudiante_formulario, name="estudiante_nuevo"),
     path("estudiantes/<int:estudiante_id>/", estudiante_views.estudiante_expediente, name="estudiante_expediente"),

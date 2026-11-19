@@ -72,17 +72,17 @@ def generar(tipo,usuario,filtros):
         campo='fecha_inscripcion' if tipo=='inscripciones' else 'matricula__fecha_matricula'
         registros=list(periodo(inscripciones(usuario,filtros),campo,filtros).order_by('matricula__ciclo__anio','curso__materia__nombre','matricula__estudiante__apellidos','pk'))
         columnas=['Ciclo','Curso','Materia','Código','Estudiante','Estado de inscripción']
-        if tipo=='calificaciones':columnas+=['Nota final registrada','Estado de calificación']
+        if tipo=='calificaciones':columnas+=['Nota registrada (provisional hasta el cierre)','Estado de calificación']
         for i in registros:
             e=i.matricula.estudiante
             fila=[str(i.matricula.ciclo),str(i.curso_id),i.curso.materia.nombre,e.codigo_estudiante,f'{e.nombres} {e.apellidos}',i.estado]
             if tipo=='calificaciones':
                 nota_registrada=getattr(i,'calificacion',None)
-                fila+=[str(nota_registrada.nota_final) if nota_registrada and nota_registrada.nota_final is not None else 'Sin nota final',
+                fila+=[str(nota_registrada.nota_final) if nota_registrada and nota_registrada.nota_final is not None else 'Sin nota registrada',
                        nota_registrada.get_estado_display() if nota_registrada else 'Sin calificación registrada']
             filas.append(fila)
         totales=[('Inscripciones',len(registros)),('Estudiantes distintos',len({i.matricula.estudiante_id for i in registros})),('Cursos distintos',len({i.curso_id for i in registros}))]
-        nota='Los estados se muestran como están registrados. No se infiere «incompleto» ni reprobación a partir de una nota ausente.'
+        nota='Las calificaciones PENDIENTE son provisionales; el resultado definitivo se establece al cerrar el curso. Los estados históricos se muestran como están registrados. Una nota ausente no equivale a reprobación.'
     elif tipo=='asistencia':
         qs=Asistencia.objects.filter(inscripcion__in=inscripciones(usuario,filtros)).select_related('inscripcion__curso__materia','inscripcion__matricula__estudiante','inscripcion__matricula__ciclo','sesion')
         registros=list(periodo(qs,'sesion__fecha',filtros).order_by('inscripcion__curso_id','inscripcion__matricula__estudiante__apellidos','sesion__fecha','pk'))

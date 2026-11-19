@@ -7,7 +7,7 @@ from django.urls import reverse
 
 from core.models import Usuario
 from .flujo import (autorizar_extra, cerrar_curso, firma_calendario, guardar_calendario,
-                    matricular, propuesta, requisitos_cierre)
+                    matricular, propuesta, requisitos_cierre, firma_cierre)
 from .models import (Asistencia, Calificacion, CicloAcademico, Curso, Estudiante, InscripcionCurso, Maestro,
                      Materia, Matricula, SesionClase)
 
@@ -194,7 +194,7 @@ class FlujoAcademicoTests(TestCase):
         with self.assertRaises(ValidationError): autorizar_extra(sesion,self.docente)
         self.assertFalse(SesionClase.objects.exists())
 
-    def test_cierre_minimo_cinco_sin_pendientes_preserva_inscripciones(self):
+    def test_cierre_exige_notas_y_conserva_otras_inscripciones(self):
         self.matricular()
         antes=list(InscripcionCurso.objects.values())
         for n in range(1,6): self.sesion(n,'IMPARTIDA')
@@ -202,10 +202,17 @@ class FlujoAcademicoTests(TestCase):
         self.assertTrue(requisitos_cierre(self.cursos[0]))
         with self.assertRaises(ValidationError): cerrar_curso(self.cursos[0].pk,self.docente,self.firma())
         SesionClase.objects.filter(numero_clase=6).update(estado='CANCELADA')
+        self.assertTrue(requisitos_cierre(self.cursos[0]))
+        inscripcion = InscripcionCurso.objects.get(curso=self.cursos[0])
+        Calificacion.objects.create(inscripcion=inscripcion, **{c: 0 for c in Calificacion.COMPONENTES})
+        for sesion in SesionClase.objects.filter(curso=self.cursos[0], estado='IMPARTIDA'):
+            Asistencia.objects.create(inscripcion=inscripcion, sesion=sesion, estado_asistencia='PRESENTE')
         self.assertFalse(requisitos_cierre(self.cursos[0]))
-        cerrar_curso(self.cursos[0].pk,self.docente,self.firma())
+        firma = firma_cierre(self.cursos[0], list(SesionClase.objects.filter(curso=self.cursos[0]).order_by('numero_clase')))
+        cerrar_curso(self.cursos[0].pk,self.docente,firma)
         self.cursos[0].refresh_from_db();self.assertEqual(self.cursos[0].estado,'FINALIZADO')
-        self.assertEqual(list(InscripcionCurso.objects.values()),antes)
+        self.assertEqual(list(InscripcionCurso.objects.exclude(curso=self.cursos[0]).values()), [i for i in antes if i['curso_id'] != self.cursos[0].pk])
+        self.assertEqual(InscripcionCurso.objects.get(pk=inscripcion.pk).estado, 'REPROBADA_ACADEMICAMENTE')
         self.assertEqual(SesionClase.objects.get(numero_clase=6).estado,'CANCELADA')
 
     def test_cierre_guiado_muestra_requisitos_sin_modificar(self):

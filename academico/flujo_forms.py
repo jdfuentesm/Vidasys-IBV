@@ -3,7 +3,7 @@ from django import forms
 from django.utils import timezone
 
 from .forms import SesionExtraordinariaForm
-from .models import CicloAcademico, Curso, Estudiante, Matricula
+from .models import CicloAcademico, Curso, Estudiante, Matricula, SesionClase
 
 
 class MatriculaSecretariaForm(forms.Form):
@@ -83,3 +83,18 @@ class ExtraordinariaDireccionForm(SesionExtraordinariaForm):
         self.instance.usuario_autoriza = usuario
         self.instance.fecha_autorizacion = timezone.now()
         self.fields['curso'].queryset = Curso.objects.filter(estado__in=('PROGRAMADO','ACTIVO'))
+
+
+class GestionSesionForm(forms.ModelForm):
+    revision = forms.CharField(widget=forms.HiddenInput)
+
+    class Meta:
+        model = SesionClase
+        fields = ['fecha', 'hora_inicio', 'hora_fin', 'estado']
+        widgets = {'fecha': forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d'),
+                   'hora_inicio': forms.TimeInput(attrs={'type': 'time'}, format='%H:%M'),
+                   'hora_fin': forms.TimeInput(attrs={'type': 'time'}, format='%H:%M')}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['estado'].choices = [('PROGRAMADA','Programada / reprogramada'), ('SUSPENDIDA','Suspendida'), ('IMPARTIDA','Impartida')]

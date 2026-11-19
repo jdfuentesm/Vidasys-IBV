@@ -244,12 +244,12 @@ class AsistenciaDocenteTests(TestCase):
         with self.assertRaises(ValidationError): self.registro()
         self.assertEqual(Asistencia.objects.count(), 1)
 
-    def test_no_modifica_calificacion_final_ni_cierre_academico(self):
+    def test_asistencia_posterior_no_modifica_nota_provisional_ni_cierra_inscripcion(self):
         nota = fixtures.CalificacionesTests().nota()
         nota.save()
         antes_nota = Calificacion.objects.values().get(pk=nota.pk)
         antes_inscripcion = InscripcionCurso.objects.values().get(pk=self.inscripcion.pk)
-        with self.assertRaises(ValidationError): self.registro()
+        self.registro()
         self.assertEqual(Calificacion.objects.values().get(pk=nota.pk), antes_nota)
         self.assertEqual(InscripcionCurso.objects.values().get(pk=self.inscripcion.pk), antes_inscripcion)
 

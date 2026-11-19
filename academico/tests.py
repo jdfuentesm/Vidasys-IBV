@@ -73,22 +73,22 @@ class CalificacionesTests(TestCase):
         nota.save()
         nota.refresh_from_db()
         self.assertEqual(nota.nota_final, Decimal("80.00"))
-        self.assertEqual(nota.estado, "APROBADA")
+        self.assertEqual(nota.estado, "PENDIENTE")
         self.assertIsNotNone(nota.fecha_registro)
         self.inscripciones[0].refresh_from_db()
-        self.assertEqual(self.inscripciones[0].estado, "APROBADA")
-        self.assertIsNotNone(self.inscripciones[0].fecha_cierre)
+        self.assertEqual(self.inscripciones[0].estado, "CURSANDO")
+        self.assertIsNone(self.inscripciones[0].fecha_cierre)
 
     def test_frontera_setenta(self):
         nota = self.nota(tarea_1="50", examen_1="50", tarea_2="50", examen_2="100")
         nota.save()
         self.assertEqual(nota.nota_final, Decimal("70.00"))
-        self.assertEqual(nota.estado, "APROBADA")
+        self.assertEqual(nota.estado, "PENDIENTE")
         nota.examen_2 = Decimal("99.90")
         nota.save()
         nota.refresh_from_db()
         self.assertEqual(nota.nota_final, Decimal("69.98"))
-        self.assertEqual(nota.estado, "REPROBADA_ACADEMICAMENTE")
+        self.assertEqual(nota.estado, "PENDIENTE")
 
     def test_modificacion_sin_duplicado_y_fecha_original(self):
         nota = self.nota()
@@ -109,10 +109,10 @@ class CalificacionesTests(TestCase):
         nota.save()
         nota.refresh_from_db()
         self.assertEqual(nota.nota_final, Decimal("0.00"))
-        self.assertEqual(nota.estado, "REPROBADA_ACADEMICAMENTE")
+        self.assertEqual(nota.estado, "PENDIENTE")
         self.inscripciones[0].refresh_from_db()
-        self.assertEqual(self.inscripciones[0].estado, "REPROBADA_ACADEMICAMENTE")
-        self.assertIsNotNone(self.inscripciones[0].fecha_cierre)
+        self.assertEqual(self.inscripciones[0].estado, "CURSANDO")
+        self.assertIsNone(self.inscripciones[0].fecha_cierre)
 
     def test_limites_servidor(self):
         for campo, limite in Calificacion.LIMITES_COMPONENTES.items():
@@ -224,8 +224,8 @@ class CalificacionesTests(TestCase):
         self.assertEqual(respuesta.status_code, 302)
         self.assertFalse(Calificacion.objects.exists())
 
-    def test_guardado_atomico_si_falla_cierre(self):
-        with patch("django.db.models.query.QuerySet.update", side_effect=DatabaseError("error simulado")):
+    def test_guardado_provisional_atomico_si_falla_persistencia(self):
+        with patch("django.db.models.Model.save", side_effect=DatabaseError("error simulado")):
             with self.assertRaises(DatabaseError):
                 self.nota().save()
         self.assertFalse(Calificacion.objects.exists())
@@ -291,7 +291,7 @@ class CalificacionesTests(TestCase):
         self.assertContains(respuesta, "1 calificaciones guardadas")
         self.assertFalse(Calificacion.objects.filter(inscripcion=self.inscripciones[0]).exists())
         self.assertEqual(Calificacion.objects.get(inscripcion=segunda).nota_final, Decimal("0"))
-        self.assertEqual(Calificacion.objects.get(inscripcion=segunda).estado, "REPROBADA_ACADEMICAMENTE")
+        self.assertEqual(Calificacion.objects.get(inscripcion=segunda).estado, "PENDIENTE")
         self.assertContains(respuesta, "0,00")
         self.assertContains(respuesta, "Pendiente")
 
@@ -355,7 +355,7 @@ class CalificacionesTests(TestCase):
         self.assertEqual(respuesta.status_code, 200)
         self.assertEqual(len(respuesta.json()["filas"]), 2)
         self.assertEqual(respuesta.json()["filas"][0]["nota"], "80.00")
-        self.assertEqual(respuesta.json()["filas"][0]["estado"], "Aprobada")
+        self.assertEqual(respuesta.json()["filas"][0]["estado"], "Provisional · pendiente de cierre")
         self.assertFalse(Calificacion.objects.exists())
         self.inscripciones[0].refresh_from_db()
         self.assertEqual(self.inscripciones[0].estado, "CURSANDO")
@@ -365,7 +365,7 @@ class CalificacionesTests(TestCase):
         InscripcionCurso.objects.filter(pk=segunda.pk).update(estado="REPROBADA_POR_INASISTENCIA")
         self.client.force_login(self.docente)
         respuesta = self.client.post(reverse("registrar_calificacion"), self.libro_datos(), follow=True)
-        self.assertContains(respuesta, "No editable: reprobada por inasistencia")
+        self.assertContains(respuesta, "Inscripción cerrada o matrícula no activa")
         self.assertEqual(Calificacion.objects.count(), 1)
         self.assertFalse(Calificacion.objects.filter(inscripcion=segunda).exists())
 

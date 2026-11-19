@@ -19,6 +19,28 @@ from .models import (
 )
 
 
+class ProteccionCursoCerradoAdmin(admin.ModelAdmin):
+    """La consola técnica no autoriza correcciones de cursos cerrados."""
+    def curso_de(self, obj):
+        return obj if isinstance(obj, Curso) else obj.curso if isinstance(obj, (SesionClase, InscripcionCurso)) else obj.inscripcion.curso
+
+    def has_change_permission(self, request, obj=None):
+        if obj is not None and self.curso_de(obj).estado in ('FINALIZADO', 'CANCELADO'):
+            return False
+        return super().has_change_permission(request, obj)
+
+    def has_delete_permission(self, request, obj=None):
+        if obj is not None and self.curso_de(obj).estado in ('FINALIZADO', 'CANCELADO'):
+            return False
+        return super().has_delete_permission(request, obj)
+
+    def get_actions(self, request):
+        acciones = super().get_actions(request)
+        # El borrado masivo no evalúa el permiso por cada objeto.
+        acciones.pop('delete_selected', None)
+        return acciones
+
+
 @admin.register(Estudiante)
 class EstudianteAdmin(admin.ModelAdmin):
     # Los vínculos se confirman desde Usuarios y accesos; no se reasignan aquí.
@@ -119,7 +141,17 @@ class CicloAcademicoAdmin(admin.ModelAdmin):
 
 
 @admin.register(Curso)
-class CursoAdmin(admin.ModelAdmin):
+class CursoAdmin(ProteccionCursoCerradoAdmin):
+    def get_form(self, request, obj=None, **kwargs):
+        base = super().get_form(request, obj, **kwargs)
+        class CursoSinCierreTecnicoForm(base):
+            def clean(self):
+                datos = super().clean()
+                if datos.get('estado') == 'FINALIZADO' and (obj is None or obj.estado != 'FINALIZADO'):
+                    raise ValidationError('El cierre académico debe realizarse desde el flujo institucional docente, con asistencia y notas completas.')
+                return datos
+        return CursoSinCierreTecnicoForm
+
     list_display = (
         "materia",
         "maestro",
@@ -208,7 +240,7 @@ class MatriculaAdmin(admin.ModelAdmin):
 
 
 @admin.register(InscripcionCurso)
-class InscripcionCursoAdmin(admin.ModelAdmin):
+class InscripcionCursoAdmin(ProteccionCursoCerradoAdmin):
     list_display = (
         "matricula",
         "curso",
@@ -240,7 +272,16 @@ class InscripcionCursoAdmin(admin.ModelAdmin):
 
 
 @admin.register(SesionClase)
-class SesionClaseAdmin(admin.ModelAdmin):
+class SesionClaseAdmin(ProteccionCursoCerradoAdmin):
+    def has_change_permission(self, request, obj=None):
+        if obj is not None and obj.estado in ('IMPARTIDA', 'CANCELADA'):
+            return False
+        return super().has_change_permission(request, obj)
+
+    def has_delete_permission(self, request, obj=None):
+        # No convertir eliminación técnica en una cancelación sin trazabilidad.
+        return False
+
     list_display = (
         "curso",
         "numero_clase",
@@ -322,6 +363,9 @@ class SesionClaseAdmin(admin.ModelAdmin):
             def clean(self):
                 datos = super().clean()
                 numero_clase = datos.get("numero_clase")
+                anterior = SesionClase.objects.filter(pk=self.instance.pk).first() if self.instance.pk else None
+                if datos.get('estado') == 'CANCELADA' and (anterior is None or anterior.estado != 'CANCELADA'):
+                    raise ValidationError('Solo Dirección puede aprobar una cancelación con trazabilidad. El flujo de solicitudes está pendiente de aprobación técnica; no se puede cancelar desde Django Admin.')
 
                 if numero_clase is None:
                     return datos
@@ -357,7 +401,7 @@ class SesionClaseAdmin(admin.ModelAdmin):
 
 
 @admin.register(Asistencia)
-class AsistenciaAdmin(admin.ModelAdmin):
+class AsistenciaAdmin(ProteccionCursoCerradoAdmin):
     list_display = (
         "inscripcion",
         "sesion",
@@ -383,7 +427,7 @@ class AsistenciaAdmin(admin.ModelAdmin):
 
 
 @admin.register(Calificacion)
-class CalificacionAdmin(admin.ModelAdmin):
+class CalificacionAdmin(ProteccionCursoCerradoAdmin):
     list_display = (
         "inscripcion",
         "nota_final",

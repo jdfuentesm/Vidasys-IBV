@@ -1,6 +1,8 @@
 """Reglas de habilitación confirmadas, sin nuevos estados ni cambios de esquema."""
 
 def motivo_bloqueo(inscripcion, sesion):
+    if inscripcion.curso.estado in ("FINALIZADO", "CANCELADO"):
+        return "Curso finalizado o cancelado: asistencia solo para consulta. Solicite revisión de Dirección."
     if inscripcion.estado == "REPROBADA_POR_INASISTENCIA":
         return "Inscripción cerrada por inasistencia. Cualquier corrección requiere revisión de Dirección; no se reabre automáticamente."
     if inscripcion.estado != "CURSANDO":

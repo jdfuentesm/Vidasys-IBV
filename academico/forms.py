@@ -163,7 +163,9 @@ class FilaCalificacionForm(CalificacionForm):
         self.fields["inscripcion"].disabled = True
         self.fields["inscripcion"].widget = forms.HiddenInput()
         self.initial["inscripcion"] = inscripcion.pk
-        self.bloqueada = inscripcion.estado == "REPROBADA_POR_INASISTENCIA"
+        self.motivo_bloqueo = ("Curso no activo: notas solo para consulta." if inscripcion.curso.estado != "ACTIVO" else
+                              "Inscripción cerrada o matrícula no activa: solicite revisión de Dirección." if inscripcion.estado != "CURSANDO" or inscripcion.matricula.estado != "ACTIVA" else "")
+        self.bloqueada = bool(self.motivo_bloqueo)
         self.omitir = False
         # Una nota existente tiene que conservar exactamente su versión al editarla.
         datos = {campo: str(getattr(self.instance, campo)) for campo in self.Meta.fields
