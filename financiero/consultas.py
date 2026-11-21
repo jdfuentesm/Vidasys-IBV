@@ -32,7 +32,8 @@ def cuenta(estudiante):
         anulada = obligacion.estado == 'ANULADA'
         exigible = not anulada and saldo > CERO and obligacion.fecha_vencimiento < timezone.localdate()
         filas.append({'obligacion': obligacion, 'pagado': pagado, 'donado': donado, 'saldo': saldo,
-                      'anulada': anulada, 'exigible': exigible})
+                      'anulada': anulada, 'exigible': exigible,
+                      'becas': list(obligacion.aplicaciones_beca.filter(estado='APLICADA').select_related('beca'))})
         if not anulada:
             pendientes += saldo
     return {'filas': filas, 'saldo_total': pendientes, 'solvente': solvente(estudiante)}

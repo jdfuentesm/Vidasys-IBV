@@ -17,3 +17,15 @@
  .fin-recibo h1 { font-size:1.6rem; }
  .fin-recibo .est-materias li { break-inside:avoid; }
 }
+
+/* Formularios institucionales de becas: controles adaptables sin tablas anchas. */
+.fin-becas-form { max-width:56rem; }
+.fin-becas-form label { overflow-wrap:anywhere; }
+.fin-becas-form select, .fin-becas-form textarea {
+ width:100%; max-width:100%; box-sizing:border-box; font:inherit;
+ border:1px solid #8a9aad; border-radius:6px; padding:.65rem;
+}
+.fin-becas-form textarea { min-height:7rem; }
+.fin-becas-form button { max-width:100%; white-space:normal; margin:.5rem .5rem .5rem 0; }
+.fin-becas-form input[type=checkbox] { margin-right:.5rem; }
+.fin-becas-form .errorlist { color:#a51b25; }

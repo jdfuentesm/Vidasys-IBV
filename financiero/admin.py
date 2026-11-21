@@ -91,6 +91,7 @@ class CategoriaEgresoAdmin(admin.ModelAdmin):
 
 @admin.register(Obligacion)
 class ObligacionAdmin(NoEliminarAdminMixin):
+    readonly_fields = ("monto_descuento",)  # Solo el servicio autorizado aplica becas.
     list_display = (
         "id_obligacion",
         "matricula",
@@ -176,7 +177,18 @@ class PagoAdmin(NoEliminarAdminMixin):
     inlines = (DetallePagoInline,)
 
 
-class AplicacionBecaInline(admin.TabularInline):
+class BecaSoloConsultaMixin:
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+
+class AplicacionBecaInline(BecaSoloConsultaMixin, admin.TabularInline):
     model = AplicacionBeca
     extra = 0
     can_delete = False
@@ -190,7 +202,7 @@ class AplicacionBecaInline(admin.TabularInline):
 
 
 @admin.register(Beca)
-class BecaAdmin(NoEliminarAdminMixin):
+class BecaAdmin(BecaSoloConsultaMixin, NoEliminarAdminMixin):
     list_display = (
         "id_beca",
         "matricula",

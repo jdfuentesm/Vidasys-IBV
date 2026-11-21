@@ -415,7 +415,7 @@ class AplicacionBeca(models.Model):
             errores["monto_aplicado"] = "El monto aplicado debe ser mayor que cero."
 
         if hasattr(self, "obligacion"):
-            nombre_concepto = self.obligacion.concepto.nombre.strip().upper()
+            nombre_concepto = self.obligacion.concepto.nombre.strip().upper().replace("Í", "I")
 
             if nombre_concepto not in conceptos_permitidos:
                 errores["obligacion"] = (
@@ -1266,3 +1266,51 @@ class CalendarioFinanciero(models.Model):
     class Meta:
         managed = False
         db_table = 'calendario_financiero'
+
+
+class SolicitudBeca(models.Model):
+    """Solicitud institucional; una resolución aprobada produce una sola beca."""
+    clave = models.UUIDField(unique=True, editable=False)
+    matricula = models.ForeignKey('academico.Matricula', on_delete=models.PROTECT)
+    solicitante = models.ForeignKey('core.Usuario', on_delete=models.PROTECT, related_name='solicitudes_beca')
+    fecha_solicitud = models.DateTimeField(default=timezone.now, editable=False)
+    porcentaje_solicitado = models.DecimalField(max_digits=5, decimal_places=2)
+    conceptos_solicitados = models.JSONField()
+    contexto = models.JSONField(default=dict)
+    alcance_solicitado = models.CharField(max_length=15)
+    justificacion = models.TextField()
+    estado = models.CharField(max_length=12, default='PENDIENTE', choices=[(s, s.title()) for s in ('PENDIENTE', 'APROBADA', 'RECHAZADA')])
+    directora = models.ForeignKey('core.Usuario', null=True, blank=True, on_delete=models.PROTECT, related_name='resoluciones_beca')
+    fecha_resolucion = models.DateTimeField(null=True, blank=True)
+    resolucion = models.JSONField(default=dict)
+    aplicados = models.JSONField(default=dict)
+    beca = models.OneToOneField(Beca, null=True, blank=True, on_delete=models.PROTECT)
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            anterior = type(self).objects.get(pk=self.pk)
+            if anterior.estado != 'PENDIENTE':
+                raise ValidationError('La resolución es inmutable. No se puede modificar el historial.')
+            for campo in ('clave','matricula_id','solicitante_id','fecha_solicitud','porcentaje_solicitado',
+                          'conceptos_solicitados','alcance_solicitado','justificacion','contexto'):
+                if getattr(self, campo) != getattr(anterior, campo):
+                    raise ValidationError('No se puede modificar una solicitud presentada.')
+        return super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        raise ValidationError('Las solicitudes de beca se conservan como historial.')
+
+    class Meta:
+        db_table = 'solicitud_beca'
+        ordering = ['-fecha_solicitud', '-pk']
+        indexes = [models.Index(fields=['estado','fecha_solicitud'], name='sol_beca_bandeja')]
+        constraints = [
+            models.CheckConstraint(condition=models.Q(porcentaje_solicitado__in=[50,100]), name='sol_beca_porcentaje'),
+            models.CheckConstraint(condition=models.Q(alcance_solicitado__in=['VENCIDAS','NO_VENCIDAS','AMBAS']), name='sol_beca_alcance'),
+            models.UniqueConstraint(fields=['matricula'],condition=models.Q(estado='PENDIENTE'),name='sol_beca_pendiente_unica'),
+            models.CheckConstraint(condition=(
+                models.Q(estado='PENDIENTE',directora__isnull=True,fecha_resolucion__isnull=True,beca__isnull=True) |
+                models.Q(estado='RECHAZADA',directora__isnull=False,fecha_resolucion__isnull=False,beca__isnull=True) |
+                models.Q(estado='APROBADA',directora__isnull=False,fecha_resolucion__isnull=False,beca__isnull=False)
+            ),name='sol_beca_resolucion_coherente'),
+        ]

@@ -15,7 +15,7 @@ from academico.models import Estudiante, CicloAcademico
 from .calendario import guardar, leer
 from .consultas import cuenta
 from .forms import CalendarioForm, ConceptoForm, PagoForm
-from .models import Pago, ConceptoCobro
+from .models import Pago, ConceptoCobro, SolicitudBeca
 from .servicios import puede_cobrar, reservar_recibo, registrar_pago
 
 
@@ -101,7 +101,8 @@ def estado_cuenta(request, estudiante_id):
         datos = {'error_cuenta': 'No se pudo consultar el estado de cuenta. Contacte a Administración; la solvencia no se puede determinar en este momento.'}
     pagos = Pago.objects.filter(estudiante=estudiante).prefetch_related('detalles__obligacion__concepto').order_by('-fecha_pago', '-pk')
     return render(request, 'financiero/cuenta.html', dict(datos, estudiante=estudiante,
-        pagos=pagos, puede_cobrar=puede_cobrar(request.user)))
+        pagos=pagos, puede_cobrar=puede_cobrar(request.user),
+        solicitudes_beca=SolicitudBeca.objects.filter(matricula__estudiante=estudiante).select_related('matricula__ciclo','directora')))
 
 
 @financiero(escritura=True)
