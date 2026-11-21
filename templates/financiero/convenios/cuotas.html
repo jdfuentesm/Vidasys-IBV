@@ -1,0 +1,2 @@
+{{ cuotas.management_form }}{{ cuotas.non_form_errors }}
+{% for cuota in cuotas %}<fieldset class="panel-curso"><legend>Cuota {{ forloop.counter }}</legend>{{ cuota.as_p }}</fieldset>{% endfor %}

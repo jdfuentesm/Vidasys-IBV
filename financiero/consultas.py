@@ -5,7 +5,7 @@ from django.db import connection
 from django.db.models import Sum
 from django.utils import timezone
 
-from .models import DetallePago, Donacion, Obligacion
+from .models import DetallePago, Donacion, Obligacion, ConvenioPago
 
 CERO = Decimal('0.00')
 
@@ -36,4 +36,5 @@ def cuenta(estudiante):
                       'becas': list(obligacion.aplicaciones_beca.filter(estado='APLICADA').select_related('beca'))})
         if not anulada:
             pendientes += saldo
-    return {'filas': filas, 'saldo_total': pendientes, 'solvente': solvente(estudiante)}
+    return {'filas': filas, 'saldo_total': pendientes, 'solvente': solvente(estudiante),
+            'convenios': ConvenioPago.objects.filter(estudiante=estudiante).order_by('-pk')}

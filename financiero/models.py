@@ -566,13 +566,7 @@ class ConvenioObligacion(models.Model):
                     "Una obligación pagada no puede incluirse en un convenio."
                 )
 
-            if (
-                self.obligacion.fecha_vencimiento
-                and self.obligacion.fecha_vencimiento >= timezone.localdate()
-            ):
-                errores["obligacion"] = (
-                    "El convenio solamente puede incluir obligaciones vencidas."
-                )
+            # F3: Dirección puede incluir obligaciones vencidas o no vencidas.
 
         if hasattr(self, "convenio") and hasattr(self, "obligacion"):
             estudiante_convenio = self.convenio.estudiante.pk
@@ -1314,3 +1308,67 @@ class SolicitudBeca(models.Model):
                 models.Q(estado='APROBADA',directora__isnull=False,fecha_resolucion__isnull=False,beca__isnull=False)
             ),name='sol_beca_resolucion_coherente'),
         ]
+
+
+class SolicitudConvenio(models.Model):
+    clave = models.UUIDField(unique=True, editable=False)
+    estudiante = models.ForeignKey('academico.Estudiante', on_delete=models.PROTECT)
+    solicitante = models.ForeignKey('core.Usuario', on_delete=models.PROTECT, related_name='solicitudes_convenio')
+    fecha_solicitud = models.DateTimeField(default=timezone.now, editable=False)
+    justificacion = models.TextField()
+    propuesta = models.JSONField()
+    anteriores = models.JSONField()
+    estado = models.CharField(max_length=12, default='PENDIENTE', choices=[(s,s.title()) for s in ('PENDIENTE','APROBADA','RECHAZADA')])
+    directora = models.ForeignKey('core.Usuario', null=True, blank=True, on_delete=models.PROTECT, related_name='decisiones_convenio')
+    fecha_resolucion = models.DateTimeField(null=True, blank=True)
+    resolucion = models.JSONField(default=dict)
+    aplicados = models.JSONField(default=dict)
+    convenio = models.OneToOneField(ConvenioPago, null=True, blank=True, on_delete=models.PROTECT)
+
+    def save(self,*args,**kwargs):
+        if self.pk:
+            anterior=type(self).objects.get(pk=self.pk)
+            if anterior.estado!='PENDIENTE':raise ValidationError('La resolución es inmutable.')
+            for campo in ('clave','estudiante_id','solicitante_id','fecha_solicitud','justificacion','propuesta','anteriores'):
+                if getattr(self,campo)!=getattr(anterior,campo):raise ValidationError('La solicitud presentada no se modifica.')
+        return super().save(*args,**kwargs)
+
+    def delete(self,*args,**kwargs):
+        raise ValidationError('Se conserva el historial de convenios.')
+
+    class Meta:
+        db_table='solicitud_convenio'
+        ordering=['-fecha_solicitud','-pk']
+        indexes=[models.Index(fields=['estado','fecha_solicitud'],name='sol_conv_bandeja')]
+        constraints=[
+            models.UniqueConstraint(fields=['estudiante'],condition=models.Q(estado='PENDIENTE'),name='sol_conv_pendiente_unica'),
+            models.CheckConstraint(condition=(
+                models.Q(estado='PENDIENTE',directora__isnull=True,fecha_resolucion__isnull=True,convenio__isnull=True)|
+                models.Q(estado='RECHAZADA',directora__isnull=False,fecha_resolucion__isnull=False,convenio__isnull=True)|
+                models.Q(estado='APROBADA',directora__isnull=False,fecha_resolucion__isnull=False,convenio__isnull=False)
+            ),name='sol_conv_resolucion_coherente')]
+
+
+class RevisionConvenio(models.Model):
+    clave=models.UUIDField(unique=True,editable=False)
+    convenio=models.ForeignKey(ConvenioPago,on_delete=models.PROTECT,related_name='revisiones')
+    nuevo=models.OneToOneField(ConvenioPago,null=True,blank=True,on_delete=models.PROTECT,related_name='revision_origen')
+    directora=models.ForeignKey('core.Usuario',on_delete=models.PROTECT)
+    fecha=models.DateTimeField(default=timezone.now,editable=False)
+    accion=models.CharField(max_length=15,choices=[('MODIFICACION','Modificación'),('CANCELACION','Cancelación')])
+    motivo=models.TextField()
+    anteriores=models.JSONField()
+    aplicados=models.JSONField()
+
+    def save(self,*args,**kwargs):
+        if self.pk:raise ValidationError('El historial de revisiones es inmutable.')
+        return super().save(*args,**kwargs)
+
+    def delete(self,*args,**kwargs):raise ValidationError('No se elimina historial de convenios.')
+
+    class Meta:
+        db_table='revision_convenio'
+        ordering=['-fecha','-pk']
+        constraints=[models.CheckConstraint(condition=(
+            models.Q(accion='CANCELACION',nuevo__isnull=True)|models.Q(accion='MODIFICACION',nuevo__isnull=False)
+        ),name='rev_conv_destino_coherente')]

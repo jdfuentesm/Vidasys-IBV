@@ -110,8 +110,8 @@ def registrar_pago(*, usuario, estudiante, token, metodo, referencia, aplicacion
             obligacion = por_id[pk]
             if obligacion.matricula.estudiante_id != estudiante.pk or obligacion.estado == 'ANULADA':
                 raise ValidationError('La obligación no pertenece al estudiante o está anulada.')
-            if ConvenioObligacion.objects.filter(obligacion=obligacion, convenio__estado__in=('ACTIVO', 'CUMPLIDO')).exists():
-                raise ValidationError('Esta obligación está cubierta por un convenio. Su aplicación debe realizarse por el flujo de convenios existente, fuera de esta etapa.')
+            if ConvenioObligacion.objects.filter(obligacion=obligacion, convenio__estado__in=('ACTIVO', 'CUMPLIDO', 'INCUMPLIDO')).exists():
+                raise ValidationError('Esta obligación está cubierta por un convenio. Registre el cobro desde Convenios de pago con desglose por cuota y obligación.')
             _, _, saldo = importes(obligacion)
             if monto > saldo:
                 raise ValidationError('El importe supera el saldo disponible. Recargue el estado de cuenta.')

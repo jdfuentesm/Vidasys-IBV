@@ -1,0 +1,2 @@
+<h2>Comparación financiera</h2>{% for fila in plan.filas %}<section class="panel-curso"><h3>{{ fila.descripcion }} · #{{ fila.id }}</h3><p>Vencimiento {{ fila.vencimiento }} · Original USD {{ fila.original }} · Descuento USD {{ fila.descuento }} · Pagos USD {{ fila.pagado }} · Donaciones USD {{ fila.donado }} · Saldo incluido USD {{ fila.saldo }}</p></section>{% endfor %}
+{% if plan.total %}<p>Total convenido: USD {{ plan.total }}. No se genera ingreso ni recibo al autorizar.</p>{% endif %}

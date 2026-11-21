@@ -236,7 +236,7 @@ class BecaAdmin(BecaSoloConsultaMixin, NoEliminarAdminMixin):
     inlines = (AplicacionBecaInline,)
 
 
-class ConvenioObligacionInline(admin.TabularInline):
+class ConvenioObligacionInline(BecaSoloConsultaMixin, admin.TabularInline):
     model = ConvenioObligacion
     extra = 0
     can_delete = False
@@ -247,7 +247,7 @@ class ConvenioObligacionInline(admin.TabularInline):
     )
 
 
-class CuotaConvenioInline(admin.TabularInline):
+class CuotaConvenioInline(BecaSoloConsultaMixin, admin.TabularInline):
     model = CuotaConvenio
     extra = 0
     can_delete = False
@@ -261,7 +261,7 @@ class CuotaConvenioInline(admin.TabularInline):
 
 
 @admin.register(ConvenioPago)
-class ConvenioPagoAdmin(NoEliminarAdminMixin):
+class ConvenioPagoAdmin(BecaSoloConsultaMixin, NoEliminarAdminMixin):
     list_display = (
         "id_convenio",
         "estudiante",
@@ -300,7 +300,7 @@ class ConvenioPagoAdmin(NoEliminarAdminMixin):
 
 
 @admin.register(AplicacionPagoCuota)
-class AplicacionPagoCuotaAdmin(NoEliminarAdminMixin):
+class AplicacionPagoCuotaAdmin(BecaSoloConsultaMixin, NoEliminarAdminMixin):
     list_display = (
         "id_aplicacion_pago_cuota",
         "pago",
