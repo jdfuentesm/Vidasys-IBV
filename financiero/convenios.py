@@ -11,7 +11,7 @@ from academico.models import Estudiante
 from core.models import Usuario
 from .consultas import importes, solvente
 from .models import (SolicitudConvenio, RevisionConvenio, ConvenioPago, ConvenioObligacion,
-                     CuotaConvenio, AplicacionPagoCuota, Obligacion, DetallePago, Donacion, Pago)
+                     CuotaConvenio, AplicacionPagoCuota, Obligacion, DetallePago, Donacion, Pago, MovimientoCaja)
 
 
 def actor_bloqueado(usuario,roles):
@@ -232,6 +232,7 @@ def _aplicaciones(filas):
 
 def registrar_abono(*,usuario,convenio_id,token,metodo,referencia,cuotas,obligaciones):
     from .servicios import puede_cobrar
+    from .caja import abierta_bloqueada
     if not puede_cobrar(usuario):raise PermissionDenied('Solo Secretaría y Administración pueden cobrar.')
     por_cuota=_aplicaciones(cuotas);por_obligacion=_aplicaciones(obligaciones)
     total=sum(por_cuota.values(),Decimal('0'))
@@ -243,6 +244,7 @@ def registrar_abono(*,usuario,convenio_id,token,metodo,referencia,cuotas,obligac
     except signing.BadSignature:raise ValidationError('La reserva de recibo venció o fue alterada. Revise el historial antes de reintentar.')
     with transaction.atomic():
         actor=actor_bloqueado(usuario,('SECRETARIA','ADMINISTRADOR'))
+        caja=abierta_bloqueada(actor,exigir=False)
         ref=ConvenioPago.objects.get(pk=convenio_id)
         estudiante=Estudiante.objects.select_for_update().get(pk=ref.estudiante_id)
         if reserva.get('usuario')!=actor.pk or reserva.get('estudiante')!=estudiante.pk:
@@ -262,6 +264,7 @@ def registrar_abono(*,usuario,convenio_id,token,metodo,referencia,cuotas,obligac
                     dict(previo.aplicaciones_cuotas.values_list('cuota_id','monto_aplicado'))==por_cuota):
                 return previo,False
             raise ValidationError('La reserva ya se utilizó con otros datos. No se modificó el pago.')
+        if caja is None:raise ValidationError('Abra su caja en Finanzas → Caja antes de registrar un cobro nuevo.')
         if convenio.estado not in ('ACTIVO','INCUMPLIDO'):raise ValidationError('El convenio no está habilitado para cobros nuevos.')
         enlaces={e.obligacion_id:e for e in convenio.obligaciones_incluidas.all()}
         originales={o.pk:o for o in filas if o.pk in enlaces}
@@ -300,4 +303,5 @@ def registrar_abono(*,usuario,convenio_id,token,metodo,referencia,cuotas,obligac
             convenio.estado='CUMPLIDO'
         convenio.fecha_actualizacion=timezone.now()
         convenio.save(update_fields=['estado','fecha_actualizacion'])
+        MovimientoCaja.objects.create(caja=caja,pago=pago,operador=actor,metodo=metodo,importe=total,referencia=referencia)
         return pago,True

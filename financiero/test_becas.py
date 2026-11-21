@@ -31,6 +31,12 @@ class BecasTests(TestCase):
         cls.admin=Usuario.objects.create_user('becas-admin','becas-admin@example.test','ficticia',
             rol='ADMINISTRADOR',is_staff=True,is_superuser=True)
 
+        # Nuevo requisito operativo: los cobros de regresión parten de una caja propia abierta.
+        import uuid
+        from .caja import abrir
+        for operador in (cls.secretaria, cls.admin):
+            abrir(usuario=operador, clave=uuid.uuid4(), fondo='0.00')
+
     def setUp(self):
         self.matricula=matricular(estudiante=self.estudiante,ciclo=self.ciclo,numero_matricula='BECA-1',fecha_matricula=date(2026,1,2))[0]
         self.obligaciones=list(self.matricula.obligaciones.select_related('concepto').order_by('pk'))
@@ -345,7 +351,7 @@ class BecasTests(TestCase):
         self.assertEqual(orden,['Usuario','Estudiante','Matricula','Obligacion','SolicitudBeca'])
         orden.clear()
         with patch.object(QuerySet,'select_for_update',observar):self.pagar(self.cargo,'5')
-        self.assertEqual(orden[:3],['Usuario','Estudiante','Obligacion'])
+        self.assertEqual(orden[:4],['Usuario','Caja','Estudiante','Obligacion'])
 
     def test_pagos_posteriores_beca_cien_no_admiten_cobro_inexistente(self):
         self.aprobar(self.solicitar(),porcentaje='100',obligaciones=[self.cargo.pk])

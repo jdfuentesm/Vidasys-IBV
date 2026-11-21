@@ -1372,3 +1372,6 @@ class RevisionConvenio(models.Model):
         constraints=[models.CheckConstraint(condition=(
             models.Q(accion='CANCELACION',nuevo__isnull=True)|models.Q(accion='MODIFICACION',nuevo__isnull=False)
         ),name='rev_conv_destino_coherente')]
+
+# Modelos administrados nuevos; separados para mantener legible el esquema histórico.
+from .caja_models import Caja, MovimientoCaja, SolicitudAnulacion  # noqa: E402,F401

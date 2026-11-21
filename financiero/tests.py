@@ -29,6 +29,12 @@ class FinancieroTests(TestCase):
         cls.docente, cls.maestro = b.docente, b.maestro
         cls.admin = Usuario.objects.create_user('admin-fin', 'admin-fin@example.test', 'ficticia', rol='ADMINISTRADOR')
 
+        # Nuevo requisito operativo: los cobros de regresión parten de una caja propia abierta.
+        import uuid
+        from .caja import abrir
+        for operador in (cls.secretaria, cls.admin):
+            abrir(usuario=operador, clave=uuid.uuid4(), fondo='0.00')
+
     def matricula(self, estudiante=None):
         return matricular(estudiante=estudiante or self.estudiante, ciclo=self.ciclo,
             numero_matricula='FIN-M1', fecha_matricula=date(2026, 1, 2))[0]

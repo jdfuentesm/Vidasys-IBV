@@ -171,3 +171,11 @@ PostgreSQL JSONB para no depender de disco web persistente. El backend de archiv
 conserva para desarrollo; no es el backend de la demo web. La tabla nueva se inicializa
 solo en una base demo vacía, sin migrar la base real ni esquemas existentes. Véase
 [demo_gratuita.md](../despliegue/demo_gratuita.md) antes de publicar.
+
+## Ampliación F4 — Caja y anulaciones
+
+Los nuevos cobros ordinarios y de convenios requieren caja propia abierta. Finanzas
+incluye Caja y arqueos y Anulaciones de pagos. Secretaría solicita; solo Dirección
+resuelve. Una anulación no devuelve efectivo. Cajas cerradas y recibos históricos sin
+caja mantienen bloqueada su anulación. Procedimientos, permisos, migración 0003,
+pruebas y limitaciones: [Caja y anulaciones](../financiero/caja_y_anulaciones.md).

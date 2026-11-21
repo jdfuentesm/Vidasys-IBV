@@ -13,7 +13,8 @@ from academico.models import Estudiante
 from core.models import Usuario
 from .calendario import leer, validar
 from .consultas import importes
-from .models import Obligacion, Pago, DetallePago, ConvenioObligacion
+from .models import Obligacion, Pago, DetallePago, ConvenioObligacion, MovimientoCaja
+from .caja import abierta_bloqueada
 
 
 def puede_cobrar(usuario):
@@ -91,6 +92,7 @@ def registrar_pago(*, usuario, estudiante, token, metodo, referencia, aplicacion
         usuario = Usuario.objects.select_for_update().get(pk=usuario.pk)
         if not puede_cobrar(usuario):
             raise PermissionDenied
+        caja = abierta_bloqueada(usuario, exigir=False)
         estudiante = Estudiante.objects.select_for_update().get(pk=estudiante.pk)
         numero = f'IBV-{reserva["id"]:010d}'
         existente = Pago.objects.filter(pk=reserva['id']).first()
@@ -102,6 +104,8 @@ def registrar_pago(*, usuario, estudiante, token, metodo, referencia, aplicacion
                     detalles == dict(aplicaciones)):
                 return existente, False
             raise ValidationError('Esta reserva ya fue utilizada con otros datos. Revise el historial; no se modificó el pago.')
+        if caja is None:
+            raise ValidationError('Abra su caja en Finanzas → Caja antes de registrar un cobro nuevo.')
         obligaciones = list(Obligacion.objects.select_for_update().filter(pk__in=[pk for pk, _ in aplicaciones]).order_by('pk'))
         if len(obligaciones) != len(aplicaciones):
             raise ValidationError('Una obligación ya no está disponible.')
@@ -132,4 +136,5 @@ def registrar_pago(*, usuario, estudiante, token, metodo, referencia, aplicacion
             detalle = DetallePago(pago=pago, obligacion=por_id[pk], monto_aplicado=monto)
             detalle.full_clean()
             detalle.save()
+        MovimientoCaja.objects.create(caja=caja, pago=pago, operador=usuario, metodo=metodo, importe=total, referencia=referencia)
         return pago, True

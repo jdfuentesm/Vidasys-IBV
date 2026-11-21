@@ -143,4 +143,5 @@ def presentar_recibo(request, pago, *, portal=False):
             snapshot = json.loads(pago.observaciones.split('\n', 1)[1])
         except (ValueError, IndexError):
             pass
-    return render(request, 'financiero/recibo.html', {'pago': pago, 'snapshot': snapshot, 'portal': portal})
+    return render(request, 'financiero/recibo.html', {'pago': pago, 'snapshot': snapshot, 'portal': portal,
+        'anulacion': pago.solicitudes_anulacion.filter(estado='APROBADA').select_related('directora').first()})
