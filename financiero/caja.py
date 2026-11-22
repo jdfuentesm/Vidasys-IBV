@@ -59,12 +59,14 @@ def abierta_bloqueada(usuario, *, exigir=True):
 
 
 def totales(caja):
-    filas = list(caja.movimientos.select_related('pago','ingreso','egreso').order_by('pk'))
+    filas = list(caja.movimientos.select_related('pago','ingreso','egreso','ingreso__recepcion_donacion').order_by('pk'))
     efectivo = transferencias = anulados = retenido = entradas = salidas = Decimal('0.00')
+    donaciones = donaciones_transferencia = Decimal('0.00')
     academicos = administrativos = egresos = transferidas = egresos_anulados = Decimal('0.00')
     movimientos=[]
     for m in filas:
         origen=m.pago if m.pago_id else m.ingreso if m.ingreso_id else m.egreso
+        aporte=getattr(m.ingreso,'recepcion_donacion',None) if m.ingreso_id else None
         salida=m.egreso_id is not None
         vigente=origen.estado=='REGISTRADO'
         if m.metodo=='EFECTIVO':
@@ -77,20 +79,22 @@ def totales(caja):
                 if vigente:
                     efectivo+=m.importe
                     if m.pago_id:academicos+=m.importe
+                    elif aporte:donaciones+=m.importe
                     else:administrativos+=m.importe
                 else:retenido+=m.importe
         elif salida:
             transferidas+=m.importe
         elif vigente:
             transferencias+=m.importe
+            if aporte:donaciones_transferencia+=m.importe
         if not vigente:anulados+=m.importe
-        numero=origen.numero_recibo if m.pago_id else f'ING-{origen.pk:010d}' if m.ingreso_id else origen.numero_egreso
+        numero=origen.numero_recibo if m.pago_id else aporte.numero if aporte else f'ING-{origen.pk:010d}' if m.ingreso_id else origen.numero_egreso
         movimientos.append({'id':m.pk,'pago':m.pago_id,'ingreso':m.ingreso_id,'egreso':m.egreso_id,
-            'tipo':'PAGO' if m.pago_id else 'INGRESO' if m.ingreso_id else 'EGRESO',
+            'donacion':aporte.pk if aporte else None,'tipo':'PAGO' if m.pago_id else 'DONACION' if aporte else 'INGRESO' if m.ingreso_id else 'EGRESO',
             'numero':numero,'fecha':m.fecha.isoformat(),'operador':m.operador_id,'metodo':m.metodo,
             'importe':str(m.importe),'referencia':m.referencia,'estado':origen.estado})
     esperado=caja.fondo_inicial+entradas-salidas
-    return {'fondo':str(caja.fondo_inicial),'efectivo_vigente':str(efectivo),
+    return {'donaciones_efectivo':str(donaciones),'donaciones_transferencia':str(donaciones_transferencia),'fondo':str(caja.fondo_inicial),'efectivo_vigente':str(efectivo),
         'transferencias_vigentes':str(transferencias),'anulados':str(anulados),
         'efectivo_anulado_retenido':str(retenido),'entradas_efectivo':str(entradas),
         'salidas_efectivo':str(salidas),'esperado':str(esperado),'disponible':str(esperado-retenido),

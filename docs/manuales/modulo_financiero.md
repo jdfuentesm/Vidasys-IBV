@@ -188,3 +188,12 @@ categorías. Secretaría y Administración operan sus cajas; los egresos en efec
 pueden superar el disponible, que excluye efectivo anulado retenido. Aprobar no desembolsa.
 Se conservan comprobantes privados PDF/PNG/JPEG y las anulaciones no devuelven ni recuperan
 fondos. [Manual técnico, permisos, pruebas y recorrido](../financiero/ingresos_egresos_institucionales.md).
+
+## Ampliación F6 — Donaciones y padrinazgos
+
+Finanzas → Donaciones y padrinazgos incorpora donantes, aportes efectivos y compromisos
+futuros separados. Dirección autoriza cobertura sin registrar ingresos; el vencimiento
+exige revisión y no bloquea automáticamente al estudiante. Caja solo reconoce dinero
+recibido. El portal muestra saldo a cargo y cobertura sin datos del padrino. Prórrogas,
+sustituciones, cancelaciones notificadas y conversiones compatibles conservan historial.
+[Reglas aprobadas, permisos, pruebas y recorrido manual](../financiero/donaciones_padrinazgos.md).

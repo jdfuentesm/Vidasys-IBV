@@ -408,7 +408,7 @@ class EgresoAdmin(OperacionSoloConsulta, NoEliminarAdminMixin):
 
 
 @admin.register(Donante)
-class DonanteAdmin(NoEliminarAdminMixin):
+class DonanteAdmin(OperacionSoloConsulta, NoEliminarAdminMixin):
     list_display = (
         "id_donante",
         "nombre_completo",
@@ -433,7 +433,7 @@ class DonanteAdmin(NoEliminarAdminMixin):
     ordering = ("nombre_completo",)
 
 
-class DonacionInline(admin.TabularInline):
+class DonacionInline(BecaSoloConsultaMixin, admin.TabularInline):
     model = Donacion
     extra = 0
     can_delete = False
@@ -455,7 +455,7 @@ class DonacionInline(admin.TabularInline):
 
 
 @admin.register(Padrinazgo)
-class PadrinazgoAdmin(NoEliminarAdminMixin):
+class PadrinazgoAdmin(OperacionSoloConsulta, NoEliminarAdminMixin):
     list_display = (
         "id_padrinazgo",
         "donante",
@@ -491,7 +491,7 @@ class PadrinazgoAdmin(NoEliminarAdminMixin):
 
 
 @admin.register(Donacion)
-class DonacionAdmin(NoEliminarAdminMixin):
+class DonacionAdmin(OperacionSoloConsulta, NoEliminarAdminMixin):
     list_display = (
         "id_donacion",
         "donante",

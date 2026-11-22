@@ -111,6 +111,9 @@ def documento(request,documento_id):
         permitido=(ingresos_visibles(request.user).filter(comprobante=d).exists() or
             egresos_visibles(request.user).filter(comprobante=d).exists() or
             egresos_visibles(request.user).filter(desembolso__comprobante=d).exists())
+        if not permitido:
+            from .models import RecepcionDonacion
+            permitido=RecepcionDonacion.objects.filter(comprobante=d).exists()
         if not permitido:return HttpResponseNotFound('Documento no disponible.')
     contenido=bytes(d.contenido)
     if len(contenido)!=d.tamano or hashlib.sha256(contenido).hexdigest()!=d.sha256:

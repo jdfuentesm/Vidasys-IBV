@@ -1,7 +1,21 @@
 from django.urls import path
-from . import views, becas_views, convenios_views, caja_views, operaciones_views
+from . import views, becas_views, convenios_views, caja_views, operaciones_views, aportes_views
 
 urlpatterns = [
+    path('aportes/', aportes_views.panel, name='aportes_panel'),
+    path('aportes/donantes/nuevo/', aportes_views.donante_form, name='aportes_donante_nuevo'),
+    path('aportes/donantes/<int:donante_id>/', aportes_views.donante, name='aportes_donante'),
+    path('aportes/donantes/<int:donante_id>/editar/', aportes_views.donante_form, name='aportes_donante_editar'),
+    path('aportes/estudiantes/', aportes_views.buscar_estudiante, name='aportes_buscar'),
+    path('aportes/padrinazgo/<int:matricula_id>/nuevo/', aportes_views.solicitar, name='aportes_solicitar'),
+    path('aportes/solicitudes/<int:solicitud_id>/', aportes_views.solicitud, name='aportes_solicitud'),
+    path('aportes/solicitudes/<int:solicitud_id>/revision/', aportes_views.revision, name='aportes_revision'),
+    path('aportes/recibir/', aportes_views.recibir, name='aportes_recibir_general'),
+    path('aportes/recibir/<int:matricula_id>/', aportes_views.recibir, name='aportes_recibir'),
+    path('aportes/recibos/<int:recepcion_id>/', aportes_views.recibo, name='aportes_recibo'),
+    path('aportes/recibos/<int:recepcion_id>/anular/', aportes_views.pedir_anulacion, name='aportes_pedir_anulacion'),
+    path('aportes/anulaciones/<int:anulacion_id>/', aportes_views.anulacion, name='aportes_anulacion'),
+    path('aportes/reportes/', aportes_views.reporte, name='aportes_reporte'),
     path('operaciones/', operaciones_views.panel, name='operaciones_panel'),
     path('operaciones/ingresos/nuevo/', operaciones_views.ingreso_nuevo, name='operaciones_ingreso_nuevo'),
     path('operaciones/ingresos/<int:registro_id>/', operaciones_views.ingreso_detalle, name='operaciones_ingreso'),

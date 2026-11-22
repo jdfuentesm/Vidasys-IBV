@@ -61,8 +61,12 @@ def inicio(request):
     matricula = None
     if habilitado:
         matricula = Matricula.objects.filter(estudiante=estudiante).select_related('ciclo').order_by('-fecha_matricula', '-pk').first()
+    from financiero.aportes import detalle_solvencia
+    cobertura=detalle_solvencia(estudiante)['por_padrinazgo'] if habilitado else False
+    from financiero.models import RevisionPadrinazgo
+    avisos=RevisionPadrinazgo.objects.filter(solicitud__matricula__estudiante=estudiante).exclude(notificacion='').values('notificacion','fecha').order_by('-fecha')[:10] if habilitado is not None else []
     return render(request, 'core/portal/inicio.html', {
-        'estudiante': estudiante, 'habilitado': habilitado, 'matricula': matricula, 'mensaje_solvencia': MENSAJE_SOLVENCIA})
+        'notificaciones_padrinazgo':avisos,'estudiante': estudiante, 'cobertura_padrinazgo':cobertura, 'habilitado': habilitado, 'matricula': matricula, 'mensaje_solvencia': MENSAJE_SOLVENCIA})
 
 
 @acceso_portal(academico=True)

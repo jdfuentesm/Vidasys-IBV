@@ -1377,3 +1377,5 @@ class RevisionConvenio(models.Model):
 from .caja_models import Caja, MovimientoCaja, SolicitudAnulacion  # noqa: E402,F401
 from .operaciones_models import (ComprobantePrivado, RegistroIngreso, SolicitudEgreso,
                                 DesembolsoEgreso, SolicitudAnulacionOperacion)  # noqa: E402,F401
+from .aportes_models import (HistorialDonante, SolicitudPadrinazgo, CoberturaPadrinazgo,
+    RecepcionDonacion, LineaDonacion, RevisionPadrinazgo, AnulacionDonacion)  # noqa: E402,F401

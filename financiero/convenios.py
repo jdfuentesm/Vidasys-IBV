@@ -54,6 +54,8 @@ def evaluar(estudiante,obligaciones,condicion,excluir_convenio=None):
         cobertura=ConvenioObligacion.objects.filter(obligacion=o).exclude(convenio__estado='CANCELADO')
         if excluir_convenio is not None:cobertura=cobertura.exclude(convenio_id=excluir_convenio)
         if cobertura.exists():raise ValidationError(f'Obligación #{pk}: ya pertenece a un convenio incompatible.')
+        from .aportes import reservada
+        if reservada(o)>0:raise ValidationError('La obligación tiene padrinazgo. Dirección debe resolver primero su cobertura.')
         pagado,donado,saldo=importes(o)
         if saldo<=0 or o.estado=='PAGADA':raise ValidationError(f'Obligación #{pk}: no tiene saldo disponible.')
         total+=saldo

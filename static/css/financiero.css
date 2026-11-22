@@ -37,3 +37,8 @@
 .fin-operaciones-form input[type=file]::file-selector-button {
  max-width:100%; white-space:normal;
 }
+
+/* F6: secciones y selección accesible, sin rediseñar pantallas anteriores. */
+.fin-aportes-form fieldset { min-width:0; margin:1rem 0; padding:1rem; border:1px solid #d4dce6; border-radius:6px; }
+.fin-aportes-form legend { padding:0 .4rem; font-weight:650; }
+.fin-aportes-form input[type=checkbox] { width:auto; }

@@ -122,6 +122,8 @@ def plan(matricula, obligaciones, resolucion):
             raise ValidationError(f'Obligación #{pk}: el vencimiento no corresponde al alcance autorizado.')
         if ConvenioObligacion.objects.filter(obligacion=o,convenio__estado__in=['ACTIVO','CUMPLIDO']).exists():
             raise ValidationError(f'Obligación #{pk}: cubierta por un convenio activo o cumplido.')
+        from .aportes import reservada
+        if reservada(o)>0:raise ValidationError('La obligación tiene padrinazgo. Use la conversión autorizada o resuelva primero su cobertura.')
         if o.monto_descuento!=0 or AplicacionBeca.objects.filter(obligacion=o).exists():
             raise ValidationError(f'Obligación #{pk}: ya tiene descuentos o aplicaciones; no se acumulan ni sustituyen.')
         pagado,donado,saldo=importes(o)

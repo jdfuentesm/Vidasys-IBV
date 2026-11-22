@@ -51,7 +51,7 @@ class PagoForm(forms.Form):
             self.obligaciones.append(o)
             self.fields[f'importe_{o.pk}'] = forms.DecimalField(required=False, max_digits=10, decimal_places=2,
                 min_value=Decimal('.01'), label=f'{o.concepto.nombre} · {o.fecha_vencimiento:%d/%m/%Y}',
-                help_text=f'Saldo USD {fila["saldo"]:.2f}. ' + ('Permite abonos.' if o.concepto.permite_abonos else 'Saldo completo obligatorio.'),
+                help_text=f'Saldo financiero USD {fila["saldo"]:.2f}. ' + (f'Padrinazgo reservado USD {fila["reserva_padrinazgo"]:.2f}; a cargo del estudiante USD {max(fila["saldo"]-fila["reserva_padrinazgo"], Decimal("0")):.2f}. ' if fila.get('reserva_padrinazgo') else '') + ('Permite abonos.' if o.concepto.permite_abonos else 'Pago completo de la parte del estudiante obligatorio.'),
                 widget=forms.NumberInput(attrs={'step': '.01', 'min': '.01'}))
 
     def aplicaciones(self):

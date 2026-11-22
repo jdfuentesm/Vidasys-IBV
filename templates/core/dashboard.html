@@ -3,7 +3,7 @@
 {% block content %}
 <section class="inicio-cabecera"><p class="seccion">SU ESPACIO DE TRABAJO</p><h1>Bienvenido, {{ request.user.get_full_name|default:request.user.numero_usuario }}</h1>
     <p>Su espacio de trabajo como <strong>{{ request.user.get_rol_display }}</strong>.</p></section>
-<section aria-labelledby="tareas-titulo"><h2 id="tareas-titulo">¿Qué necesita hacer?</h2>
+{% if request.user.rol == 'DIRECTORA' and padrinazgos_vencidos %}<section class="mensaje error" role="status"><h2>Padrinazgos pendientes de revisión: {{ padrinazgos_vencidos }}</h2><p>La fecha de aporte venció; los estudiantes mantienen su cobertura hasta su resolución.</p><a href="{% url 'aportes_panel' %}">Revisar compromisos</a></section>{% endif %}<section aria-labelledby="tareas-titulo"><h2 id="tareas-titulo">¿Qué necesita hacer?</h2>
     <div class="accesos-inicio">
     {% if request.user.rol == 'MAESTRO' %}
         <a class="acceso-tarjeta" href="{% url 'mis_cursos' %}"><span class="acceso-icono">{% include 'core/partials/icono.html' with nombre='cursos' %}</span><span class="acceso-etiqueta">DOCENCIA</span><h3>Mis cursos</h3><p>Seleccione un curso para registrar asistencia y calificaciones, programar sesiones o revisar su cierre.</p><span class="acceso-enlace">Abrir mis cursos →</span></a>

@@ -116,11 +116,13 @@ def registrar_pago(*, usuario, estudiante, token, metodo, referencia, aplicacion
                 raise ValidationError('La obligación no pertenece al estudiante o está anulada.')
             if ConvenioObligacion.objects.filter(obligacion=obligacion, convenio__estado__in=('ACTIVO', 'CUMPLIDO', 'INCUMPLIDO')).exists():
                 raise ValidationError('Esta obligación está cubierta por un convenio. Registre el cobro desde Convenios de pago con desglose por cuota y obligación.')
+            from .aportes import reservada
+            if monto>importes(obligacion)[2]-reservada(obligacion):raise ValidationError('Parte de este saldo tiene padrinazgo autorizado. Pague solo el saldo a su cargo o contacte a Dirección.')
             _, _, saldo = importes(obligacion)
             if monto > saldo:
                 raise ValidationError('El importe supera el saldo disponible. Recargue el estado de cuenta.')
-            if not obligacion.concepto.permite_abonos and monto != saldo:
-                raise ValidationError('Este concepto no permite abonos: debe pagar el saldo completo.')
+            if not obligacion.concepto.permite_abonos and monto != saldo-reservada(obligacion):
+                raise ValidationError('Este concepto no permite abonos: debe pagar íntegramente el saldo a cargo del estudiante.')
         snapshot = {'estudiante': f'{estudiante.codigo_estudiante} · {estudiante.nombres} {estudiante.apellidos}',
             'registrado_por': usuario.numero_usuario,
             'detalles': [{'descripcion': por_id[pk].descripcion,
