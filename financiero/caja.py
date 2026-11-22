@@ -59,28 +59,45 @@ def abierta_bloqueada(usuario, *, exigir=True):
 
 
 def totales(caja):
-    filas = list(caja.movimientos.select_related('pago').order_by('pk'))
-    efectivo = transferencias = anulados = efectivo_anulado = entradas = Decimal('0.00')
+    filas = list(caja.movimientos.select_related('pago','ingreso','egreso').order_by('pk'))
+    efectivo = transferencias = anulados = retenido = entradas = salidas = Decimal('0.00')
+    academicos = administrativos = egresos = transferidas = egresos_anulados = Decimal('0.00')
+    movimientos=[]
     for m in filas:
-        if m.metodo == 'EFECTIVO':
-            entradas += m.importe
-        if m.pago.estado == 'REGISTRADO':
-            if m.metodo == 'EFECTIVO':
-                efectivo += m.importe
+        origen=m.pago if m.pago_id else m.ingreso if m.ingreso_id else m.egreso
+        salida=m.egreso_id is not None
+        vigente=origen.estado=='REGISTRADO'
+        if m.metodo=='EFECTIVO':
+            if salida:
+                salidas+=m.importe
+                if vigente:egresos+=m.importe
+                else:egresos_anulados+=m.importe
             else:
-                transferencias += m.importe
-        else:
-            anulados += m.importe
-            if m.metodo == 'EFECTIVO':
-                efectivo_anulado += m.importe
-    return {'fondo': str(caja.fondo_inicial), 'efectivo_vigente': str(efectivo),
-            'transferencias_vigentes': str(transferencias), 'anulados': str(anulados),
-            'efectivo_anulado_retenido': str(efectivo_anulado), 'entradas_efectivo': str(entradas),
-            'salidas_efectivo': '0.00', 'esperado': str(caja.fondo_inicial + entradas),
-            'ingresos_vigentes': str(efectivo + transferencias), 'recibos': len(filas),
-            'movimientos': [{'id': m.pk, 'pago': m.pago_id, 'numero': m.pago.numero_recibo,
-                'fecha': m.fecha.isoformat(), 'operador': m.operador_id, 'metodo': m.metodo,
-                'importe': str(m.importe), 'referencia': m.referencia, 'estado': m.pago.estado} for m in filas]}
+                entradas+=m.importe
+                if vigente:
+                    efectivo+=m.importe
+                    if m.pago_id:academicos+=m.importe
+                    else:administrativos+=m.importe
+                else:retenido+=m.importe
+        elif salida:
+            transferidas+=m.importe
+        elif vigente:
+            transferencias+=m.importe
+        if not vigente:anulados+=m.importe
+        numero=origen.numero_recibo if m.pago_id else f'ING-{origen.pk:010d}' if m.ingreso_id else origen.numero_egreso
+        movimientos.append({'id':m.pk,'pago':m.pago_id,'ingreso':m.ingreso_id,'egreso':m.egreso_id,
+            'tipo':'PAGO' if m.pago_id else 'INGRESO' if m.ingreso_id else 'EGRESO',
+            'numero':numero,'fecha':m.fecha.isoformat(),'operador':m.operador_id,'metodo':m.metodo,
+            'importe':str(m.importe),'referencia':m.referencia,'estado':origen.estado})
+    esperado=caja.fondo_inicial+entradas-salidas
+    return {'fondo':str(caja.fondo_inicial),'efectivo_vigente':str(efectivo),
+        'transferencias_vigentes':str(transferencias),'anulados':str(anulados),
+        'efectivo_anulado_retenido':str(retenido),'entradas_efectivo':str(entradas),
+        'salidas_efectivo':str(salidas),'esperado':str(esperado),'disponible':str(esperado-retenido),
+        'academicos_efectivo':str(academicos),'administrativos_efectivo':str(administrativos),
+        'egresos_efectivo':str(egresos),'transferencias_realizadas':str(transferidas),
+        'egresos_anulados_efectivo':str(egresos_anulados),
+        'ingresos_vigentes':str(efectivo+transferencias),'recibos':len(filas),'movimientos':movimientos}
 
 
 def preparar_cierre(*, usuario, caja_id, contado, observaciones=''):

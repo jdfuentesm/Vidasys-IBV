@@ -29,3 +29,11 @@
 .fin-becas-form button { max-width:100%; white-space:normal; margin:.5rem .5rem .5rem 0; }
 .fin-becas-form input[type=checkbox] { margin-right:.5rem; }
 .fin-becas-form .errorlist { color:#a51b25; }
+
+/* F5: los controles nativos de adjuntos y fecha respetan el ancho móvil. */
+.fin-operaciones-form input:not([type=hidden]), .fin-operaciones-form select {
+ width:100%; max-width:100%; min-width:0; box-sizing:border-box; font:inherit;
+}
+.fin-operaciones-form input[type=file]::file-selector-button {
+ max-width:100%; white-space:normal;
+}

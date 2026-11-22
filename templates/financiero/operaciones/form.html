@@ -1,0 +1,3 @@
+{% extends 'financiero/base.html' %}{% block title %}{{ titulo }}{% endblock %}{% block content %}
+<a href="{% url 'operaciones_panel' %}">← Ingresos y egresos</a><h1>{{ titulo }}</h1>{% if solicitud %}<p>{{ solicitud.concepto }} · Beneficiario: {{ solicitud.beneficiario }} · Estado: {{ solicitud.estado }}. Importe íntegro autorizado, sin pagos parciales. Confirme solo cuando realice el pago efectivo.</p>{% endif %}
+<form method="post" enctype="multipart/form-data" class="panel-curso fin-becas-form fin-operaciones-form">{% csrf_token %}{{ form.as_p }}<button>{{ accion }}</button></form>{% endblock %}

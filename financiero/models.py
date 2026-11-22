@@ -1375,3 +1375,5 @@ class RevisionConvenio(models.Model):
 
 # Modelos administrados nuevos; separados para mantener legible el esquema histórico.
 from .caja_models import Caja, MovimientoCaja, SolicitudAnulacion  # noqa: E402,F401
+from .operaciones_models import (ComprobantePrivado, RegistroIngreso, SolicitudEgreso,
+                                DesembolsoEgreso, SolicitudAnulacionOperacion)  # noqa: E402,F401

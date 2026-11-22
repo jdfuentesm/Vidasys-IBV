@@ -179,3 +179,12 @@ incluye Caja y arqueos y Anulaciones de pagos. Secretaría solicita; solo Direcc
 resuelve. Una anulación no devuelve efectivo. Cajas cerradas y recibos históricos sin
 caja mantienen bloqueada su anulación. Procedimientos, permisos, migración 0003,
 pruebas y limitaciones: [Caja y anulaciones](../financiero/caja_y_anulaciones.md).
+
+## Ampliación F5 — Ingresos y egresos institucionales
+
+Finanzas → Ingresos y egresos permite ingresos administrativos, solicitudes de egreso,
+autorización exclusiva de Dirección y desembolso separado. Administración configura
+categorías. Secretaría y Administración operan sus cajas; los egresos en efectivo no
+pueden superar el disponible, que excluye efectivo anulado retenido. Aprobar no desembolsa.
+Se conservan comprobantes privados PDF/PNG/JPEG y las anulaciones no devuelven ni recuperan
+fondos. [Manual técnico, permisos, pruebas y recorrido](../financiero/ingresos_egresos_institucionales.md).

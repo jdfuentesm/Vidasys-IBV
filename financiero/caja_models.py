@@ -52,7 +52,9 @@ class Caja(models.Model):
 
 class MovimientoCaja(models.Model):
     caja = models.ForeignKey(Caja, on_delete=models.PROTECT, related_name='movimientos')
-    pago = models.OneToOneField('financiero.Pago', on_delete=models.PROTECT, related_name='movimiento_caja')
+    pago = models.OneToOneField('financiero.Pago', null=True, blank=True, on_delete=models.PROTECT, related_name='movimiento_caja')
+    ingreso = models.OneToOneField('financiero.Ingreso', null=True, blank=True, on_delete=models.PROTECT, related_name='movimiento_caja')
+    egreso = models.OneToOneField('financiero.Egreso', null=True, blank=True, on_delete=models.PROTECT, related_name='movimiento_caja')
     fecha = models.DateTimeField(default=timezone.now, editable=False)
     operador = models.ForeignKey('core.Usuario', on_delete=models.PROTECT)
     metodo = models.CharField(max_length=15)
@@ -64,8 +66,13 @@ class MovimientoCaja(models.Model):
             raise ValidationError('Los movimientos originales son inmutables; consulte el estado del pago.')
         if self.caja.estado != 'ABIERTA' or self.caja.operador_id != self.operador_id:
             raise ValidationError('La caja no está abierta para el operador.')
-        if (self.pago.usuario_id != self.operador_id or self.pago.metodo_pago != self.metodo or
-                self.pago.monto_total != self.importe or (self.pago.referencia or '') != self.referencia):
+        if sum(pk is not None for pk in (self.pago_id,self.ingreso_id,self.egreso_id)) != 1:
+            raise ValidationError('El movimiento requiere exactamente un origen.')
+        origen = self.pago if self.pago_id else self.ingreso if self.ingreso_id else self.egreso
+        operador = origen.usuario_id if self.pago_id else origen.usuario_registra_id
+        monto = origen.monto_total if self.pago_id else origen.monto
+        if (operador != self.operador_id or origen.metodo_pago != self.metodo or
+                monto != self.importe or (origen.referencia or '') != self.referencia):
             raise ValidationError('El movimiento no coincide con su recibo.')
         return super().save(*args, **kwargs)
 
@@ -76,6 +83,7 @@ class MovimientoCaja(models.Model):
         db_table = 'movimiento_caja'
         ordering = ['fecha', 'pk']
         constraints = [
+            models.CheckConstraint(condition=(models.Q(pago__isnull=False,ingreso__isnull=True,egreso__isnull=True)|models.Q(pago__isnull=True,ingreso__isnull=False,egreso__isnull=True)|models.Q(pago__isnull=True,ingreso__isnull=True,egreso__isnull=False)), name='mov_caja_origen_unico'),
             models.CheckConstraint(condition=models.Q(importe__gt=Decimal('0')), name='mov_caja_importe_positivo'),
             models.CheckConstraint(condition=models.Q(metodo__in=['EFECTIVO', 'TRANSFERENCIA']), name='mov_caja_metodo'),
         ]

@@ -48,6 +48,10 @@ def _validar(pago, caja, obligaciones, convenios, cuotas, movimiento):
         raise ValidationError('Recibo histórico sin caja: anulación bloqueada hasta definir su tratamiento institucional.')
     if caja.estado != 'ABIERTA':
         raise ValidationError('La caja está cerrada. Su anulación requiere una política de ajustes posterior al cierre aún no autorizada.')
+    if pago.metodo_pago == 'EFECTIVO':
+        from .caja import totales
+        if Decimal(totales(caja)['disponible']) < pago.monto_total:
+            raise ValidationError('El pago respalda desembolsos posteriores. No hay efectivo disponible para reservar su anulación.')
     if (movimiento.operador_id != pago.usuario_id or movimiento.importe != pago.monto_total or
             movimiento.metodo != pago.metodo_pago or movimiento.referencia != (pago.referencia or '')):
         raise ValidationError('El movimiento y el recibo no coinciden. Se requiere revisión.')

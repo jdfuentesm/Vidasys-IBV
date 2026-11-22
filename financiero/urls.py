@@ -1,7 +1,18 @@
 from django.urls import path
-from . import views, becas_views, convenios_views, caja_views
+from . import views, becas_views, convenios_views, caja_views, operaciones_views
 
 urlpatterns = [
+    path('operaciones/', operaciones_views.panel, name='operaciones_panel'),
+    path('operaciones/ingresos/nuevo/', operaciones_views.ingreso_nuevo, name='operaciones_ingreso_nuevo'),
+    path('operaciones/ingresos/<int:registro_id>/', operaciones_views.ingreso_detalle, name='operaciones_ingreso'),
+    path('operaciones/egresos/nuevo/', operaciones_views.egreso_nuevo, name='operaciones_egreso_nuevo'),
+    path('operaciones/egresos/<int:solicitud_id>/', operaciones_views.egreso_detalle, name='operaciones_egreso'),
+    path('operaciones/egresos/<int:solicitud_id>/desembolso/', operaciones_views.desembolso, name='operaciones_desembolso'),
+    path('operaciones/comprobantes/<int:documento_id>/', operaciones_views.documento, name='operaciones_documento'),
+    path('operaciones/anular/<str:tipo>/<int:registro_id>/', operaciones_views.anular, name='operaciones_anular'),
+    path('operaciones/anulaciones/<int:solicitud_id>/', operaciones_views.anulacion, name='operaciones_anulacion'),
+    path('operaciones/categorias/', operaciones_views.categorias, name='operaciones_categorias'),
+    path('operaciones/reportes/', operaciones_views.reporte, name='operaciones_reporte'),
     path('caja/', caja_views.listado, name='caja_listado'),
     path('caja/apertura/', caja_views.apertura, name='caja_apertura'),
     path('caja/<int:caja_id>/', caja_views.detalle, name='caja_detalle'),

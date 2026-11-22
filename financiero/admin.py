@@ -55,8 +55,16 @@ class ConceptoCobroAdmin(admin.ModelAdmin):
     ordering = ("nombre",)
 
 
+class CatalogoSoloConsulta:
+    def has_view_permission(self, request, obj=None):
+        return request.user.is_active and request.user.rol in ('SECRETARIA','ADMINISTRADOR','DIRECTORA') and super().has_view_permission(request,obj)
+    def has_add_permission(self, request): return False
+    def has_change_permission(self, request, obj=None): return False
+    def has_delete_permission(self, request, obj=None): return False
+
+
 @admin.register(CategoriaIngreso)
-class CategoriaIngresoAdmin(admin.ModelAdmin):
+class CategoriaIngresoAdmin(CatalogoSoloConsulta, admin.ModelAdmin):
     list_display = (
         "id_categoria_ingreso",
         "nombre",
@@ -71,7 +79,7 @@ class CategoriaIngresoAdmin(admin.ModelAdmin):
 
 
 @admin.register(CategoriaEgreso)
-class CategoriaEgresoAdmin(admin.ModelAdmin):
+class CategoriaEgresoAdmin(CatalogoSoloConsulta, admin.ModelAdmin):
     list_display = (
         "id_categoria_egreso",
         "nombre",
@@ -320,8 +328,13 @@ class AplicacionPagoCuotaAdmin(BecaSoloConsultaMixin, NoEliminarAdminMixin):
     ordering = ("-id_aplicacion_pago_cuota",)
 
 
+class OperacionSoloConsulta(BecaSoloConsultaMixin):
+    def has_view_permission(self, request, obj=None):
+        return request.user.is_active and request.user.rol in ('SECRETARIA','ADMINISTRADOR','DIRECTORA') and super().has_view_permission(request,obj)
+
+
 @admin.register(Ingreso)
-class IngresoAdmin(NoEliminarAdminMixin):
+class IngresoAdmin(OperacionSoloConsulta, NoEliminarAdminMixin):
     list_display = (
         "id_ingreso",
         "categoria_ingreso",
@@ -356,7 +369,7 @@ class IngresoAdmin(NoEliminarAdminMixin):
 
 
 @admin.register(Egreso)
-class EgresoAdmin(NoEliminarAdminMixin):
+class EgresoAdmin(OperacionSoloConsulta, NoEliminarAdminMixin):
     list_display = (
         "numero_egreso",
         "categoria_egreso",
