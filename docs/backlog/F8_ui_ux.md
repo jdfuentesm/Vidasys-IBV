@@ -20,3 +20,19 @@ F6 ya incorpora, dentro de su alcance: búsqueda por nombre, selección sin IDs 
 secciones, cálculo orientativo dinámico, selección automática del padrino de un compromiso,
 confirmaciones de Dirección, mensajes al estudiante y pantallas responsivas. No se rediseñan
 los módulos anteriores. Permanecen pendientes las mejoras integrales de esta tabla.
+
+## Actualización tras F7
+
+F7 incorpora exclusivamente su centro de consulta para Dirección/Administración:
+indicadores con enlaces, criterios visibles, filtros, gráficos etiquetados, detalle adaptable,
+CSV e impresión. No resuelve la navegación ni los formularios operativos de F1–F6.
+
+| Prioridad | Trabajo futuro | Criterio verificable |
+| --- | --- | --- |
+| Alta | Pruebas de comprensión de reportes con Dirección | Distingue resultado del período, saldo actual, compromiso y efectivo retenido sin asistencia. |
+| Media | Navegación compacta y selección de reportes favoritos por rol | Accede a sus consultas frecuentes en móvil con menos desplazamiento, sin ampliar permisos. |
+| Media | Grandes volúmenes en F7 | Medir en PostgreSQL aislado y reducir memoria/latencia de totales y exportaciones sin perder exactitud ni snapshot. |
+| Media | Integrar bandeja operativa y reportes | Enlaces de ida y vuelta conservan filtros y contexto sin habilitar decisiones desde GET. |
+
+La unificación definitiva de solvencia Django/SQL y la validación PostgreSQL son requisitos
+de integración previos al despliegue, no tareas cosméticas que puedan posponerse en F8.

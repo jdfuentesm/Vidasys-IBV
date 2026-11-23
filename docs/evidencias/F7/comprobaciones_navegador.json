@@ -1,0 +1,338 @@
+[
+  {
+    "rol": "directora",
+    "width": 390,
+    "tipo": "panel",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "directora",
+    "width": 390,
+    "tipo": "resultados",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "directora",
+    "width": 390,
+    "tipo": "cuentas",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "directora",
+    "width": 390,
+    "tipo": "solvencia",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "directora",
+    "width": 390,
+    "tipo": "beneficios",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "directora",
+    "width": 390,
+    "tipo": "convenios",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "directora",
+    "width": 390,
+    "tipo": "cajas",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "directora",
+    "width": 390,
+    "tipo": "auditoria",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "directora",
+    "width": 768,
+    "tipo": "panel",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "directora",
+    "width": 768,
+    "tipo": "resultados",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "directora",
+    "width": 768,
+    "tipo": "cuentas",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "directora",
+    "width": 768,
+    "tipo": "solvencia",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "directora",
+    "width": 768,
+    "tipo": "beneficios",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "directora",
+    "width": 768,
+    "tipo": "convenios",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "directora",
+    "width": 768,
+    "tipo": "cajas",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "directora",
+    "width": 768,
+    "tipo": "auditoria",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "directora",
+    "width": 1366,
+    "tipo": "panel",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "directora",
+    "width": 1366,
+    "tipo": "resultados",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "directora",
+    "width": 1366,
+    "tipo": "cuentas",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "directora",
+    "width": 1366,
+    "tipo": "solvencia",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "directora",
+    "width": 1366,
+    "tipo": "beneficios",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "directora",
+    "width": 1366,
+    "tipo": "convenios",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "directora",
+    "width": 1366,
+    "tipo": "cajas",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "directora",
+    "width": 1366,
+    "tipo": "auditoria",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "admin",
+    "width": 390,
+    "tipo": "panel",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "admin",
+    "width": 390,
+    "tipo": "resultados",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "admin",
+    "width": 390,
+    "tipo": "cuentas",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "admin",
+    "width": 390,
+    "tipo": "solvencia",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "admin",
+    "width": 390,
+    "tipo": "beneficios",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "admin",
+    "width": 390,
+    "tipo": "convenios",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "admin",
+    "width": 390,
+    "tipo": "cajas",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "admin",
+    "width": 390,
+    "tipo": "auditoria",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "admin",
+    "width": 768,
+    "tipo": "panel",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "admin",
+    "width": 768,
+    "tipo": "resultados",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "admin",
+    "width": 768,
+    "tipo": "cuentas",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "admin",
+    "width": 768,
+    "tipo": "solvencia",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "admin",
+    "width": 768,
+    "tipo": "beneficios",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "admin",
+    "width": 768,
+    "tipo": "convenios",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "admin",
+    "width": 768,
+    "tipo": "cajas",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "admin",
+    "width": 768,
+    "tipo": "auditoria",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "admin",
+    "width": 1366,
+    "tipo": "panel",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "admin",
+    "width": 1366,
+    "tipo": "resultados",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "admin",
+    "width": 1366,
+    "tipo": "cuentas",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "admin",
+    "width": 1366,
+    "tipo": "solvencia",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "admin",
+    "width": 1366,
+    "tipo": "beneficios",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "admin",
+    "width": 1366,
+    "tipo": "convenios",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "admin",
+    "width": 1366,
+    "tipo": "cajas",
+    "status": 200,
+    "overflow": false
+  },
+  {
+    "rol": "admin",
+    "width": 1366,
+    "tipo": "auditoria",
+    "status": 200,
+    "overflow": false
+  }
+]

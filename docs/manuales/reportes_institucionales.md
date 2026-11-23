@@ -145,3 +145,14 @@ Los reportes son síncronos; se recomienda aplicar filtros en volúmenes elevado
 instantáneas contables históricas ni reconstruyen saldos al corte. La exportación PDF es
 mediante navegador y no un archivo generado por una biblioteca del servidor. Esta entrega
 no constituye autorización de producción o publicación pública.
+
+## Centro financiero consolidado F7
+
+Para Dirección y Administración se añade un acceso separado desde Reportes y Finanzas:
+`/reportes/finanzas/`. Los ocho reportes anteriores y sus permisos se conservan; las
+consultas nuevas consolidan F1–F6 sin duplicar pagos, aplicaciones y movimientos.
+Usar este centro para la consulta financiera consolidada: separa período de efectivo,
+saldos actuales, beneficios, solvencia F6, convenios, cajas y auditoría. HTML pagina 25;
+CSV e impresión incluyen toda la selección. Secretaría, Maestro, Estudiante y Pastor
+Principal no reciben acceso adicional.
+[Manual y límites técnicos F7](../financiero/reportes_consolidados_F7.md).

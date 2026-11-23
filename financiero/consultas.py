@@ -25,12 +25,8 @@ def solvente_sql(estudiante):
 
 
 def solvente(estudiante):
-    base=solvente_sql(estudiante)
-    if base:return True
-    from .models import CoberturaPadrinazgo
-    if not CoberturaPadrinazgo.objects.filter(activa=True,solicitud__matricula__estudiante=estudiante).exists():return False
-    from .aportes import detalle_solvencia
-    return detalle_solvencia(estudiante)['solvente']
+    from .lectura import EstadoFinanciero
+    return EstadoFinanciero([estudiante]).solvencias[estudiante.pk]['solvente']
 
 
 def cuenta(estudiante):

@@ -197,3 +197,14 @@ exige revisión y no bloquea automáticamente al estudiante. Caja solo reconoce 
 recibido. El portal muestra saldo a cargo y cobertura sin datos del padrino. Prórrogas,
 sustituciones, cancelaciones notificadas y conversiones compatibles conservan historial.
 [Reglas aprobadas, permisos, pruebas y recorrido manual](../financiero/donaciones_padrinazgos.md).
+
+## Ampliación F7 — Reportes financieros consolidados
+
+Dirección y Administración: Finanzas → **Centro de reportes financieros**. Panel,
+resultados de efectivo, cuentas por cobrar, solvencia compatible con F6, beneficios,
+convenios, caja y auditoría. Filtros, CSV protegido e impresión institucional.
+Secretaría conserva sus consultas previas; no accede al centro consolidado.
+Los saldos son actuales; los flujos corresponden al período indicado. Compromisos no son
+ingresos y becas no son egresos. Las advertencias de datos históricos indican importes
+excluidos del resultado verificado, no ajustes realizados.
+[Fuentes, fórmulas, permisos, pruebas y recorrido F7](../financiero/reportes_consolidados_F7.md).

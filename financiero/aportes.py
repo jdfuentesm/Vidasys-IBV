@@ -43,24 +43,8 @@ def reservada(o,excluir=None):
 
 
 def detalle_solvencia(estudiante):
-    # La función SQL original sigue siendo la primera autoridad. Se agrega solo la excepción F6.
-    from .consultas import solvente_sql
-    base=solvente_sql(estudiante)
-    from .models import ConvenioPago
-    from .convenios import resumen
-    obs=list(Obligacion.objects.filter(matricula__estudiante=estudiante).select_related('matricula'))
-    financiero=cobertura=exigible=Decimal('0');filas=[]
-    for o in obs:
-        if o.estado=='ANULADA':continue
-        saldo=importes(o)[2];protegido=cubierta(o);cargo=max(saldo-protegido,Decimal('0'))
-        financiero+=saldo;cobertura+=protegido
-        if o.fecha_vencimiento<timezone.localdate() and cargo>0 and not ConvenioObligacion.objects.filter(obligacion=o,convenio__estado__in=('ACTIVO','CUMPLIDO')).exists():exigible+=cargo
-        filas.append({'obligacion':o.pk,'saldo':str(saldo),'cobertura':str(protegido),'cargo':str(cargo)})
-    convenios=ConvenioPago.objects.filter(estudiante=estudiante)
-    conflicto=convenios.filter(estado='INCUMPLIDO').exists() or any(resumen(c)['vencidas'] for c in convenios.filter(estado='ACTIVO'))
-    solvente=base or (cobertura>0 and exigible==0 and not conflicto)
-    return {'solvente':solvente,'por_padrinazgo':bool(solvente and cobertura>0),
-        'saldo_financiero':financiero,'cobertura_autorizada':cobertura,'saldo_estudiante':financiero-cobertura,'filas':filas}
+    from .lectura import EstadoFinanciero
+    return EstadoFinanciero([estudiante]).solvencias[estudiante.pk]
 
 
 def guardar_donante(*,usuario,clave,donante_id=None,**datos):
