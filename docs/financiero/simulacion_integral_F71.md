@@ -278,3 +278,101 @@ selectores. No se implementó el rediseño ni se hicieron entrevistas con usuari
 Archivos: `iniciar_simulacion.py`, paquete `simulacion` (settings, entorno, generador,
 validación y tests), este manual, evidencias F71 y actualización del backlog F8.
 No se modifica el código funcional de F1–F7 ni las migraciones existentes.
+
+## Acceso temporal desde el teléfono por Wi-Fi privada (`--lan`)
+
+El lanzador conserva su modo local: **sin `--lan` solo escucha en `127.0.0.1:8000`**.
+La opción explícita `--lan` escucha únicamente en la IP Windows autorizada
+**`192.168.1.154:8000`**, sin `0.0.0.0`, túneles ni exposición de otras interfaces.
+El acceso es para datos ficticios en una Wi-Fi privada de confianza; no usar en redes públicas.
+No se abren puertos del router ni se configura publicación en internet.
+
+Desde PowerShell, en la raíz del repositorio y con el entorno virtual habitual activado:
+
+```powershell
+$env:PYTHONUTF8 = '1'
+
+# Opcional: generar y conciliar sin abrir ningún servidor.
+python -B .\iniciar_simulacion.py --lan --comprobar --semilla 711 --fecha 2026-11-22
+
+# Iniciar el ensayo para Windows y el teléfono.
+python -B .\iniciar_simulacion.py --lan --semilla 711 --fecha 2026-11-22
+```
+
+En **ambos dispositivos** abrir exactamente:
+
+```text
+http://192.168.1.154:8000/login/
+```
+
+El teléfono debe usar la misma Wi-Fi. Utilizar la contraseña temporal impresa por la
+**ejecución que inicia el servidor**, no la de `--comprobar`, que ya fue descartada.
+Los usuarios son los mismos: por ejemplo `sim-directora`, `sim-secretaria` y
+`sim-estudiante-29`. No guardar la salida con contraseñas en archivos ni versionarla.
+No se modifica ni almacena ninguna credencial de producción.
+
+Ctrl+C detiene el acceso y descarta los datos. Para volver al modo exclusivo de la PC,
+quitar `--lan` y usar `http://127.0.0.1:8000/login/`. En modo LAN se utiliza la dirección
+192.168.1.154 también desde la PC: el proceso está ligado a esa interfaz concreta.
+Si cambia la IP de Windows, este modo debe revisarse; no se amplía automáticamente a
+otras direcciones ni se usa un comodín para ocultar el error de vinculación.
+
+### Hosts, CSRF y estáticos
+
+- Se agrega exclusivamente `192.168.1.154` a los hosts locales originales. No hay hosts
+  comodín; se conserva `testserver` para la conciliación interna, como en el ensayo básico.
+- Se configura únicamente `http://192.168.1.154:8000` como origen CSRF de confianza, con
+  esquema y puerto exactos. No se marca ninguna vista como exenta ni se omite el token.
+  Los POST sin token, con token incorrecto o desde otro origen/puerto siguen bloqueados.
+- Los formularios y las redirecciones relativas mantienen el mismo host del navegador;
+  las cookies son las originales de Django, sin ampliar su dominio.
+- En LAN, `DEBUG=False` evita páginas detalladas de errores. Para que el servidor de
+  desarrollo continúe sirviendo CSS, JavaScript y logotipos, se utiliza la opción de
+  Django `runserver(insecure=True)` **solo para sus archivos estáticos**. El nombre de
+  esa opción no significa omitir validaciones: CSRF, hosts, autenticación y permisos
+  siguen activos. No es configuración para un servidor productivo.
+- Se conserva SQLite `:memory:` y sus comprobaciones antes de preparar datos, servidor
+  en el mismo proceso, sin threading ni autoreload. `simulacion/settings.py`, modelos,
+  migraciones, servicios y reglas permanecen intactos.
+
+### Si Windows bloquea la conexión
+
+1. Confirmar con `ipconfig` que la interfaz Wi-Fi conserva `192.168.1.154`. Primero probar
+   la URL LAN desde la propia PC y verificar que el servidor terminó de generar los datos.
+2. Consultar `Get-NetConnectionProfile`: usar este modo únicamente en una red de confianza
+   identificada como **Private**. No convertir una red pública en privada para este ensayo.
+3. Si hace falta una excepción, crear una regla específica de Firewall de Windows, desde
+   PowerShell **como administrador**, limitada a esa IP, puerto y subred local:
+
+```powershell
+New-NetFirewallRule -Name 'VidaSYS-Simulacion-LAN-Temporal' `
+  -DisplayName 'VidaSYS simulación LAN temporal' `
+  -Direction Inbound -Action Allow -Protocol TCP `
+  -LocalAddress 192.168.1.154 -LocalPort 8000 `
+  -RemoteAddress LocalSubnet -Profile Private
+```
+
+No desactivar el firewall ni permitir el perfil público. Este comando es una excepción
+**local de Windows**, no una apertura del router. La regla no se crea automáticamente.
+Eliminar únicamente esa regla al terminar, si se creó para el ensayo:
+
+```powershell
+Remove-NetFirewallRule -Name 'VidaSYS-Simulacion-LAN-Temporal'
+```
+
+Si PC y teléfono siguen sin comunicarse, comprobar que no estén separados por una red de
+invitados, aislamiento Wi-Fi o VPN. No abrir puertos del router ni crear túneles para resolverlo.
+
+### Validación del ajuste LAN
+
+Se agregaron 13 pruebas: modo predeterminado, IP/origen exactos sin comodines,
+configuración de base intacta, login con CSRF real (`enforce_csrf_checks=True`), token
+faltante/incorrecto, origen ajeno o puerto distinto, host ajeno, rechazo LAN sin flag,
+continuidad de hosts locales, errores sin depuración y archivos estáticos con DEBUG apagado.
+La prueba `--lan --comprobar`, semilla 711 y fecha 2026-11-22, conserva 40 estudiantes,
+240 obligaciones y resultado USD 2.678,00 sin diferencias de conciliación.
+La regresión completa aprobó **649 pruebas**: los 636 casos anteriores y los 13 nuevos.
+
+Las pruebas HTTP simulan el host y origen LAN en SQLite aislado. El entorno remoto no
+posee la IP de su computadora Windows: la conectividad física teléfono/Wi-Fi/firewall debe
+confirmarse allí. No se modificó su firewall, router o configuración de red desde Codex.
