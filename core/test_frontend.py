@@ -43,11 +43,15 @@ class FrontendInstitucionalTests(TestCase):
         return html.split('<aside id="menu-app"',1)[1].split('</aside>',1)[0]
 
     def test_menu_exacto_por_rol_sin_enlaces_ficticios(self):
+        # F8.1 reorganiza la presentación; las rutas operativas conservan sus permisos.
+        finanzas=['finanzas_panel','caja_listado','operaciones_panel','becas_listado',
+                  'convenios_listado','aportes_panel','anulaciones_listado']
         esperados={
-            'MAESTRO':['dashboard','reportes','mis_cursos'],
-            'SECRETARIA':['dashboard','finanzas_panel','estudiantes','matricula_secretaria','reportes'],
-            'DIRECTORA':['dashboard','finanzas_panel','estudiantes','matricula_secretaria','reportes','autorizar_clase_extraordinaria'],
-            'ADMINISTRADOR':['dashboard','finanzas_panel','estudiantes','matricula_secretaria','usuarios','reportes'],
+            'MAESTRO':['dashboard','mis_cursos','solicitudes_academicas','reportes'],
+            'SECRETARIA':['dashboard','estudiantes','matricula_secretaria',*finanzas,'reportes'],
+            'DIRECTORA':['dashboard','estudiantes','matricula_secretaria','solicitudes_academicas',
+                         'autorizar_clase_extraordinaria',*finanzas,'reportes','finanzas_centro'],
+            'ADMINISTRADOR':['dashboard','estudiantes','matricula_secretaria','usuarios',*finanzas,'reportes','finanzas_centro'],
             'ESTUDIANTE':['dashboard','portal_academico','portal_cuenta'], 'PASTOR_PRINCIPAL':['dashboard'],
         }
         for rol,usuario in self.usuarios.items():

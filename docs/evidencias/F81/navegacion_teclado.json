@@ -1,0 +1,1078 @@
+{
+  "controles": [
+    {
+      "control": "Cantidad de enlaces directora",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso directora /",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso directora /estudiantes/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso directora /matriculas/nueva/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso directora /solicitudes-academicas/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso directora /autorizar-clase/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso directora /finanzas/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso directora /finanzas/caja/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso directora /finanzas/operaciones/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso directora /finanzas/becas/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso directora /finanzas/convenios/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso directora /finanzas/aportes/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso directora /finanzas/anulaciones/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso directora /reportes/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso directora /reportes/finanzas/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento inicio directora 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú cerrado directora 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú abierto directora 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Estado ARIA directora 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Foco dentro directora 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento menú directora 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Escape y foco directora 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento inicio directora 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú cerrado directora 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú abierto directora 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Estado ARIA directora 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Foco dentro directora 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento menú directora 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Escape y foco directora 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento inicio directora 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú cerrado directora 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú abierto directora 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Estado ARIA directora 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Foco dentro directora 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento menú directora 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Escape y foco directora 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento inicio directora 1366",
+      "resultado": "OK"
+    },
+    {
+      "control": "Grupo por teclado",
+      "resultado": "OK"
+    },
+    {
+      "control": "Enlace siguiente al grupo",
+      "resultado": "OK"
+    },
+    {
+      "control": "Foco al pasar a móvil",
+      "resultado": "OK"
+    },
+    {
+      "control": "Foco al pasar a escritorio",
+      "resultado": "OK"
+    },
+    {
+      "control": "Saltar contenido primer tab",
+      "resultado": "OK"
+    },
+    {
+      "control": "Destino salto enfocable",
+      "resultado": "OK"
+    },
+    {
+      "control": "Criterios plegados",
+      "resultado": "OK"
+    },
+    {
+      "control": "Criterios completos al imprimir",
+      "resultado": "OK"
+    },
+    {
+      "control": "Criterios restaurados",
+      "resultado": "OK"
+    },
+    {
+      "control": "Ayuda con teclado",
+      "resultado": "OK"
+    },
+    {
+      "control": "Vista imprimible criterios abiertos",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin navegación en impresión",
+      "resultado": "OK"
+    },
+    {
+      "control": "Cantidad de enlaces administracion",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso administracion /",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso administracion /estudiantes/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso administracion /matriculas/nueva/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso administracion /usuarios/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso administracion /finanzas/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso administracion /finanzas/caja/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso administracion /finanzas/operaciones/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso administracion /finanzas/becas/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso administracion /finanzas/convenios/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso administracion /finanzas/aportes/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso administracion /finanzas/anulaciones/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso administracion /reportes/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso administracion /reportes/finanzas/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento inicio administracion 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú cerrado administracion 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú abierto administracion 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Estado ARIA administracion 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Foco dentro administracion 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento menú administracion 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Escape y foco administracion 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento inicio administracion 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú cerrado administracion 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú abierto administracion 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Estado ARIA administracion 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Foco dentro administracion 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento menú administracion 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Escape y foco administracion 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento inicio administracion 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú cerrado administracion 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú abierto administracion 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Estado ARIA administracion 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Foco dentro administracion 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento menú administracion 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Escape y foco administracion 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento inicio administracion 1366",
+      "resultado": "OK"
+    },
+    {
+      "control": "Cantidad de enlaces secretaria",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso secretaria /",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso secretaria /estudiantes/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso secretaria /matriculas/nueva/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso secretaria /finanzas/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso secretaria /finanzas/caja/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso secretaria /finanzas/operaciones/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso secretaria /finanzas/becas/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso secretaria /finanzas/convenios/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso secretaria /finanzas/aportes/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso secretaria /finanzas/anulaciones/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso secretaria /reportes/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento inicio secretaria 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú cerrado secretaria 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú abierto secretaria 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Estado ARIA secretaria 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Foco dentro secretaria 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento menú secretaria 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Escape y foco secretaria 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento inicio secretaria 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú cerrado secretaria 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú abierto secretaria 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Estado ARIA secretaria 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Foco dentro secretaria 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento menú secretaria 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Escape y foco secretaria 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento inicio secretaria 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú cerrado secretaria 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú abierto secretaria 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Estado ARIA secretaria 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Foco dentro secretaria 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento menú secretaria 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Escape y foco secretaria 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento inicio secretaria 1366",
+      "resultado": "OK"
+    },
+    {
+      "control": "Cantidad de enlaces maestro",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso maestro /",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso maestro /mis-cursos/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso maestro /solicitudes-academicas/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso maestro /reportes/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento inicio maestro 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú cerrado maestro 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú abierto maestro 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Estado ARIA maestro 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Foco dentro maestro 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento menú maestro 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Escape y foco maestro 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento inicio maestro 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú cerrado maestro 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú abierto maestro 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Estado ARIA maestro 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Foco dentro maestro 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento menú maestro 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Escape y foco maestro 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento inicio maestro 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú cerrado maestro 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú abierto maestro 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Estado ARIA maestro 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Foco dentro maestro 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento menú maestro 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Escape y foco maestro 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento inicio maestro 1366",
+      "resultado": "OK"
+    },
+    {
+      "control": "Cantidad de enlaces estudiante",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso estudiante /",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso estudiante /portal/academico/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso estudiante /portal/cuenta/",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento inicio estudiante 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú cerrado estudiante 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú abierto estudiante 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Estado ARIA estudiante 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Foco dentro estudiante 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento menú estudiante 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Escape y foco estudiante 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento inicio estudiante 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú cerrado estudiante 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú abierto estudiante 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Estado ARIA estudiante 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Foco dentro estudiante 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento menú estudiante 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Escape y foco estudiante 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento inicio estudiante 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú cerrado estudiante 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú abierto estudiante 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Estado ARIA estudiante 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Foco dentro estudiante 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento menú estudiante 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Escape y foco estudiante 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento inicio estudiante 1366",
+      "resultado": "OK"
+    },
+    {
+      "control": "Cantidad de enlaces pastor",
+      "resultado": "OK"
+    },
+    {
+      "control": "Acceso pastor /",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento inicio pastor 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú cerrado pastor 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú abierto pastor 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Estado ARIA pastor 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Foco dentro pastor 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento menú pastor 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Escape y foco pastor 320",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento inicio pastor 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú cerrado pastor 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú abierto pastor 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Estado ARIA pastor 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Foco dentro pastor 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento menú pastor 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Escape y foco pastor 390",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento inicio pastor 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú cerrado pastor 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú abierto pastor 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Estado ARIA pastor 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Foco dentro pastor 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento menú pastor 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Escape y foco pastor 768",
+      "resultado": "OK"
+    },
+    {
+      "control": "Sin desbordamiento inicio pastor 1366",
+      "resultado": "OK"
+    },
+    {
+      "control": "Menú sin JavaScript visible",
+      "resultado": "OK"
+    },
+    {
+      "control": "Grupo nativo sin JavaScript",
+      "resultado": "OK"
+    },
+    {
+      "control": "Destino sin JavaScript",
+      "resultado": "OK"
+    }
+  ],
+  "matriz": [
+    {
+      "rol": "directora",
+      "ruta": "/",
+      "texto": "Inicio",
+      "status": 200
+    },
+    {
+      "rol": "directora",
+      "ruta": "/estudiantes/",
+      "texto": "Estudiantes",
+      "status": 200
+    },
+    {
+      "rol": "directora",
+      "ruta": "/matriculas/nueva/",
+      "texto": "Matrículas",
+      "status": 200
+    },
+    {
+      "rol": "directora",
+      "ruta": "/solicitudes-academicas/",
+      "texto": "Solicitudes académicas",
+      "status": 200
+    },
+    {
+      "rol": "directora",
+      "ruta": "/autorizar-clase/",
+      "texto": "Clases extraordinarias",
+      "status": 200
+    },
+    {
+      "rol": "directora",
+      "ruta": "/finanzas/",
+      "texto": "Cuentas y cobros",
+      "status": 200
+    },
+    {
+      "rol": "directora",
+      "ruta": "/finanzas/caja/",
+      "texto": "Caja y cierres",
+      "status": 200
+    },
+    {
+      "rol": "directora",
+      "ruta": "/finanzas/operaciones/",
+      "texto": "Ingresos y egresos",
+      "status": 200
+    },
+    {
+      "rol": "directora",
+      "ruta": "/finanzas/becas/",
+      "texto": "Becas",
+      "status": 200
+    },
+    {
+      "rol": "directora",
+      "ruta": "/finanzas/convenios/",
+      "texto": "Convenios de pago",
+      "status": 200
+    },
+    {
+      "rol": "directora",
+      "ruta": "/finanzas/aportes/",
+      "texto": "Donaciones y padrinazgos",
+      "status": 200
+    },
+    {
+      "rol": "directora",
+      "ruta": "/finanzas/anulaciones/",
+      "texto": "Anulaciones de pagos",
+      "status": 200
+    },
+    {
+      "rol": "directora",
+      "ruta": "/reportes/",
+      "texto": "Reportes institucionales",
+      "status": 200
+    },
+    {
+      "rol": "directora",
+      "ruta": "/reportes/finanzas/",
+      "texto": "Reportes financieros",
+      "status": 200
+    },
+    {
+      "rol": "administracion",
+      "ruta": "/",
+      "texto": "Inicio",
+      "status": 200
+    },
+    {
+      "rol": "administracion",
+      "ruta": "/estudiantes/",
+      "texto": "Estudiantes",
+      "status": 200
+    },
+    {
+      "rol": "administracion",
+      "ruta": "/matriculas/nueva/",
+      "texto": "Matrículas",
+      "status": 200
+    },
+    {
+      "rol": "administracion",
+      "ruta": "/usuarios/",
+      "texto": "Usuarios y accesos",
+      "status": 200
+    },
+    {
+      "rol": "administracion",
+      "ruta": "/finanzas/",
+      "texto": "Cuentas y cobros",
+      "status": 200
+    },
+    {
+      "rol": "administracion",
+      "ruta": "/finanzas/caja/",
+      "texto": "Caja y cierres",
+      "status": 200
+    },
+    {
+      "rol": "administracion",
+      "ruta": "/finanzas/operaciones/",
+      "texto": "Ingresos y egresos",
+      "status": 200
+    },
+    {
+      "rol": "administracion",
+      "ruta": "/finanzas/becas/",
+      "texto": "Becas",
+      "status": 200
+    },
+    {
+      "rol": "administracion",
+      "ruta": "/finanzas/convenios/",
+      "texto": "Convenios de pago",
+      "status": 200
+    },
+    {
+      "rol": "administracion",
+      "ruta": "/finanzas/aportes/",
+      "texto": "Donaciones y padrinazgos",
+      "status": 200
+    },
+    {
+      "rol": "administracion",
+      "ruta": "/finanzas/anulaciones/",
+      "texto": "Anulaciones de pagos",
+      "status": 200
+    },
+    {
+      "rol": "administracion",
+      "ruta": "/reportes/",
+      "texto": "Reportes institucionales",
+      "status": 200
+    },
+    {
+      "rol": "administracion",
+      "ruta": "/reportes/finanzas/",
+      "texto": "Reportes financieros",
+      "status": 200
+    },
+    {
+      "rol": "secretaria",
+      "ruta": "/",
+      "texto": "Inicio",
+      "status": 200
+    },
+    {
+      "rol": "secretaria",
+      "ruta": "/estudiantes/",
+      "texto": "Estudiantes",
+      "status": 200
+    },
+    {
+      "rol": "secretaria",
+      "ruta": "/matriculas/nueva/",
+      "texto": "Matrículas",
+      "status": 200
+    },
+    {
+      "rol": "secretaria",
+      "ruta": "/finanzas/",
+      "texto": "Cuentas y cobros",
+      "status": 200
+    },
+    {
+      "rol": "secretaria",
+      "ruta": "/finanzas/caja/",
+      "texto": "Caja y cierres",
+      "status": 200
+    },
+    {
+      "rol": "secretaria",
+      "ruta": "/finanzas/operaciones/",
+      "texto": "Ingresos y egresos",
+      "status": 200
+    },
+    {
+      "rol": "secretaria",
+      "ruta": "/finanzas/becas/",
+      "texto": "Becas",
+      "status": 200
+    },
+    {
+      "rol": "secretaria",
+      "ruta": "/finanzas/convenios/",
+      "texto": "Convenios de pago",
+      "status": 200
+    },
+    {
+      "rol": "secretaria",
+      "ruta": "/finanzas/aportes/",
+      "texto": "Donaciones y padrinazgos",
+      "status": 200
+    },
+    {
+      "rol": "secretaria",
+      "ruta": "/finanzas/anulaciones/",
+      "texto": "Anulaciones de pagos",
+      "status": 200
+    },
+    {
+      "rol": "secretaria",
+      "ruta": "/reportes/",
+      "texto": "Reportes institucionales",
+      "status": 200
+    },
+    {
+      "rol": "maestro",
+      "ruta": "/",
+      "texto": "Inicio",
+      "status": 200
+    },
+    {
+      "rol": "maestro",
+      "ruta": "/mis-cursos/",
+      "texto": "Mis cursos",
+      "status": 200
+    },
+    {
+      "rol": "maestro",
+      "ruta": "/solicitudes-academicas/",
+      "texto": "Mis solicitudes",
+      "status": 200
+    },
+    {
+      "rol": "maestro",
+      "ruta": "/reportes/",
+      "texto": "Reportes académicos",
+      "status": 200
+    },
+    {
+      "rol": "estudiante",
+      "ruta": "/",
+      "texto": "Inicio",
+      "status": 200
+    },
+    {
+      "rol": "estudiante",
+      "ruta": "/portal/academico/",
+      "texto": "Mis materias",
+      "status": 200
+    },
+    {
+      "rol": "estudiante",
+      "ruta": "/portal/cuenta/",
+      "texto": "Mi cuenta",
+      "status": 200
+    },
+    {
+      "rol": "pastor",
+      "ruta": "/",
+      "texto": "Inicio",
+      "status": 200
+    }
+  ]
+}

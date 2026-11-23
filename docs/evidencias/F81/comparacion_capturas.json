@@ -1,0 +1,38 @@
+[
+  {
+    "estado": "antes",
+    "rol": "directora",
+    "ancho": 390,
+    "alto_captura": 2570
+  },
+  {
+    "estado": "despues",
+    "rol": "directora",
+    "ancho": 390,
+    "alto_captura": 1374
+  },
+  {
+    "estado": "antes",
+    "rol": "directora",
+    "ancho": 1366,
+    "alto_captura": 1387
+  },
+  {
+    "estado": "despues",
+    "rol": "directora",
+    "ancho": 1366,
+    "alto_captura": 952
+  },
+  {
+    "estado": "antes",
+    "rol": "secretaria",
+    "ancho": 768,
+    "alto_captura": 1208
+  },
+  {
+    "estado": "despues",
+    "rol": "secretaria",
+    "ancho": 768,
+    "alto_captura": 952
+  }
+]

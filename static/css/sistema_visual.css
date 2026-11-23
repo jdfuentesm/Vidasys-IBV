@@ -1,0 +1,186 @@
+/* F8.1: tokens y componentes compartidos. Los módulos conservan sus contratos y disposición. */
+:root {
+    --ui-azul: #1765a1;
+    --ui-marino: #102c50;
+    --ui-acento: #e21d2b;
+    --ui-fondo: #f3f6fa;
+    --ui-superficie: #ffffff;
+    --ui-texto: #24364b;
+    --ui-secundario: #53657a;
+    --ui-borde: #d7e0eb;
+    --ui-exito: #21643e;
+    --ui-exito-fondo: #edf7f0;
+    --ui-error: #982c38;
+    --ui-error-fondo: #fff1f2;
+    --ui-aviso: #79520a;
+    --ui-aviso-fondo: #fff6df;
+    --ui-radio: .75rem;
+    --ui-altura-cabecera: 96px;
+    --ui-espacio-1: .25rem;
+    --ui-espacio-2: .5rem;
+    --ui-espacio-3: .75rem;
+    --ui-espacio-4: 1rem;
+    --ui-espacio-6: 1.5rem;
+    --ui-espacio-8: 2rem;
+    --azul-marino: var(--ui-marino);
+    --azul-institucional: var(--ui-azul);
+    --fondo: var(--ui-fondo);
+    --texto: var(--ui-texto);
+    --texto-suave: var(--ui-secundario);
+    --borde: var(--ui-borde);
+    font-size: 16px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: var(--ui-texto);
+}
+body { line-height: 1.5; background: var(--ui-fondo); }
+h1 { font-size: clamp(1.5rem, 2.5vw, 2rem); letter-spacing: -.025em; color: var(--ui-marino); }
+h2 { font-size: 1.2rem; line-height: 1.35; }
+h3 { font-size: 1.05rem; line-height: 1.4; }
+a { color: var(--ui-azul); text-underline-offset: .2em; }
+p { line-height: 1.6; }
+.seccion { font-size: .75rem; color: var(--ui-secundario); letter-spacing: .065em; }
+small { font-size: .8125rem; }
+:where(a,button,input,select,textarea,summary,[tabindex]):focus-visible {
+    outline: 3px solid #a75b00; outline-offset: 3px;
+}
+.app-main:focus { outline: none; }
+#contenido,.app-main :is(a,button,input,select,textarea,summary) { scroll-margin-top: calc(var(--ui-altura-cabecera) + 16px); scroll-margin-bottom: 16px; }
+input,select,textarea,button { font: inherit; }
+input:not([type=checkbox]):not([type=radio]),select,textarea {
+    border: 1px solid #78899f; border-radius: .5rem; color: var(--ui-texto); background: white;
+    padding: .65rem .75rem; max-width: 100%;
+}
+input:not([type=checkbox]):not([type=radio]),select { min-height: 44px; }
+textarea { min-height: 100px; resize: vertical; }
+input[type=checkbox],input[type=radio] { min-height: 0; width: 1.2rem; height: 1.2rem; accent-color: var(--ui-azul); }
+input:disabled,select:disabled,textarea:disabled { background: #eef1f5; color: #42526a; }
+input[aria-invalid=true],select[aria-invalid=true],textarea[aria-invalid=true] { border: 2px solid var(--ui-error); background: var(--ui-error-fondo); }
+label { font-size: .9375rem; font-weight: 650; margin-bottom: .4rem; }
+button,.ui-boton,.app-main .est-boton {
+    display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 44px;
+    padding: .65rem 1rem; border: 1px solid var(--ui-azul); border-radius: .5rem;
+    background: var(--ui-azul); color: white; font-size: .9375rem; font-weight: 650;
+    text-decoration: none; cursor: pointer;
+}
+button:hover,.ui-boton:hover,.app-main .est-boton:hover { background: var(--ui-marino); color: white; border-color: var(--ui-marino); }
+button:disabled { opacity: .65; cursor: not-allowed; }
+.boton-secundario,.ui-boton--secundario { background: white; color: var(--ui-azul); border-color: #91acc7; }
+.ui-panel,.panel-curso,.acceso-tarjeta,.estado-vacio { border-radius: var(--ui-radio); border-color: var(--ui-borde); box-shadow: none; }
+.panel-curso { padding: 1.25rem; margin-top: 1rem; }
+.ui-encabezado-pagina { margin: .25rem 0 1.75rem; }
+.ui-encabezado-pagina h1 { margin-top: .3rem; }
+.ui-encabezado-pagina>p:last-child { color: var(--ui-secundario); }
+.ui-tareas { grid-template-columns: repeat(auto-fit,minmax(min(100%,240px),1fr)); gap: 1rem; }
+.ui-tarea { padding: 1.5rem; border-top: 3px solid var(--ui-azul); }
+.ui-tarea .acceso-icono { width: 40px; height: 40px; margin-bottom: .5rem; border-radius: .625rem; }
+.ui-tarea h3 { font-size: 1.15rem; margin-block: .5rem; }
+.ui-tarea p { font-size: .9375rem; }
+.ui-tarea .acceso-enlace { font-size: .875rem; padding-top: 1rem; }
+.ui-otras-tareas { margin-top: 1.5rem; max-width: 100%; padding: 1rem; background: white; border: 1px solid var(--ui-borde); border-radius: var(--ui-radio); }
+.ui-otras-tareas[open] { padding: 1rem; }
+.ui-otras-tareas ul,.ui-cambio-seccion ul { list-style: none; padding: 0; margin: .5rem 0 0; }
+.ui-otras-tareas a,.ui-cambio-seccion a { display: block; padding: .65rem .5rem; min-height: 44px; }
+.ui-otras-tareas summary,.ui-ayuda summary,.ui-cambio-seccion summary { min-height: 44px; align-content: center; }
+.ui-aviso,.mensaje { font-size: .9375rem; border-radius: .625rem; padding: .875rem 1rem; margin-block: 1rem; }
+.ui-aviso p { margin: 0; }
+.mensaje.success { color: var(--ui-exito); background: var(--ui-exito-fondo); }
+.mensaje.error { color: var(--ui-error); background: var(--ui-error-fondo); }
+.mensaje.warning { color: var(--ui-aviso); background: var(--ui-aviso-fondo); border-color: #b58a32; }
+.mensaje.info { color: var(--ui-marino); background: #eaf2fa; }
+.errorlist { color: var(--ui-error); font-size: .875rem; }
+.ui-estado,.estado { border-radius: .4rem; font-size: .875rem; }
+.estado--aprobada { color: var(--ui-exito); background: var(--ui-exito-fondo); }
+.estado--reprobada { color: var(--ui-error); background: var(--ui-error-fondo); }
+.estado--pendiente { color: var(--ui-aviso); background: var(--ui-aviso-fondo); }
+.estado--bloqueada { color: #42526a; background: #e9eef5; }
+.ui-tabla,table,dl,input[type=number] { font-variant-numeric: tabular-nums; }
+.ui-tabla { width: 100%; border-collapse: collapse; }
+.ui-tabla th,.ui-tabla td { padding: .75rem; border-bottom: 1px solid var(--ui-borde); text-align: left; }
+.ui-tabla th { background: #edf3f9; color: var(--ui-marino); }
+.grupos th,thead .estudiante { background: var(--ui-marino); }
+.ui-ayuda { max-width: none; margin-block: .25rem; font-size: .875rem; padding: 0; }
+.ui-ayuda[open] { padding: .5rem .75rem; background: white; border: 1px solid var(--ui-borde); border-radius: .5rem; }
+.ui-ayuda summary { color: var(--ui-azul); font-weight: 600; }
+.ui-ayuda>div { padding-top: .25rem; }
+/* Estructura general: marca original, encabezado compacto y navegación por tareas. */
+.app-header { position: sticky; top: 0; z-index: 20; padding: .5rem 1.5rem; min-height: 96px; gap: 1rem; flex-wrap: nowrap; }
+.app-marca { gap: .75rem; width: auto; }
+.app-logotipo { width: 120px; height: auto; }
+.app-institucion { font-size: .6875rem; gap: .5rem; }
+.app-escudo { width: 36px; height: auto; }
+.app-identidad { margin-left: auto; gap: 1rem; font-size: .875rem; }
+.app-identidad>span { max-width: 250px; }
+.app-identidad small { font-size: .8125rem; margin-top: .125rem; }
+.app-salir { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; font-size: .875rem; }
+.app-frame { grid-template-columns: 232px minmax(0,1fr); min-height: calc(100dvh - 96px); background: linear-gradient(to right,var(--ui-marino) 232px,var(--ui-fondo) 232px); }
+.app-sidebar { position: sticky; top: 96px; align-self: start; max-height: calc(100dvh - 96px); overflow-y: auto; padding: 1.25rem .75rem; min-height: calc(100dvh - 96px); border: 0; scrollbar-width: thin; }
+.app-sidebar a { padding: .65rem .75rem; font-size: .875rem; min-height: 44px; color: #e2eaf5; }
+.app-sidebar a:hover { background: #ffffff15; }
+.app-sidebar a[aria-current=page] { background: #25466d; box-shadow: inset 3px 0 #96c9f3; color: white; }
+.app-sidebar :is(a,summary):focus-visible { outline-color: #ffd085; }
+.menu-titulo { margin-bottom: .75rem; font-size: .6875rem; color: #b8c9de; }
+.menu-grupo,.menu-grupo[open] { max-width: none; margin: .25rem 0; padding: 0; border: 0; background: transparent; font-size: inherit; }
+.menu-grupo summary { display: flex; align-items: center; gap: .75rem; min-height: 44px; padding: .65rem .75rem; border-radius: .5rem; color: #e2eaf5; list-style: none; font-size: .875rem; font-weight: 600; }
+.menu-grupo summary::-webkit-details-marker { display: none; }
+.menu-grupo summary:hover { background: #ffffff15; }
+.menu-flecha { margin-left: auto; font-size: 1.1rem; }
+.menu-grupo[open] .menu-flecha { transform: rotate(180deg); }
+.menu-grupo ul { margin: .25rem 0 .5rem .9rem; padding-left: .5rem; border-left: 1px solid #446487; }
+.menu-grupo ul .ui-icono { display: none; }
+.menu-grupo ul a { font-size: .8125rem; }
+.menu-ayuda { margin: 1.25rem .75rem 0; font-size: .75rem; color: #e2eaf5; }
+.menu-ayuda small { font-size: .75rem; color: #b8c9de; }
+.app-main { padding: 1.75rem clamp(1rem,3vw,2.5rem); }
+.app-footer { font-size: .75rem; }
+.ui-seccion-nav { display: flex; align-items: center; justify-content: space-between; gap: .75rem; flex-wrap: wrap; margin-bottom: 1.25rem; padding-bottom: .75rem; border-bottom: 1px solid var(--ui-borde); }
+.ui-seccion-nav>p { font-size: .875rem; color: var(--ui-secundario); }
+.ui-seccion-nav strong { color: var(--ui-marino); font-weight: 600; }
+.ui-cambio-seccion { position: relative; max-width: none; margin: 0; padding: 0; font-size: .875rem; }
+.ui-cambio-seccion[open] { padding: .5rem .75rem; border: 1px solid var(--ui-borde); border-radius: .5rem; background: white; }
+.ui-cambio-seccion summary { color: var(--ui-azul); }
+.ui-seccion-nav .ui-cambio-seccion[open] { flex-basis: 100%; }
+.ui-seccion-nav .ui-cambio-seccion ul { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(220px,100%),1fr)); gap: .25rem 1rem; }
+.ui-cambio-seccion a[aria-current=page] { font-weight: 700; color: var(--ui-marino); }
+.ui-elegir-reporte { margin-block: 1rem; }
+.ui-elegir-reporte .f7-menu { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(240px,100%),1fr)); gap: .5rem; }
+.ui-elegir-reporte .f7-menu a { background: white; font-size: .875rem; }
+.ui-elegir-reporte .f7-menu a[aria-current=page] { background: var(--ui-marino); color: white; }
+.f7 .f7-alcance { border-radius: .5rem; padding: .875rem 1rem; }
+.f7 .f7-alcance h2 { margin: 0 0 .5rem; font-size: 1rem; }
+.f7 .f7-filtros { border-radius: var(--ui-radio); }
+.f7 .f7-filtros input,.f7 .f7-filtros select { min-height: 44px; }
+/* Menú en el flujo: no tapa ni atrapa controles. Sin JS siempre está disponible. */
+@media(min-width:1001px) { .app-header .nav-toggle { display: none; } .js .app-sidebar[data-abierto=false] { display: block; } }
+@media(max-width:1000px) {
+    :root { --ui-altura-cabecera: 80px; }
+    .app-header { padding: .5rem .75rem; gap: .5rem; min-height: 80px; }
+    .app-marca { width: auto; flex: 0 1 auto; justify-content: start; gap: .5rem; }
+    .app-logotipo { width: 96px; }
+    .app-institucion { border: 0; padding: 0; }
+    .app-institucion>span { display: none; }
+    .app-escudo { width: 24px; }
+    .app-identidad { width: auto; margin-left: auto; gap: .375rem; font-size: .75rem; }
+    .app-identidad>span { max-width: 120px; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .app-identidad small { font-size: .6875rem; }
+    .app-salir { font-size: .8125rem; padding: .375rem; min-height: 44px; }
+    .js .app-header .nav-toggle { display: inline-flex; width: auto; padding: .5rem; font-size: .8125rem; background: #eef3fa; color: var(--ui-marino); border: 1px solid #b6c7da; }
+    .app-header .nav-toggle:hover { background: #dce8f7; color: var(--ui-marino); }
+    .app-frame { display: block; min-height: calc(100dvh - 80px); background: var(--ui-fondo); }
+    .app-sidebar { position: static; max-height: none; min-height: 0; padding: 1rem; }
+    .js .app-sidebar[data-abierto=false] { display: none; }
+    .app-main { padding: 1.25rem .875rem; }
+    .ui-encabezado-pagina { margin-bottom: 1.25rem; }
+    .ui-tareas { gap: .75rem; }
+    .ui-tarea { padding: 1.25rem; }
+    .ui-seccion-nav { margin-bottom: 1rem; }
+}
+@media(max-width:400px) { .app-identidad>span { max-width: 90px; } }
+@media(max-width:360px) { .app-logotipo { width: 80px; } .app-identidad>span { max-width: 68px; } }
+@media(prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior: auto !important; transition: none !important; } }
+@media print {
+    .app-header,.app-sidebar,.app-footer,.saltar,.ui-seccion-nav,.ui-otras-tareas,.ui-elegir-reporte { display: none !important; }
+    .app-frame { display: block; background: white; }
+    .app-main { padding: 0; }
+    .ui-ayuda { border: 0; padding: 0; }
+    .ui-ayuda summary { display: none; }
+}

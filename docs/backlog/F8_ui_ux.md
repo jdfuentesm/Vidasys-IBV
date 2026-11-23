@@ -1,8 +1,9 @@
-# F8 — Backlog de UI/UX institucional (sin implementar F8)
+# F8 — Backlog de UI/UX institucional
 
 Objetivo futuro: usuarios con conocimientos tecnológicos básicos puedan completar sus
 operaciones sin asistencia, conservando la identidad institucional y los permisos.
-Este archivo registra deuda; no autoriza ni implementa un rediseño integral.
+Este archivo registra deuda y entregas. F8.1 está implementada como base visual y de navegación;
+las etapas F8.2–F8.6 siguen pendientes de autorización. Las entradas históricas conservan su contexto.
 
 | Prioridad | Trabajo futuro | Criterio verificable |
 | --- | --- | --- |
@@ -57,3 +58,30 @@ usuarios reales. Estos hallazgos técnicos no autorizan modificar las reglas ins
 [Evidencias y medidas](../evidencias/F71/README.md). Los reportes F7 respondieron sin errores
 en este volumen; sus tiempos locales no certifican rendimiento ni concurrencia PostgreSQL.
 No se implementó ninguno de los rediseños de esta tabla durante F7.1.
+
+
+## Entrega F8.1 — Sistema visual y navegación general
+
+Implementado: tokens visuales, estilos comunes, encabezado compacto, navegación agrupada
+por rol, tres prioridades como máximo en inicio, selección activa por ruta, contexto de
+sección, acceso a solicitudes del maestro y ayudas técnicas plegables. Componentes nativos
+con teclado, foco, Escape, alternativa sin JS e impresión completa.
+
+Validación: 636 pruebas (620 conservadas + 16 nuevas), 114 pantallas con datos F7.1 y
+199 controles de navegación/accesibilidad, 46 destinos por rol y 12 pares de contraste.
+[Diseño, matriz y recorrido](../frontend/F81_sistema_visual.md) ·
+[Evidencias antes/después](../evidencias/F81/README.md).
+
+| Estado | Trabajo | Seguimiento |
+| --- | --- | --- |
+| Base resuelta en F8.1 | Navegación y prioridades por rol, estilo y componentes comunes | Pendiente comprobar aprendizaje con usuarios reales y lectores de pantalla. |
+| Base resuelta en F8.1 | Menú financiero y selector de reportes compactos; ayuda técnica accesible | Mantener criterios, filtros y avisos críticos visibles; impresión íntegra. |
+| Pendiente | Libro docente y mensajes/acciones específicos de cursos cerrados | Sigue la tabla horizontal, no se reorganizaron sus campos ni reglas. |
+| Pendiente | Cobros/formularios y totales dinámicos | No se modificaron contratos, cálculos ni confirmaciones operativas. |
+| Pendiente | Bandeja unificada de Dirección | Accesos mejorados; no se fusionaron modelos ni procesos de aprobación. |
+| Pendiente | Portal estudiantil y presentación condicional de acceso académico | Servidor conserva solvencia; no calcular otra regla en la navegación. |
+| Pendiente | Detalle compacto y paginación cómoda en reportes | Cuentas sigue midiendo 30.430 px con 25 fichas en 390 px; hace falta rediseño específico. |
+| Pendiente | Reducir CSS heredado gradualmente | Adoptar tokens/aliases por módulo con regresión, sin reestructurar tablas de forma global. |
+
+No se implementan F8.2–F8.6. La unificación de solvencia Django/SQL, PostgreSQL aislado y
+el servicio formal de INCUMPLIDO conservan su estado pendiente; no son cambios visuales.

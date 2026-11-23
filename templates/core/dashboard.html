@@ -1,31 +1,11 @@
 {% extends 'core/aplicacion.html' %}
 {% block title %}Inicio{% endblock %}
 {% block content %}
-<section class="inicio-cabecera"><p class="seccion">SU ESPACIO DE TRABAJO</p><h1>Bienvenido, {{ request.user.get_full_name|default:request.user.numero_usuario }}</h1>
-    <p>Su espacio de trabajo como <strong>{{ request.user.get_rol_display }}</strong>.</p></section>
-{% if request.user.rol == 'DIRECTORA' and padrinazgos_vencidos %}<section class="mensaje error" role="status"><h2>Padrinazgos pendientes de revisión: {{ padrinazgos_vencidos }}</h2><p>La fecha de aporte venció; los estudiantes mantienen su cobertura hasta su resolución.</p><a href="{% url 'aportes_panel' %}">Revisar compromisos</a></section>{% endif %}<section aria-labelledby="tareas-titulo"><h2 id="tareas-titulo">¿Qué necesita hacer?</h2>
-    <div class="accesos-inicio">
-    {% if request.user.rol == 'MAESTRO' %}
-        <a class="acceso-tarjeta" href="{% url 'mis_cursos' %}"><span class="acceso-icono">{% include 'core/partials/icono.html' with nombre='cursos' %}</span><span class="acceso-etiqueta">DOCENCIA</span><h3>Mis cursos</h3><p>Seleccione un curso para registrar asistencia y calificaciones, programar sesiones o revisar su cierre.</p><span class="acceso-enlace">Abrir mis cursos →</span></a>
-    {% endif %}
-    {% if request.user.rol == 'SECRETARIA' or request.user.rol == 'DIRECTORA' or request.user.rol == 'ADMINISTRADOR' %}
-        <a class="acceso-tarjeta" href="{% url 'finanzas_panel' %}"><span class="acceso-icono">{% include 'core/partials/icono.html' with nombre='finanzas' %}</span><span class="acceso-etiqueta">FINANZAS</span><h3>Estado de cuenta y pagos</h3><p>Consulte obligaciones, saldos, recibos y solvencia del estudiante.</p><span class="acceso-enlace">Abrir finanzas →</span></a>
-        <a class="acceso-tarjeta" href="{% url 'estudiantes' %}"><span class="acceso-icono">{% include 'core/partials/icono.html' with nombre='estudiantes' %}</span><span class="acceso-etiqueta">GESTIÓN ACADÉMICA</span><h3>Estudiantes</h3><p>Busque, registre o actualice estudiantes y consulte su expediente para matricularlos.</p><span class="acceso-enlace">Abrir estudiantes →</span></a>
-        <a class="acceso-tarjeta" href="{% url 'matricula_secretaria' %}"><span class="acceso-icono">{% include 'core/partials/icono.html' with nombre='matricula' %}</span><span class="acceso-etiqueta">MATRÍCULA</span><h3>Matricular estudiante</h3><p>Registre una matrícula del ciclo y confirme sus seis materias, conservando las inscripciones existentes.</p><span class="acceso-enlace">Abrir matrícula →</span></a>
-    {% endif %}
-    {% if request.user.rol == 'ADMINISTRADOR' or request.user.rol == 'DIRECTORA' or request.user.rol == 'SECRETARIA' or request.user.rol == 'MAESTRO' %}
-        <a class="acceso-tarjeta" href="{% url 'reportes' %}"><span class="acceso-icono">{% include 'core/partials/icono.html' with nombre='reportes' %}</span><span class="acceso-etiqueta">INFORMACIÓN INSTITUCIONAL</span><h3>Reportes institucionales</h3><p>Consulte y genere reportes según su rol, con filtros y exportación.</p><span class="acceso-enlace">Abrir reportes →</span></a>
-    {% endif %}
-    {% if request.user.rol == 'ADMINISTRADOR' %}
-        <a class="acceso-tarjeta" href="{% url 'usuarios' %}"><span class="acceso-icono">{% include 'core/partials/icono.html' with nombre='usuarios' %}</span><span class="acceso-etiqueta">ADMINISTRACIÓN</span><h3>Usuarios y accesos</h3><p>Administre cuentas, estados y vínculos verificados con expedientes estudiantiles.</p><span class="acceso-enlace">Administrar usuarios →</span></a>
-    {% endif %}
-    {% if request.user.rol == 'DIRECTORA' %}
-<a class="acceso-tarjeta" href="{% url 'solicitudes_academicas' %}"><h3>Solicitudes académicas</h3><p>Revisar cancelaciones pendientes y consultar resoluciones.</p></a>
-        <a class="acceso-tarjeta" href="{% url 'autorizar_clase_extraordinaria' %}"><span class="acceso-icono">{% include 'core/partials/icono.html' with nombre='autorizar' %}</span><span class="acceso-etiqueta">DIRECCIÓN</span><h3>Autorizar extraordinarias</h3><p>Revise y autorice una clase 7 u 8. La autorización quedará vinculada a su cuenta.</p><span class="acceso-enlace">Abrir autorización →</span></a>
-    {% endif %}
-    {% if request.user.rol == 'PASTOR_PRINCIPAL' %}
-        <div class="estado-vacio"><h3>Su sesión está activa</h3><p>Todavía no hay módulos de consulta habilitados para su rol. Puede volver a este inicio o cerrar su sesión desde el encabezado.</p></div>
-    {% endif %}
-    </div>
-</section>
+{% include 'core/componentes/encabezado_pagina.html' with titulo='Inicio' bajada='Elija una tarea para comenzar.' %}
+{% if request.user.rol == 'DIRECTORA' and padrinazgos_vencidos %}<section class="mensaje warning" role="status"><h2>Padrinazgos pendientes de revisión: {{ padrinazgos_vencidos }}</h2><p>Los estudiantes mantienen su cobertura hasta su resolución.</p><a href="{% url 'aportes_panel' %}">Revisar compromisos</a></section>{% endif %}
+{% if navegacion.tareas %}
+<section aria-labelledby="tareas-titulo"><h2 id="tareas-titulo">Tareas principales</h2><div class="accesos-inicio ui-tareas">{% for item in navegacion.tareas %}{% include 'core/componentes/tarjeta_tarea.html' %}{% endfor %}</div></section>
+{% endif %}
+{% if navegacion.otras %}<details class="ui-otras-tareas"><summary>Otras tareas disponibles</summary><nav aria-label="Otras tareas"><ul>{% for item in navegacion.otras %}<li><a href="{{ item.url }}">{{ item.titulo }} <span aria-hidden="true">→</span></a></li>{% endfor %}</ul></nav></details>{% endif %}
+{% if request.user.rol == 'PASTOR_PRINCIPAL' %}<section class="estado-vacio"><h2>Su sesión está activa</h2><p>Todavía no hay módulos de consulta habilitados para su rol. Puede cerrar su sesión desde el encabezado.</p></section>{% endif %}
 {% endblock %}
