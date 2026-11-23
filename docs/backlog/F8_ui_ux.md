@@ -36,3 +36,24 @@ CSV e impresión. No resuelve la navegación ni los formularios operativos de F1
 
 La unificación definitiva de solvencia Django/SQL y la validación PostgreSQL son requisitos
 de integración previos al despliegue, no tareas cosméticas que puedan posponerse en F8.
+
+## Hallazgos comprobados en la simulación integral F7.1
+
+Datos ficticios: 40 estudiantes, 240 obligaciones, 132 pagos. Chromium en 390/768/1366 px;
+114 pantallas revisadas. Sin desbordamiento del documento; sí hay desplazamiento interno
+obligatorio en el libro docente. No se hicieron entrevistas ni pruebas de comprensión con
+usuarios reales. Estos hallazgos técnicos no autorizan modificar las reglas institucionales.
+
+| Prioridad | Evidencia y problema observado | Trabajo futuro y aceptación |
+| --- | --- | --- |
+| Alta | Libro docente: 20 estudiantes; en móvil el contenedor mide 359 px y su tabla 2.192 px. Estado académico y nota final quedan alejados de la identidad. | Presentar identidad, nota y estado juntos; consulta individual/por componentes en móvil, sin perder edición por lote en escritorio. Mantener cierre y autorización excepcional. |
+| Alta | Libro de curso cerrado conserva el texto «Escriba en las casillas»; muestra «Revisar corrección excepcional» también en filas cuya inasistencia impide ese trámite. El servidor sí lo bloquea. | Mensajes y acciones acordes al estado; explicar por qué una corrección no está habilitada y distinguir lectura de edición. |
+| Alta | Cobro ordinario de SIM-017: varios importes por obligación y sin suma dinámica visible; el único JS financiero es el botón de impresión. | Mostrar importe total, saldo de cada obligación y confirmación comprensible antes de emitir; servidor conserva toda validación e idempotencia. |
+| Alta | Cuentas F7: con 25 registros la página móvil mide 32.712 px de alto; no hay desbordamiento horizontal, pero exige mucho desplazamiento hasta paginar. | Resumen compacto con detalle desplegable y paginación accesible sin recorrer todas las fichas. Mantener todos los conceptos y controles de conciliación. |
+| Media | Panel F7 en móvil: ocho accesos y criterios ocupan varias pantallas antes de los indicadores. | Navegación compacta y acceso directo a indicadores prioritarios, con filtros/criterios siempre identificables. |
+| Media | Nombres completos de curso quedan truncados en el selector móvil del maestro. | Mostrar materia/nivel/estado con etiquetas breves y detalle accesible sin depender del desplegable nativo. |
+| Media | Desde pendientes del panel se pasa por Auditoría y luego por el expediente del módulo para resolver; las bandejas siguen separadas. | Conservar permisos, aportar contexto y retorno a filtros; estudiar bandeja unificada ya prevista, sin aprobar desde GET. |
+
+[Evidencias y medidas](../evidencias/F71/README.md). Los reportes F7 respondieron sin errores
+en este volumen; sus tiempos locales no certifican rendimiento ni concurrencia PostgreSQL.
+No se implementó ninguno de los rediseños de esta tabla durante F7.1.

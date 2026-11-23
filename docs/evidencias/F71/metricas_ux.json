@@ -1,0 +1,15 @@
+{
+  "directora": {
+    "alto_pagina": 32712,
+    "filas": 25,
+    "tabla": null
+  },
+  "maestro": {
+    "alto_pagina": 2101,
+    "filas": 20,
+    "tabla": {
+      "ancho": 359,
+      "contenido": 2192
+    }
+  }
+}
