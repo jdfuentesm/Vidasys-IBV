@@ -1,0 +1,11 @@
+{
+  "csv_filas": 240,
+  "csv_columnas": 16,
+  "impresion_filas": 240,
+  "solicitudes_unicas": 49,
+  "atencion": 10,
+  "decisiones": 8,
+  "seguimientos": 2,
+  "antes_despues_mismos_esperados": true,
+  "antes_despues_mismos_conteos": true
+}

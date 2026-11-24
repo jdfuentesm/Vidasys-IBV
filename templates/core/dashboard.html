@@ -1,8 +1,9 @@
-{% extends 'core/aplicacion.html' %}
+{% extends 'core/aplicacion.html' %}{% load static %}
 {% block title %}Inicio{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/paneles_institucionales.css' %}">{% endblock %}
 {% block content %}
-{% include 'core/componentes/encabezado_pagina.html' with titulo='Inicio' bajada='Elija una tarea para comenzar.' %}
-{% if request.user.rol == 'DIRECTORA' and padrinazgos_vencidos %}<section class="mensaje warning" role="status"><h2>Padrinazgos pendientes de revisión: {{ padrinazgos_vencidos }}</h2><p>Los estudiantes mantienen su cobertura hasta su resolución.</p><a href="{% url 'aportes_panel' %}">Revisar compromisos</a></section>{% endif %}
+{% include 'core/componentes/encabezado_pagina.html' with titulo=titulo_panel|default:'Inicio' bajada=bajada_panel|default:'Elija una tarea para comenzar.' %}
+{% if panel_rol or error_panel or form_panel %}{% include 'core/paneles/resumen.html' %}{% endif %}
 {% if navegacion.tareas %}
 <section aria-labelledby="tareas-titulo"><h2 id="tareas-titulo">Tareas principales</h2><div class="accesos-inicio ui-tareas">{% for item in navegacion.tareas %}{% include 'core/componentes/tarjeta_tarea.html' %}{% endfor %}</div></section>
 {% endif %}

@@ -108,10 +108,8 @@ def dashboard(request):
     """
     if request.user.rol == 'ESTUDIANTE':
         return redirect('portal_inicio')
+    if request.user.rol in ('DIRECTORA','ADMINISTRADOR'):
+        from .paneles_views import inicio
+        return inicio(request)
     contexto={"usuario":request.user}
-    if request.user.rol=='DIRECTORA':
-        from financiero.models import SolicitudPadrinazgo
-        from financiero.aportes import pendiente
-        from django.utils import timezone
-        contexto['padrinazgos_vencidos']=sum(any(pendiente(c)>0 for c in s.coberturas.filter(activa=True)) for s in SolicitudPadrinazgo.objects.filter(estado='APROBADA',padrinazgo__estado='ACTIVO',padrinazgo__fecha_fin__lt=timezone.localdate()))
     return render(request, "core/dashboard.html", contexto)

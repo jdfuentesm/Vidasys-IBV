@@ -1,0 +1,17 @@
+{% extends 'core/aplicacion.html' %}{% load static %}
+{% block title %}Pendientes de Dirección{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/paneles_institucionales.css' %}">{% endblock %}
+{% block content %}
+{% include 'core/componentes/encabezado_pagina.html' with titulo='Pendientes de Dirección' bajada='Consulte cada asunto y continúe en su expediente original.' %}
+<form method="get" class="f82-filtros panel-curso" aria-label="Filtros de la bandeja">{{ form.as_div }}<button type="submit">Aplicar filtros</button><a href="{% url 'direccion_pendientes' %}">Restablecer</a></form>
+{% if error_bandeja %}<p class="mensaje error" role="alert">{{ error_bandeja }}</p>{% elif form.errors %}<p class="mensaje error" role="alert">Corrija los filtros; no se muestran resultados parciales.</p>{% else %}
+<p>{{ cantidad }} solicitud{{ cantidad|pluralize:'es' }} en la selección. Cada solicitud aparece una vez.</p>
+{% include 'core/paneles/paginacion.html' with pagina=pagina posicion='superior' %}
+{% for item in pagina %}<article class="f82-solicitud"><div class="f82-solicitud-cabecera"><h2>{{ item.titulo }}</h2><span class="estado {% if item.estado == 'PENDIENTE' %}estado--pendiente{% elif item.estado == 'RECHAZADA' %}estado--reprobada{% else %}estado--aprobada{% endif %}">{{ item.estado|title }}</span></div>
+<p><strong>{{ item.persona }}</strong></p><p>{{ item.consecuencia }}</p><p class="f82-etapa">{{ item.etapa }}</p><small>Solicitada: {{ item.fecha|date:'d/m/Y H:i' }} · {{ item.solicitante }} · {{ item.clave }}</small>
+<details class="ui-ayuda"><summary>Motivo e historial</summary><p>{{ item.motivo }}</p>{% if item.responsable %}<p>Resuelta por {{ item.responsable }} · {{ item.fecha_decision|date:'d/m/Y H:i' }}.</p><p>{{ item.decision|default:'Consultar la resolución completa en el expediente.' }}</p>{% endif %}</details>
+<a class="ui-boton" href="{{ item.url }}">{{ item.accion }}</a></article>{% empty %}<p class="estado-vacio">No se encontraron solicitudes con estos filtros.</p>{% endfor %}
+{% include 'core/paneles/paginacion.html' with pagina=pagina posicion='inferior' %}
+{% endif %}
+<details class="ui-ayuda"><summary>Otros procesos y alcance de esta bandeja</summary><p>Los importes son informativos; no deben sumarse como ingresos, egresos o deuda. La decisión y sus comprobaciones se realizan en el módulo original.</p><p>No existe una solicitud pendiente de clase extraordinaria: su autorización es directa.</p><a href="{% url 'autorizar_clase_extraordinaria' %}">Autorizar una clase extraordinaria →</a><p>Las donaciones recibidas no son solicitudes por aprobar. Se incluyen sus anulaciones y las revisiones de cobertura vencida verificables; las demás resoluciones directas se consultan en su historial.</p></details>
+{% endblock %}

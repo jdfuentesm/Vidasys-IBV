@@ -1,0 +1,42 @@
+/* F8.2: paneles de consulta y detalle progresivo, sobre tokens F8.1. */
+.f82-generado{font-size:.8125rem;color:var(--ui-secundario);margin:.3rem 0 1rem}
+.f82-metricas{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(210px,100%),1fr));gap:.8rem;margin:1rem 0 1.25rem}
+.f82-metricas>a,.f82-metricas>div{display:flex;flex-direction:column;gap:.4rem;padding:1rem;background:var(--ui-superficie);border:1px solid var(--ui-borde);border-top:3px solid var(--ui-azul);border-radius:var(--ui-radio);text-decoration:none;color:var(--ui-texto);min-width:0}
+.f82-metricas>a:hover{border-color:var(--ui-azul)}
+.f82-metricas strong,.f82-metricas dd{font-size:1.6rem;font-weight:700;color:var(--ui-marino);font-variant-numeric:tabular-nums;line-height:1.25;overflow-wrap:anywhere;margin:0}
+.f82-metricas span,.f82-metricas dt{font-size:.9375rem}
+.f82-metricas small{color:var(--ui-secundario)}
+.f82-kpis>div{flex-direction:column-reverse}
+.f82-periodo{font-size:.875rem;color:var(--ui-secundario)}
+.f82-contexto{margin:1.5rem 0;padding-top:1rem;border-top:1px solid var(--ui-borde)}
+.f82-estados{display:flex;flex-wrap:wrap;gap:1rem 2rem;margin:1rem 0}
+.f82-estados dt{font-size:.875rem;color:var(--ui-secundario)}
+.f82-estados dd{margin:0;font-size:1.4rem;font-weight:650;color:var(--ui-marino)}
+.f82-pendiente-breve{display:flex;align-items:center;justify-content:space-between;gap:1rem;background:white;border:1px solid var(--ui-borde);border-radius:.65rem;padding:.8rem 1rem;margin:.6rem 0}
+.f82-pendiente-breve p{margin:.2rem 0;font-size:.875rem}.f82-pendiente-breve a{min-height:44px;align-content:center}
+.f82-filtros{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(210px,100%),1fr));gap:1rem;align-items:end}
+.f82-filtros input,.f82-filtros select{width:100%}.f82-filtros .errorlist{grid-column:1/-1}
+.f82-solicitud{padding:1rem;background:white;border:1px solid var(--ui-borde);border-radius:var(--ui-radio);margin:.8rem 0;overflow-wrap:anywhere}
+.f82-solicitud-cabecera{display:flex;justify-content:space-between;gap:.75rem;align-items:center;flex-wrap:wrap}
+.f82-solicitud-cabecera h2{font-size:1.125rem}.f82-etapa{color:var(--ui-marino);font-weight:650}
+.f82-solicitud small{color:var(--ui-secundario)}.f82-solicitud .ui-boton{margin-top:.5rem}
+.f82-paginacion{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin:1rem 0;padding:.7rem 0;border-block:1px solid var(--ui-borde);font-size:.875rem;flex-wrap:wrap}
+.f82-paginacion a{display:inline-flex;align-items:center;min-height:44px;padding:.4rem .6rem;border:1px solid #91acc7;border-radius:.5rem;background:white}
+.f82-cursos{padding:0;list-style:none}.f82-cursos li{display:flex;gap:1rem;justify-content:space-between;padding:.75rem 0;border-bottom:1px solid var(--ui-borde)}
+.f82-cursos a{min-height:44px;align-content:center}.f82-cursos small{color:var(--ui-secundario)}
+.f82-cuentas{display:grid;gap:.65rem}.f7 .f82-cuentas .f7-registro{padding:.85rem 1rem}
+.f82-cuenta-cabecera{display:flex;align-items:start;justify-content:space-between;gap:.75rem}
+.f82-cuenta-cabecera h3{font-size:1rem;margin:0;flex:1;min-width:0}
+.f82-cuenta-cabecera p{margin:0;text-align:right;flex-shrink:0}
+.f82-cuenta-cabecera small{font-size:.75rem;color:var(--ui-secundario);margin:0}
+.f82-cuenta-cabecera strong{display:block;font-size:1.25rem;white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--ui-marino)}
+.f7 .f82-cuenta-saldos{font-size:.8125rem;margin:.35rem 0;color:var(--ui-secundario)}
+.f82-cuentas details{max-width:none;font-size:.875rem;padding:0;margin:.1rem 0 .5rem}
+.f82-cuentas details[open]{padding:.65rem;background:var(--ui-fondo);border:1px solid var(--ui-borde)}
+.f82-cuentas summary{min-height:44px;align-content:center}
+.f82-obligacion{border-top:1px solid var(--ui-borde);padding:.5rem 0;margin:.5rem 0}.f82-obligacion h4{margin:.3rem 0 .8rem;font-size:1rem}
+.f82-desglose{max-width:none;padding:.75rem;background:white;border:1px solid var(--ui-borde);border-radius:var(--ui-radio);margin:1rem 0}
+.f82-desglose summary{min-height:44px;align-content:center;font-size:.9375rem}
+.f7 .f7-menu section h2{font-size:.9375rem;margin:.5rem}.f7 .f7-menu section{min-width:0}
+@media(max-width:600px){.f82-pendiente-breve,.f82-cursos li{align-items:start;flex-direction:column}.f82-metricas{grid-template-columns:1fr}.f82-cuenta-cabecera{flex-wrap:wrap}.f82-cuenta-cabecera h3{flex-basis:100%}.f82-cuenta-cabecera p{text-align:left}.f7 .f82-cuentas .f7-registro{padding:.75rem}.f82-cuentas .f82-obligacion dl{grid-template-columns:1fr}}
+@media print{.f82-paginacion{display:none}.f82-desglose{border:0;padding:0}.f82-desglose summary{display:none}.f82-desglose>div,.f82-desglose>section{display:block}.f82-kpis{grid-template-columns:repeat(3,1fr)}}

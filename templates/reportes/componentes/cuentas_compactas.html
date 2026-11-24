@@ -1,0 +1,8 @@
+<dl class="f82-estados"><div><dt>Saldo financiero de la selección</dt><dd>{{ saldo_seleccion }}</dd></div><div><dt>A cargo de estudiantes</dt><dd>{{ cargo_seleccion }}</dd></div><div><dt>Protección efectiva</dt><dd>{{ cobertura_seleccion }}</dd></div></dl>
+<h2>{{ cantidad_estudiantes }} estudiante{{ cantidad_estudiantes|pluralize:'s' }} · {{ cantidad }} obligaciones seleccionadas</h2>
+<p>Los saldos de cada estudiante corresponden a los filtros aplicados. Abra el detalle para consultar todas sus obligaciones de esta selección.</p>
+{% include 'core/paneles/paginacion.html' with pagina=pagina_cuentas posicion='de estudiantes superior' %}
+<div class="f82-cuentas">{% for grupo in pagina_cuentas %}<article class="f7-registro"><div class="f82-cuenta-cabecera"><h3>{{ grupo.estudiante }}</h3><p><small>Saldo financiero</small><strong>{{ grupo.saldo }}</strong></p></div><p class="f82-cuenta-saldos">A cargo: <strong>{{ grupo.cargo }}</strong> · Protección: {{ grupo.cobertura }}</p>
+<details><summary>Ver {{ grupo.obligaciones|length }} {{ grupo.obligaciones|length|pluralize:'obligación,obligaciones' }} y conciliación</summary>{% for obligacion in grupo.obligaciones %}<section class="f82-obligacion"><h4>{{ obligacion.titulo }}</h4><dl>{% for celda in obligacion.celdas %}<div><dt>{{ celda.etiqueta }}</dt><dd>{{ celda.valor }}</dd></div>{% endfor %}</dl></section>{% endfor %}</details>
+<a href="{{ grupo.url }}">Abrir estado de cuenta →</a></article>{% empty %}<p class="estado-vacio">No se encontraron registros con estos filtros. Puede ampliar la selección.</p>{% endfor %}</div>
+{% include 'core/paneles/paginacion.html' with pagina=pagina_cuentas posicion='de estudiantes inferior' %}

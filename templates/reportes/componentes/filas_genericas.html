@@ -1,0 +1,3 @@
+<h2>Detalle · {{ cantidad }} registro{{ cantidad|pluralize:'s' }}</h2>
+<div class="f7-registros">{% for fila in filas_visibles %}<article class="f7-registro"><dl>{% for celda in fila.celdas %}<div><dt>{{ celda.etiqueta }}</dt><dd>{{ celda.valor }}</dd></div>{% endfor %}</dl>{% if fila.url %}<a class="f7-no-imprimir" href="{{ fila.url }}">Consultar registro original →</a>{% endif %}</article>{% empty %}<p class="estado-vacio">No se encontraron registros con estos filtros. Puede ampliar la selección.</p>{% endfor %}</div>
+{% if not imprimir %}{% include 'core/paneles/paginacion.html' with pagina=pagina posicion='del detalle' %}{% endif %}

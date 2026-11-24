@@ -3,7 +3,8 @@
 Objetivo futuro: usuarios con conocimientos tecnológicos básicos puedan completar sus
 operaciones sin asistencia, conservando la identidad institucional y los permisos.
 Este archivo registra deuda y entregas. F8.1 está implementada como base visual y de navegación;
-las etapas F8.2–F8.6 siguen pendientes de autorización. Las entradas históricas conservan su contexto.
+F8.2 incorpora paneles y consultas compactas. F8.3–F8.6 siguen pendientes de autorización.
+Las entradas históricas conservan su contexto y las actualizaciones posteriores indican el estado vigente.
 
 | Prioridad | Trabajo futuro | Criterio verificable |
 | --- | --- | --- |
@@ -83,5 +84,35 @@ Validación: 636 pruebas (620 conservadas + 16 nuevas), 114 pantallas con datos 
 | Pendiente | Detalle compacto y paginación cómoda en reportes | Cuentas sigue midiendo 30.430 px con 25 fichas en 390 px; hace falta rediseño específico. |
 | Pendiente | Reducir CSS heredado gradualmente | Adoptar tokens/aliases por módulo con regresión, sin reestructurar tablas de forma global. |
 
-No se implementan F8.2–F8.6. La unificación de solvencia Django/SQL, PostgreSQL aislado y
+En F8.1 no se implementaron F8.2–F8.6. La unificación de solvencia Django/SQL, PostgreSQL aislado y
 el servicio formal de INCUMPLIDO conservan su estado pendiente; no son cambios visuales.
+
+
+## Entrega F8.2 — Dirección, Administración y reportes compactos
+
+Implementado: panel de Dirección con fuentes académicas y solvencia canónica; panel
+administrativo con período y saldos actuales separados; bandeja exclusiva de Dirección,
+solo lectura, nueve tipos y enlaces a resoluciones originales; F7 con indicadores prioritarios,
+reportes agrupados y desgloses ampliables; cuentas agrupadas por estudiante y paginación doble.
+
+Validación: 678 pruebas (649 anteriores + 29 específicas), 126 pantallas en 390/768/1366 px,
+sin desbordamiento exterior; 49 solicitudes únicas y sus enlaces originales; operación esencial
+sin JavaScript. Cuentas: 30.430 → 7.756 px en 390 px (74,51 % menos altura), mismo escenario
+F7.1 y filtros. Antes 25 obligaciones; ahora 25 estudiantes con obligaciones plegables. CSV e
+impresión conservan las 240 obligaciones y las 16 columnas. No se elimina información.
+
+[Fuentes, permisos y recorrido](../frontend/F82_direccion_administracion.md) ·
+[Evidencias y límites](../evidencias/F82/README.md).
+
+| Estado vigente | Trabajo | Seguimiento |
+| --- | --- | --- |
+| Base resuelta F8.2 | Inicio de Dirección y Administración | Validar comprensión y prioridades con usuarios reales; no confundir inscripciones con personas. |
+| Base resuelta F8.2 | Bandeja unificada y paginada | Mantiene procesos originales y estados de origen; sin solicitud verificable de clases extraordinarias o donaciones recibidas no inventa pendientes. |
+| Base resuelta F8.2 | Panel F7 y detalle compacto de cuentas | Medir grandes volúmenes; CSV/impresión completos y advertencias conservadas. |
+| Pendiente F8.3–F8.6 | Formularios operativos, totales dinámicos, libro docente y portal | Sin cambios en esta entrega; requieren autorización de su fase. |
+| Pendiente | Paginación en origen de historiales grandes | Hoy materializa y filtra antes de paginar; consultas acotadas no equivalen a memoria constante. Medir PostgreSQL aislado. |
+| Pendiente | Pruebas de comprensión, lector de pantalla y otros navegadores | Chromium con teclado/sin JS no sustituye pruebas con personas. |
+| Obligatorio antes de despliegue | Solvencia Django/SQL, restricciones, transacciones y concurrencia PostgreSQL aislado | No abordado mediante cambios visuales; no desplegar sin validación. |
+| Pendiente funcional | Servicio formal para declarar convenios INCUMPLIDO | No implementado; no inferir ni cambiar el estado desde la bandeja. |
+
+No se implementan F8.3–F8.6. Lanzadores básico, integral y LAN sin modificaciones.

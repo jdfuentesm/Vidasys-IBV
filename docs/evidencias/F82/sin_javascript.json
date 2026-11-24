@@ -1,0 +1,13 @@
+{
+  "javascript": false,
+  "controles": [
+    "Alerta institucional de cobertura visible",
+    "49 solicitudes únicas; todos sus enlaces originales HTTP 200; dos paginadores sin JS",
+    "Filtro GET y motivo desplegable sin JS",
+    "16 columnas originales por obligación accesibles sin JS y sin desbordamiento",
+    "Segunda página: 15 estudiantes restantes",
+    "Impresión completa 240 obligaciones y PDF sin JS",
+    "Tres desgloses financieros abiertos en impresión sin JS",
+    "Salto por teclado al contenido"
+  ]
+}

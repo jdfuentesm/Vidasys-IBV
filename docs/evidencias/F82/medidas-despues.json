@@ -1,0 +1,170 @@
+[
+  {
+    "rol": "directora",
+    "width": 390,
+    "ruta": "/",
+    "alto": 2875,
+    "ancho": 390,
+    "registros": 0
+  },
+  {
+    "rol": "directora",
+    "width": 390,
+    "ruta": "/reportes/finanzas/cuentas/",
+    "alto": 7756,
+    "ancho": 390,
+    "registros": 25
+  },
+  {
+    "rol": "directora",
+    "width": 390,
+    "ruta": "/reportes/finanzas/panel/?desde=&hasta=",
+    "alto": 2360,
+    "ancho": 390,
+    "registros": 0
+  },
+  {
+    "rol": "directora",
+    "width": 390,
+    "ruta": "/direccion/pendientes/",
+    "alto": 4928,
+    "ancho": 390,
+    "registros": 0
+  },
+  {
+    "rol": "directora",
+    "width": 768,
+    "ruta": "/",
+    "alto": 2127,
+    "ancho": 768,
+    "registros": 0
+  },
+  {
+    "rol": "directora",
+    "width": 768,
+    "ruta": "/reportes/finanzas/cuentas/",
+    "alto": 6492,
+    "ancho": 768,
+    "registros": 25
+  },
+  {
+    "rol": "directora",
+    "width": 768,
+    "ruta": "/reportes/finanzas/panel/?desde=&hasta=",
+    "alto": 1768,
+    "ancho": 768,
+    "registros": 0
+  },
+  {
+    "rol": "directora",
+    "width": 768,
+    "ruta": "/direccion/pendientes/",
+    "alto": 3897,
+    "ancho": 768,
+    "registros": 0
+  },
+  {
+    "rol": "directora",
+    "width": 1366,
+    "ruta": "/",
+    "alto": 1892,
+    "ancho": 1366,
+    "registros": 0
+  },
+  {
+    "rol": "directora",
+    "width": 1366,
+    "ruta": "/reportes/finanzas/cuentas/",
+    "alto": 6428,
+    "ancho": 1366,
+    "registros": 25
+  },
+  {
+    "rol": "directora",
+    "width": 1366,
+    "ruta": "/reportes/finanzas/panel/?desde=&hasta=",
+    "alto": 1587,
+    "ancho": 1366,
+    "registros": 0
+  },
+  {
+    "rol": "directora",
+    "width": 1366,
+    "ruta": "/direccion/pendientes/",
+    "alto": 3841,
+    "ancho": 1366,
+    "registros": 0
+  },
+  {
+    "rol": "administrador",
+    "width": 390,
+    "ruta": "/",
+    "alto": 2615,
+    "ancho": 390,
+    "registros": 0
+  },
+  {
+    "rol": "administrador",
+    "width": 390,
+    "ruta": "/reportes/finanzas/cuentas/",
+    "alto": 7756,
+    "ancho": 390,
+    "registros": 25
+  },
+  {
+    "rol": "administrador",
+    "width": 390,
+    "ruta": "/reportes/finanzas/panel/?desde=&hasta=",
+    "alto": 2360,
+    "ancho": 390,
+    "registros": 0
+  },
+  {
+    "rol": "administrador",
+    "width": 768,
+    "ruta": "/",
+    "alto": 1814,
+    "ancho": 768,
+    "registros": 0
+  },
+  {
+    "rol": "administrador",
+    "width": 768,
+    "ruta": "/reportes/finanzas/cuentas/",
+    "alto": 6492,
+    "ancho": 768,
+    "registros": 25
+  },
+  {
+    "rol": "administrador",
+    "width": 768,
+    "ruta": "/reportes/finanzas/panel/?desde=&hasta=",
+    "alto": 1768,
+    "ancho": 768,
+    "registros": 0
+  },
+  {
+    "rol": "administrador",
+    "width": 1366,
+    "ruta": "/",
+    "alto": 1627,
+    "ancho": 1366,
+    "registros": 0
+  },
+  {
+    "rol": "administrador",
+    "width": 1366,
+    "ruta": "/reportes/finanzas/cuentas/",
+    "alto": 6428,
+    "ancho": 1366,
+    "registros": 25
+  },
+  {
+    "rol": "administrador",
+    "width": 1366,
+    "ruta": "/reportes/finanzas/panel/?desde=&hasta=",
+    "alto": 1587,
+    "ancho": 1366,
+    "registros": 0
+  }
+]

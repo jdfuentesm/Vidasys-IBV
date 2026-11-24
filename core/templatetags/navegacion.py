@@ -19,6 +19,7 @@ def construir_menu(usuario,nombre=''):
     generales=enlace('reportes','Reportes académicos' if rol=='MAESTRO' else 'Reportes institucionales','reportes','Consulte y exporte la información disponible para su rol.',nombres=('reportes_consultar',))
     financieros=enlace('finanzas_centro','Reportes financieros','reportes','Revise ingresos, egresos y cuentas pendientes.',nombres=('finanzas_reporte',))
     solicitudes=enlace('solicitudes_academicas','Solicitudes académicas' if rol=='DIRECTORA' else 'Mis solicitudes','autorizar','Revise solicitudes y consulte sus resoluciones.',nombres=('solicitud_academica',))
+    bandeja=enlace('direccion_pendientes','Pendientes de Dirección','autorizar','Revise solicitudes y asuntos institucionales pendientes.')
     extras=enlace('autorizar_clase_extraordinaria','Clases extraordinarias','autorizar','Autorice las clases adicionales de un curso.')
     usuarios=enlace('usuarios','Usuarios y accesos','usuarios','Administre las cuentas institucionales.',prefijo='usuarios')
     cursos=enlace('mis_cursos','Mis cursos','cursos','Registre asistencia, notas y clases de sus cursos.',nombres=(
@@ -32,7 +33,7 @@ def construir_menu(usuario,nombre=''):
             enlace('convenios_listado','Convenios de pago','cuenta',prefijo='convenios_'),
             enlace('aportes_panel','Donaciones y padrinazgos','estudiantes',prefijo='aportes_'),
             enlace('anulaciones_listado','Anulaciones de pagos','cuenta',prefijo='anulaciones_')]
-        if rol=='DIRECTORA':menu['grupos'].append(dict(id='academico',titulo='Dirección académica',icono='autorizar',enlaces=[solicitudes,extras]))
+        if rol=='DIRECTORA':menu['grupos'].append(dict(id='academico',titulo='Dirección académica',icono='autorizar',enlaces=[bandeja,solicitudes,extras]))
         menu['grupos'].append(dict(id='finanzas',titulo='Finanzas',icono='finanzas',enlaces=finanzas))
         menu['grupos'].append(dict(id='reportes',titulo='Reportes',icono='reportes',enlaces=[generales,financieros] if rol!='SECRETARIA' else [generales]))
         if rol=='ADMINISTRADOR':menu['principales'].append(usuarios)
@@ -43,7 +44,7 @@ def construir_menu(usuario,nombre=''):
             enlace('portal_cuenta','Mi cuenta','cuenta',nombres=('portal_recibo','convenios_portal'))]
     prioridades={
         'SECRETARIA':[estudiantes,matricula,cuentas],
-        'DIRECTORA':[solicitudes,financieros,estudiantes],
+        'DIRECTORA':[bandeja,financieros,estudiantes],
         'ADMINISTRADOR':[cuentas,financieros,usuarios],
         'MAESTRO':[cursos],
     }

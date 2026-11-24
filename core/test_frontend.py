@@ -49,7 +49,7 @@ class FrontendInstitucionalTests(TestCase):
         esperados={
             'MAESTRO':['dashboard','mis_cursos','solicitudes_academicas','reportes'],
             'SECRETARIA':['dashboard','estudiantes','matricula_secretaria',*finanzas,'reportes'],
-            'DIRECTORA':['dashboard','estudiantes','matricula_secretaria','solicitudes_academicas',
+            'DIRECTORA':['dashboard','estudiantes','matricula_secretaria','direccion_pendientes','solicitudes_academicas',
                          'autorizar_clase_extraordinaria',*finanzas,'reportes','finanzas_centro'],
             'ADMINISTRADOR':['dashboard','estudiantes','matricula_secretaria','usuarios',*finanzas,'reportes','finanzas_centro'],
             'ESTUDIANTE':['dashboard','portal_academico','portal_cuenta'], 'PASTOR_PRINCIPAL':['dashboard'],

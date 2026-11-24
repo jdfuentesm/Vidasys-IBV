@@ -4,9 +4,10 @@ URLs del módulo core de VidaSys-IBV.
 
 from django.urls import include, path
 
-from . import views, portal, usuarios_views
+from . import views, portal, usuarios_views, paneles_views
 
 urlpatterns = [
+    path('direccion/pendientes/',paneles_views.pendientes,name='direccion_pendientes'),
     path("reportes/", include("reportes.urls")),
     path("usuarios/", usuarios_views.listado, name="usuarios"),
     path("usuarios/nuevo/", usuarios_views.formulario, name="usuarios_nuevo"),

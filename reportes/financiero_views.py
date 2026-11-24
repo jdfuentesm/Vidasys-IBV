@@ -12,6 +12,7 @@ from financiero.lectura import lectura_consistente
 from .financiero_forms import FiltrosFinancierosForm, REPORTES
 from .financiero_consultas import generar, valor
 from .views import celda_csv
+from .presentacion import cuentas_por_estudiante,menu_agrupado
 
 
 @never_cache
@@ -30,6 +31,7 @@ def reporte(request,tipo='panel'):
     contexto={'form':form,'tipo':tipo,'titulo':REPORTES[tipo][0],
         'menu':[{'tipo':k,'titulo':v[0]} for k,v in REPORTES.items()],
         'generado':timezone.now(),'imprimir':formato=='imprimir'}
+    contexto['grupos_reportes']=menu_agrupado(contexto['menu'])
     try:
         with lectura_consistente():
             if not form.is_valid():
@@ -70,6 +72,14 @@ def reporte(request,tipo='panel'):
             for resumen in datos.get(clave,[]):escribir(resumen)
         return respuesta
     contexto.update(datos);contexto['alcance']=alcance;contexto['cantidad']=len(datos['filas'])
+    if tipo=='cuentas' and formato!='imprimir':
+        grupos=cuentas_por_estudiante(datos)
+        contexto['cantidad_estudiantes']=len(grupos)
+        totales_cuentas=dict(datos['totales'])
+        contexto['saldo_seleccion']=valor(totales_cuentas['Saldo financiero pendiente'])
+        contexto['cargo_seleccion']=valor(totales_cuentas['A cargo del estudiante, incluido convenio y no vencido'])
+        contexto['cobertura_seleccion']=valor(totales_cuentas['Protección pendiente efectiva'])
+        contexto['pagina_cuentas']=Paginator(grupos,25).get_page(request.GET.get('page'))
     visibles=[{'celdas':[{'etiqueta':c,'valor':valor(v)} for c,v in zip(datos['columnas'],r['celdas'])], 'url':r['url']} for r in datos['filas']]
     contexto['pagina']=Paginator(visibles,25).get_page(request.GET.get('page'))
     contexto['filas_visibles']=visibles if formato=='imprimir' else contexto['pagina']
