@@ -1,0 +1,1010 @@
+[
+  {
+    "rol": "directora",
+    "width": 390,
+    "ruta": "/reportes/finanzas/panel/?desde=&hasta=",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 127
+  },
+  {
+    "rol": "directora",
+    "width": 390,
+    "ruta": "/reportes/finanzas/resultados/?desde=&hasta=",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 138
+  },
+  {
+    "rol": "directora",
+    "width": 390,
+    "ruta": "/reportes/finanzas/cuentas/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 123
+  },
+  {
+    "rol": "directora",
+    "width": 390,
+    "ruta": "/reportes/finanzas/solvencia/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 88
+  },
+  {
+    "rol": "directora",
+    "width": 390,
+    "ruta": "/reportes/finanzas/beneficios/?desde=&hasta=",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 149
+  },
+  {
+    "rol": "directora",
+    "width": 390,
+    "ruta": "/reportes/finanzas/convenios/?desde=&hasta=",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 133
+  },
+  {
+    "rol": "directora",
+    "width": 390,
+    "ruta": "/reportes/finanzas/cajas/?desde=&hasta=",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 92
+  },
+  {
+    "rol": "directora",
+    "width": 390,
+    "ruta": "/reportes/finanzas/auditoria/?desde=&hasta=",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 173
+  },
+  {
+    "rol": "directora",
+    "width": 390,
+    "ruta": "/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 247
+  },
+  {
+    "rol": "directora",
+    "width": 390,
+    "ruta": "/direccion/pendientes/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 125
+  },
+  {
+    "rol": "directora",
+    "width": 390,
+    "ruta": "/direccion/pendientes/?vista=HISTORIAL&page=2",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 295
+  },
+  {
+    "rol": "directora",
+    "width": 390,
+    "ruta": "/solicitudes-academicas/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 77
+  },
+  {
+    "rol": "directora",
+    "width": 390,
+    "ruta": "/finanzas/becas/9/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 82
+  },
+  {
+    "rol": "directora",
+    "width": 768,
+    "ruta": "/reportes/finanzas/panel/?desde=&hasta=",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 163
+  },
+  {
+    "rol": "directora",
+    "width": 768,
+    "ruta": "/reportes/finanzas/resultados/?desde=&hasta=",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 138
+  },
+  {
+    "rol": "directora",
+    "width": 768,
+    "ruta": "/reportes/finanzas/cuentas/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 131
+  },
+  {
+    "rol": "directora",
+    "width": 768,
+    "ruta": "/reportes/finanzas/solvencia/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 116
+  },
+  {
+    "rol": "directora",
+    "width": 768,
+    "ruta": "/reportes/finanzas/beneficios/?desde=&hasta=",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 114
+  },
+  {
+    "rol": "directora",
+    "width": 768,
+    "ruta": "/reportes/finanzas/convenios/?desde=&hasta=",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 79
+  },
+  {
+    "rol": "directora",
+    "width": 768,
+    "ruta": "/reportes/finanzas/cajas/?desde=&hasta=",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 64
+  },
+  {
+    "rol": "directora",
+    "width": 768,
+    "ruta": "/reportes/finanzas/auditoria/?desde=&hasta=",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 81
+  },
+  {
+    "rol": "directora",
+    "width": 768,
+    "ruta": "/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 158
+  },
+  {
+    "rol": "directora",
+    "width": 768,
+    "ruta": "/direccion/pendientes/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 91
+  },
+  {
+    "rol": "directora",
+    "width": 768,
+    "ruta": "/direccion/pendientes/?vista=HISTORIAL&page=2",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 159
+  },
+  {
+    "rol": "directora",
+    "width": 768,
+    "ruta": "/solicitudes-academicas/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 74
+  },
+  {
+    "rol": "directora",
+    "width": 768,
+    "ruta": "/finanzas/becas/9/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 45
+  },
+  {
+    "rol": "directora",
+    "width": 1366,
+    "ruta": "/reportes/finanzas/panel/?desde=&hasta=",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 98
+  },
+  {
+    "rol": "directora",
+    "width": 1366,
+    "ruta": "/reportes/finanzas/resultados/?desde=&hasta=",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 132
+  },
+  {
+    "rol": "directora",
+    "width": 1366,
+    "ruta": "/reportes/finanzas/cuentas/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 112
+  },
+  {
+    "rol": "directora",
+    "width": 1366,
+    "ruta": "/reportes/finanzas/solvencia/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 91
+  },
+  {
+    "rol": "directora",
+    "width": 1366,
+    "ruta": "/reportes/finanzas/beneficios/?desde=&hasta=",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 99
+  },
+  {
+    "rol": "directora",
+    "width": 1366,
+    "ruta": "/reportes/finanzas/convenios/?desde=&hasta=",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 72
+  },
+  {
+    "rol": "directora",
+    "width": 1366,
+    "ruta": "/reportes/finanzas/cajas/?desde=&hasta=",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 135
+  },
+  {
+    "rol": "directora",
+    "width": 1366,
+    "ruta": "/reportes/finanzas/auditoria/?desde=&hasta=",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 79
+  },
+  {
+    "rol": "directora",
+    "width": 1366,
+    "ruta": "/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 137
+  },
+  {
+    "rol": "directora",
+    "width": 1366,
+    "ruta": "/direccion/pendientes/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 77
+  },
+  {
+    "rol": "directora",
+    "width": 1366,
+    "ruta": "/direccion/pendientes/?vista=HISTORIAL&page=2",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 106
+  },
+  {
+    "rol": "directora",
+    "width": 1366,
+    "ruta": "/solicitudes-academicas/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 42
+  },
+  {
+    "rol": "directora",
+    "width": 1366,
+    "ruta": "/finanzas/becas/9/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 36
+  },
+  {
+    "rol": "administracion",
+    "width": 390,
+    "ruta": "/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 86
+  },
+  {
+    "rol": "administracion",
+    "width": 390,
+    "ruta": "/reportes/finanzas/panel/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 217
+  },
+  {
+    "rol": "administracion",
+    "width": 390,
+    "ruta": "/reportes/finanzas/resultados/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 82
+  },
+  {
+    "rol": "administracion",
+    "width": 390,
+    "ruta": "/reportes/finanzas/cuentas/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 180
+  },
+  {
+    "rol": "administracion",
+    "width": 390,
+    "ruta": "/reportes/finanzas/solvencia/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 79
+  },
+  {
+    "rol": "administracion",
+    "width": 390,
+    "ruta": "/reportes/finanzas/beneficios/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 86
+  },
+  {
+    "rol": "administracion",
+    "width": 390,
+    "ruta": "/reportes/finanzas/convenios/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 69
+  },
+  {
+    "rol": "administracion",
+    "width": 390,
+    "ruta": "/reportes/finanzas/cajas/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 81
+  },
+  {
+    "rol": "administracion",
+    "width": 390,
+    "ruta": "/reportes/finanzas/auditoria/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 105
+  },
+  {
+    "rol": "administracion",
+    "width": 768,
+    "ruta": "/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 89
+  },
+  {
+    "rol": "administracion",
+    "width": 768,
+    "ruta": "/reportes/finanzas/panel/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 94
+  },
+  {
+    "rol": "administracion",
+    "width": 768,
+    "ruta": "/reportes/finanzas/resultados/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 69
+  },
+  {
+    "rol": "administracion",
+    "width": 768,
+    "ruta": "/reportes/finanzas/cuentas/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 222
+  },
+  {
+    "rol": "administracion",
+    "width": 768,
+    "ruta": "/reportes/finanzas/solvencia/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 160
+  },
+  {
+    "rol": "administracion",
+    "width": 768,
+    "ruta": "/reportes/finanzas/beneficios/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 89
+  },
+  {
+    "rol": "administracion",
+    "width": 768,
+    "ruta": "/reportes/finanzas/convenios/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 63
+  },
+  {
+    "rol": "administracion",
+    "width": 768,
+    "ruta": "/reportes/finanzas/cajas/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 47
+  },
+  {
+    "rol": "administracion",
+    "width": 768,
+    "ruta": "/reportes/finanzas/auditoria/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 70
+  },
+  {
+    "rol": "administracion",
+    "width": 1366,
+    "ruta": "/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 139
+  },
+  {
+    "rol": "administracion",
+    "width": 1366,
+    "ruta": "/reportes/finanzas/panel/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 222
+  },
+  {
+    "rol": "administracion",
+    "width": 1366,
+    "ruta": "/reportes/finanzas/resultados/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 294
+  },
+  {
+    "rol": "administracion",
+    "width": 1366,
+    "ruta": "/reportes/finanzas/cuentas/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 97
+  },
+  {
+    "rol": "administracion",
+    "width": 1366,
+    "ruta": "/reportes/finanzas/solvencia/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 117
+  },
+  {
+    "rol": "administracion",
+    "width": 1366,
+    "ruta": "/reportes/finanzas/beneficios/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 100
+  },
+  {
+    "rol": "administracion",
+    "width": 1366,
+    "ruta": "/reportes/finanzas/convenios/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 84
+  },
+  {
+    "rol": "administracion",
+    "width": 1366,
+    "ruta": "/reportes/finanzas/cajas/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 44
+  },
+  {
+    "rol": "administracion",
+    "width": 1366,
+    "ruta": "/reportes/finanzas/auditoria/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 82
+  },
+  {
+    "rol": "secretaria",
+    "width": 390,
+    "ruta": "/estudiantes/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 47
+  },
+  {
+    "rol": "secretaria",
+    "width": 390,
+    "ruta": "/finanzas/estudiantes/17/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 54
+  },
+  {
+    "rol": "secretaria",
+    "width": 390,
+    "ruta": "/finanzas/estudiantes/17/pago/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 59
+  },
+  {
+    "rol": "secretaria",
+    "width": 390,
+    "ruta": "/finanzas/becas/nueva/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 42
+  },
+  {
+    "rol": "secretaria",
+    "width": 390,
+    "ruta": "/finanzas/convenios/nuevo/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 51
+  },
+  {
+    "rol": "secretaria",
+    "width": 390,
+    "ruta": "/finanzas/aportes/recibir/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 159
+  },
+  {
+    "rol": "secretaria",
+    "width": 390,
+    "ruta": "/finanzas/operaciones/egresos/nuevo/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 47
+  },
+  {
+    "rol": "secretaria",
+    "width": 768,
+    "ruta": "/estudiantes/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 30
+  },
+  {
+    "rol": "secretaria",
+    "width": 768,
+    "ruta": "/finanzas/estudiantes/17/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 171
+  },
+  {
+    "rol": "secretaria",
+    "width": 768,
+    "ruta": "/finanzas/estudiantes/17/pago/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 61
+  },
+  {
+    "rol": "secretaria",
+    "width": 768,
+    "ruta": "/finanzas/becas/nueva/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 34
+  },
+  {
+    "rol": "secretaria",
+    "width": 768,
+    "ruta": "/finanzas/convenios/nuevo/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 125
+  },
+  {
+    "rol": "secretaria",
+    "width": 768,
+    "ruta": "/finanzas/aportes/recibir/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 31
+  },
+  {
+    "rol": "secretaria",
+    "width": 768,
+    "ruta": "/finanzas/operaciones/egresos/nuevo/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 44
+  },
+  {
+    "rol": "secretaria",
+    "width": 1366,
+    "ruta": "/estudiantes/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 52
+  },
+  {
+    "rol": "secretaria",
+    "width": 1366,
+    "ruta": "/finanzas/estudiantes/17/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 61
+  },
+  {
+    "rol": "secretaria",
+    "width": 1366,
+    "ruta": "/finanzas/estudiantes/17/pago/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 95
+  },
+  {
+    "rol": "secretaria",
+    "width": 1366,
+    "ruta": "/finanzas/becas/nueva/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 39
+  },
+  {
+    "rol": "secretaria",
+    "width": 1366,
+    "ruta": "/finanzas/convenios/nuevo/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 48
+  },
+  {
+    "rol": "secretaria",
+    "width": 1366,
+    "ruta": "/finanzas/aportes/recibir/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 63
+  },
+  {
+    "rol": "secretaria",
+    "width": 1366,
+    "ruta": "/finanzas/operaciones/egresos/nuevo/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 44
+  },
+  {
+    "rol": "maestro",
+    "width": 390,
+    "ruta": "/mis-cursos/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 103
+  },
+  {
+    "rol": "maestro",
+    "width": 390,
+    "ruta": "/calificacion/?curso=1",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 255
+  },
+  {
+    "rol": "maestro",
+    "width": 390,
+    "ruta": "/asistencia/?curso=1",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 40
+  },
+  {
+    "rol": "maestro",
+    "width": 390,
+    "ruta": "/cursos/1/cierre/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 43
+  },
+  {
+    "rol": "maestro",
+    "width": 768,
+    "ruta": "/mis-cursos/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 49
+  },
+  {
+    "rol": "maestro",
+    "width": 768,
+    "ruta": "/calificacion/?curso=1",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 247
+  },
+  {
+    "rol": "maestro",
+    "width": 768,
+    "ruta": "/asistencia/?curso=1",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 57
+  },
+  {
+    "rol": "maestro",
+    "width": 768,
+    "ruta": "/cursos/1/cierre/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 40
+  },
+  {
+    "rol": "maestro",
+    "width": 1366,
+    "ruta": "/mis-cursos/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 218
+  },
+  {
+    "rol": "maestro",
+    "width": 1366,
+    "ruta": "/calificacion/?curso=1",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 219
+  },
+  {
+    "rol": "maestro",
+    "width": 1366,
+    "ruta": "/asistencia/?curso=1",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 52
+  },
+  {
+    "rol": "maestro",
+    "width": 1366,
+    "ruta": "/cursos/1/cierre/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 46
+  },
+  {
+    "rol": "estudiante",
+    "width": 390,
+    "ruta": "/portal/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 36
+  },
+  {
+    "rol": "estudiante",
+    "width": 390,
+    "ruta": "/portal/cuenta/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 46
+  },
+  {
+    "rol": "estudiante",
+    "width": 390,
+    "ruta": "/portal/academico/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 33
+  },
+  {
+    "rol": "estudiante",
+    "width": 768,
+    "ruta": "/portal/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 33
+  },
+  {
+    "rol": "estudiante",
+    "width": 768,
+    "ruta": "/portal/cuenta/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 50
+  },
+  {
+    "rol": "estudiante",
+    "width": 768,
+    "ruta": "/portal/academico/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 35
+  },
+  {
+    "rol": "estudiante",
+    "width": 1366,
+    "ruta": "/portal/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 36
+  },
+  {
+    "rol": "estudiante",
+    "width": 1366,
+    "ruta": "/portal/cuenta/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 46
+  },
+  {
+    "rol": "estudiante",
+    "width": 1366,
+    "ruta": "/portal/academico/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 48
+  },
+  {
+    "rol": "padrinazgo",
+    "width": 390,
+    "ruta": "/portal/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 33
+  },
+  {
+    "rol": "padrinazgo",
+    "width": 390,
+    "ruta": "/portal/cuenta/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 56
+  },
+  {
+    "rol": "padrinazgo",
+    "width": 390,
+    "ruta": "/portal/academico/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 36
+  },
+  {
+    "rol": "padrinazgo",
+    "width": 768,
+    "ruta": "/portal/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 39
+  },
+  {
+    "rol": "padrinazgo",
+    "width": 768,
+    "ruta": "/portal/cuenta/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 53
+  },
+  {
+    "rol": "padrinazgo",
+    "width": 768,
+    "ruta": "/portal/academico/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 37
+  },
+  {
+    "rol": "padrinazgo",
+    "width": 1366,
+    "ruta": "/portal/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 40
+  },
+  {
+    "rol": "padrinazgo",
+    "width": 1366,
+    "ruta": "/portal/cuenta/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 52
+  },
+  {
+    "rol": "padrinazgo",
+    "width": 1366,
+    "ruta": "/portal/academico/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 35
+  },
+  {
+    "rol": "insolvente",
+    "width": 390,
+    "ruta": "/portal/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 29
+  },
+  {
+    "rol": "insolvente",
+    "width": 390,
+    "ruta": "/portal/cuenta/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 51
+  },
+  {
+    "rol": "insolvente",
+    "width": 768,
+    "ruta": "/portal/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 34
+  },
+  {
+    "rol": "insolvente",
+    "width": 768,
+    "ruta": "/portal/cuenta/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 46
+  },
+  {
+    "rol": "insolvente",
+    "width": 1366,
+    "ruta": "/portal/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 31
+  },
+  {
+    "rol": "insolvente",
+    "width": 1366,
+    "ruta": "/portal/cuenta/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 47
+  },
+  {
+    "rol": "pastor",
+    "width": 390,
+    "ruta": "/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 26
+  },
+  {
+    "rol": "pastor",
+    "width": 768,
+    "ruta": "/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 25
+  },
+  {
+    "rol": "pastor",
+    "width": 1366,
+    "ruta": "/",
+    "status": 200,
+    "desbordamiento_px": 0,
+    "tiempo_http_ms": 34
+  }
+]

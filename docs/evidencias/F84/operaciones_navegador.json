@@ -1,0 +1,403 @@
+{
+  "pantallas": [
+    {
+      "maestro": "01",
+      "curso": 1,
+      "width": 390,
+      "ruta": "/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "01",
+      "curso": 1,
+      "width": 390,
+      "ruta": "/mis-cursos/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "01",
+      "curso": 1,
+      "width": 390,
+      "ruta": "/calificacion/?curso=1",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "01",
+      "curso": 1,
+      "width": 390,
+      "ruta": "/asistencia/?curso=1",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "01",
+      "curso": 1,
+      "width": 390,
+      "ruta": "/cursos/1/programar/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "01",
+      "curso": 1,
+      "width": 390,
+      "ruta": "/cursos/1/cierre/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "01",
+      "curso": 1,
+      "width": 390,
+      "ruta": "/solicitudes-academicas/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "01",
+      "curso": 1,
+      "width": 390,
+      "ruta": "/reportes/calificaciones/?curso=1",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "01",
+      "curso": 1,
+      "width": 768,
+      "ruta": "/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "01",
+      "curso": 1,
+      "width": 768,
+      "ruta": "/mis-cursos/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "01",
+      "curso": 1,
+      "width": 768,
+      "ruta": "/calificacion/?curso=1",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "01",
+      "curso": 1,
+      "width": 768,
+      "ruta": "/asistencia/?curso=1",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "01",
+      "curso": 1,
+      "width": 768,
+      "ruta": "/cursos/1/programar/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "01",
+      "curso": 1,
+      "width": 768,
+      "ruta": "/cursos/1/cierre/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "01",
+      "curso": 1,
+      "width": 768,
+      "ruta": "/solicitudes-academicas/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "01",
+      "curso": 1,
+      "width": 768,
+      "ruta": "/reportes/calificaciones/?curso=1",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "01",
+      "curso": 1,
+      "width": 1366,
+      "ruta": "/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "01",
+      "curso": 1,
+      "width": 1366,
+      "ruta": "/mis-cursos/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "01",
+      "curso": 1,
+      "width": 1366,
+      "ruta": "/calificacion/?curso=1",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "01",
+      "curso": 1,
+      "width": 1366,
+      "ruta": "/asistencia/?curso=1",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "01",
+      "curso": 1,
+      "width": 1366,
+      "ruta": "/cursos/1/programar/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "01",
+      "curso": 1,
+      "width": 1366,
+      "ruta": "/cursos/1/cierre/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "01",
+      "curso": 1,
+      "width": 1366,
+      "ruta": "/solicitudes-academicas/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "01",
+      "curso": 1,
+      "width": 1366,
+      "ruta": "/reportes/calificaciones/?curso=1",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "04",
+      "curso": 4,
+      "width": 390,
+      "ruta": "/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "04",
+      "curso": 4,
+      "width": 390,
+      "ruta": "/mis-cursos/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "04",
+      "curso": 4,
+      "width": 390,
+      "ruta": "/calificacion/?curso=4",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "04",
+      "curso": 4,
+      "width": 390,
+      "ruta": "/asistencia/?curso=4",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "04",
+      "curso": 4,
+      "width": 390,
+      "ruta": "/cursos/4/programar/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "04",
+      "curso": 4,
+      "width": 390,
+      "ruta": "/cursos/4/cierre/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "04",
+      "curso": 4,
+      "width": 390,
+      "ruta": "/solicitudes-academicas/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "04",
+      "curso": 4,
+      "width": 390,
+      "ruta": "/reportes/calificaciones/?curso=4",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "04",
+      "curso": 4,
+      "width": 768,
+      "ruta": "/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "04",
+      "curso": 4,
+      "width": 768,
+      "ruta": "/mis-cursos/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "04",
+      "curso": 4,
+      "width": 768,
+      "ruta": "/calificacion/?curso=4",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "04",
+      "curso": 4,
+      "width": 768,
+      "ruta": "/asistencia/?curso=4",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "04",
+      "curso": 4,
+      "width": 768,
+      "ruta": "/cursos/4/programar/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "04",
+      "curso": 4,
+      "width": 768,
+      "ruta": "/cursos/4/cierre/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "04",
+      "curso": 4,
+      "width": 768,
+      "ruta": "/solicitudes-academicas/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "04",
+      "curso": 4,
+      "width": 768,
+      "ruta": "/reportes/calificaciones/?curso=4",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "04",
+      "curso": 4,
+      "width": 1366,
+      "ruta": "/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "04",
+      "curso": 4,
+      "width": 1366,
+      "ruta": "/mis-cursos/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "04",
+      "curso": 4,
+      "width": 1366,
+      "ruta": "/calificacion/?curso=4",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "04",
+      "curso": 4,
+      "width": 1366,
+      "ruta": "/asistencia/?curso=4",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "04",
+      "curso": 4,
+      "width": 1366,
+      "ruta": "/cursos/4/programar/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "04",
+      "curso": 4,
+      "width": 1366,
+      "ruta": "/cursos/4/cierre/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "04",
+      "curso": 4,
+      "width": 1366,
+      "ruta": "/solicitudes-academicas/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "maestro": "04",
+      "curso": 4,
+      "width": 1366,
+      "ruta": "/reportes/calificaciones/?curso=4",
+      "status": 200,
+      "desbordamiento": 0
+    }
+  ],
+  "errores_js": [],
+  "controles": {
+    "campos_unicos": true,
+    "resoluciones_preservan_formdata": true,
+    "filtro_conserva_lote": true,
+    "envios_doble_submit": 2,
+    "nota_guardada": "80.00",
+    "estado_provisional": true,
+    "error101_rechazado": true,
+    "valor_y_foco_preservados": true,
+    "asistencia_justificada": true,
+    "guardado_sin_js": true,
+    "csv_impresion": true,
+    "finanzas_sin_cambios": true
+  }
+}

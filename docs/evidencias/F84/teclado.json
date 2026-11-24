@@ -1,0 +1,12 @@
+{
+  "salto_contenido": true,
+  "detalle_con_espacio": true,
+  "tab_entre_componentes": true,
+  "foco_visible": {
+    "nombre": "nota-4-nota_uniforme",
+    "estilo": "solid",
+    "ancho": "3px"
+  },
+  "semantica_tabla_rowheader": true,
+  "encabezado_fijo": true
+}

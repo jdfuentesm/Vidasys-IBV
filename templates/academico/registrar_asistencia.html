@@ -1,20 +1,13 @@
 {% extends 'core/aplicacion.html' %}
 {% load static %}
 {% block title %}Control de Asistencia{% endblock %}
-{% block extra_css %}<link rel="stylesheet" href="{% static 'css/asistencia.css' %}">{% endblock %}
-{% block extra_js %}<script src="{% static 'js/asistencia.js' %}" defer></script>{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/asistencia.css' %}"><link rel="stylesheet" href="{% static 'css/docente.css' %}">{% endblock %}
+{% block extra_js %}<script src="{% static 'js/asistencia.js' %}" defer></script><script src="{% static 'js/docente.js' %}" defer></script>{% endblock %}
 {% block content %}
     <div class="titulo"><p class="seccion">GESTIÓN ACADÉMICA</p><h1>Control de Asistencia</h1>
     <p>Abra su curso, seleccione la sesión y registre la asistencia.</p></div>
-    <section class="panel-curso">
-        <form method="get" class="seleccion-asistencia" data-seleccion>
-            <div class="selector"><label for="curso">Mi curso</label>
-                <select name="curso" id="curso" required><option value="">Seleccione un curso</option>
-                    {% for item in cursos %}<option value="{{ item.pk }}" {% if curso.pk == item.pk %}selected{% endif %}>{{ item }}</option>{% endfor %}
-                </select></div>
-            <button class="boton-secundario" type="submit">Abrir curso</button>
-        </form>
-        {% if curso %}<form method="get" class="seleccion-asistencia" data-seleccion>
+{% include 'academico/docente/selector_curso.html' with accion='Abrir curso' destino='registrar_asistencia' %}
+<section class="panel-curso">        {% if curso %}<form method="get" class="seleccion-asistencia" data-seleccion>
             <input type="hidden" name="curso" value="{{ curso.pk }}">
             <div class="selector"><label for="sesion">Sesión de clase</label>
                 <select name="sesion" id="sesion" required><option value="">Seleccione una sesión existente</option>
@@ -39,28 +32,28 @@
             {% csrf_token %}<input type="hidden" name="curso" value="{{ curso.pk }}"><input type="hidden" name="sesion" value="{{ sesion.pk }}">
             <div class="guardar"><div><strong>Asistencia de todos los estudiantes</strong>
                 <p id="estado-asistencia" role="status">{% if request.method == 'POST' %}Hay cambios sin guardar. Revise los errores.{% else %}Los datos mostrados son los últimos guardados.{% endif %}</p></div>
-                {% if sesion.estado == 'PROGRAMADA' or sesion.estado == 'IMPARTIDA' %}<button type="submit">Guardar asistencia</button>{% endif %}
+                {% if edicion_asistencia %}<button type="submit">Guardar asistencia</button>{% endif %}
             </div>
-            <p class="instruccion-tabla">Seleccione un estado por estudiante. «Pendiente» no significa ausencia.</p>
-            <div class="tabla-scroll" role="region" tabindex="0" aria-label="Lista de asistencia de la sesión">
-            <table class="tabla-asistencia"><caption class="solo-lectores">Asistencia y ausencias injustificadas acumuladas en esta inscripción.</caption>
+            <p class="instruccion-tabla">{% if edicion_asistencia %}Seleccione un estado por estudiante. «Pendiente» no significa ausencia.{% else %}Asistencia solo para consulta. Los controles están bloqueados según su habilitación.{% endif %}</p>
+            <div class="tabla-scroll f84-tabla-scroll" role="region" tabindex="0" aria-label="Lista de asistencia de la sesión">
+            <table class="tabla-asistencia f84-asistencia"><caption class="solo-lectores">Asistencia y ausencias injustificadas acumuladas en esta inscripción.</caption>
                 <thead><tr><th class="estudiante" scope="col">Estudiante</th><th scope="col">Asistencia de esta sesión</th>
                     <th scope="col">Observaciones</th><th scope="col">Injustificadas acumuladas</th><th scope="col">Inscripción</th></tr></thead>
-                <tbody>{% for fila in filas %}<tr>
+                <tbody>{% for fila in filas %}<tr id="asistente-{{ fila.inscripcion.pk }}">
                     <th class="estudiante" scope="row"><span class="nombre-estudiante">{{ fila.inscripcion.matricula.estudiante.nombres }} {{ fila.inscripcion.matricula.estudiante.apellidos }}</span>
                         <small>{{ fila.inscripcion.matricula.estudiante.codigo_estudiante }}</small>
                         <input type="hidden" name="inscripciones" value="{{ fila.inscripcion.pk }}">
-                        {{ fila.form.inscripcion }}{{ fila.form.sesion }}{{ fila.form.revision }}{{ fila.form.revision.errors }}{{ fila.form.non_field_errors }}
+                        {{ fila.form.inscripcion }}{{ fila.form.sesion }}{{ fila.form.revision }}{{ fila.form.revision.errors }}{{ fila.form.non_field_errors }}{% if fila.form.errors %}<p data-error-docente tabindex="-1" role="alert">Revise esta asistencia.</p>{% endif %}
                     </th>
-                    <td>{{ fila.form.estado_asistencia }}{{ fila.form.estado_asistencia.errors }}
+                    <td data-label="Asistencia de esta sesión">{{ fila.form.estado_asistencia }}{{ fila.form.estado_asistencia.errors }}
                         {% if not fila.registro %}<small>Sin asistencia registrada</small>{% endif %}</td>
-                    <td>{{ fila.form.observaciones }}{{ fila.form.observaciones.errors }}</td>
-                    <td><span class="estado {% if fila.ausencias >= 2 %}estado--reprobada{% else %}estado--pendiente{% endif %}">{{ fila.ausencias }}</span>
+                    <td data-label="Observaciones">{{ fila.form.observaciones }}{{ fila.form.observaciones.errors }}</td>
+                    <td data-label="Injustificadas acumuladas"><span class="estado {% if fila.ausencias >= 2 %}estado--reprobada{% else %}estado--pendiente{% endif %}">{{ fila.ausencias }}</span>
                         <small>Solo en esta inscripción</small></td>
-                    <td>{{ fila.inscripcion.estado }}{% if fila.form.motivo_bloqueo %}<small>{{ fila.form.motivo_bloqueo }}</small>{% endif %}</td>
+                    <td data-label="Estado de inscripción">{{ fila.inscripcion.estado }}{% if fila.form.motivo_bloqueo %}<small>{{ fila.form.motivo_bloqueo }}</small>{% endif %}</td>
                 </tr>{% endfor %}</tbody>
             </table></div>
-            <p class="pie-libro">Las correcciones ordinarias están permitidas mientras la inscripción siga CURSANDO. No se borran registros al dejar un estado vacío.</p>
+            <p class="pie-libro">{% if edicion_asistencia %}Las correcciones ordinarias están permitidas mientras la inscripción siga CURSANDO. No se borran registros al dejar un estado vacío.{% else %}Esta pantalla conserva el historial; no reabre cursos ni inscripciones.{% endif %}</p>
         </form>
         {% else %}<p class="mensaje">No hay estudiantes habilitados ni asistencias anteriores para esta sesión.</p>{% endif %}
     {% endif %}

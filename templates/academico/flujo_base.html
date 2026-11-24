@@ -1,4 +1,6 @@
 {% extends 'core/aplicacion.html' %}
 {% load static %}
 {% block title %}Gestión académica{% endblock %}
-{% block extra_css %}<link rel="stylesheet" href="{% static 'css/flujo_academico.css' %}">{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/flujo_academico.css' %}"><link rel="stylesheet" href="{% static 'css/docente.css' %}">{% endblock %}
+
+{% block extra_js %}<script src="{% static 'js/docente.js' %}" defer></script>{% endblock %}

@@ -35,7 +35,7 @@
                 if (actual !== secuencia) return;
                 for (const fila of resultado.filas) {
                     const elemento = libro.querySelector(`[data-inscripcion="${fila.id}"]`);
-                    if (!elemento) continue;
+                    if (!elemento || elemento.classList.contains('bloqueada') || elemento.dataset.editado !== 'true') continue;
                     elemento.querySelector('[data-nota]').textContent = fila.nota;
                     const indicador = elemento.querySelector('[data-estado]');
                     indicador.textContent = fila.estado;

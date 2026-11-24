@@ -12,6 +12,7 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_safe
 
 from .forms import FilaAsistenciaForm, FilaCalificacionForm
+from .presentacion_docente import presentar_libro, presentar_asistencia
 from .flujo_views import autorizar_clase_extraordinaria
 from .models import Asistencia, Calificacion, Curso, Estudiante, InscripcionCurso, Maestro, Matricula, SesionClase
 
@@ -53,7 +54,7 @@ def registrar_asistencia(request):
         if not curso_id:
             if request.method == "POST":
                 messages.error(request, "Seleccione un curso y una sesión antes de guardar.")
-            return render(request, "academico/registrar_asistencia.html", contexto)
+            return presentar_asistencia(request, contexto)
         with transaction.atomic():
             seleccion = cursos
             if request.method == "POST":
@@ -69,7 +70,7 @@ def registrar_asistencia(request):
             if not sesion_id:
                 if request.method == "POST":
                     messages.error(request, "Seleccione una sesión existente antes de guardar.")
-                return render(request, "academico/registrar_asistencia.html", contexto)
+                return presentar_asistencia(request, contexto)
             sesiones = SesionClase.objects.filter(curso=curso)
             if request.method == "POST":
                 sesiones = sesiones.select_for_update()
@@ -124,11 +125,11 @@ def registrar_asistencia(request):
                     messages.error(request, "No se guardó ninguna asistencia. Revise las filas señaladas; los valores escritos se conservan.")
     except ValidationError as error:
         messages.error(request, " ".join(error.messages))
-        return render(request, "academico/registrar_asistencia.html", contexto, status=400)
+        return presentar_asistencia(request, contexto, status=400)
     except DatabaseError:
         messages.error(request, "No se pudo completar la operación. No se guardaron cambios; contacte a la administración para revisar la base de datos.")
-        return render(request, "academico/registrar_asistencia.html", contexto, status=503)
-    return render(request, "academico/registrar_asistencia.html", contexto)
+        return presentar_asistencia(request, contexto, status=503)
+    return presentar_asistencia(request, contexto)
 
 
 @login_required
@@ -147,7 +148,7 @@ def registrar_calificacion(request):
         if not curso_id:
             if request.method == "POST":
                 messages.error(request, "Seleccione primero uno de sus cursos.")
-            return render(request, "academico/registrar_calificacion.html", contexto)
+            return presentar_libro(request, contexto)
         if not curso_id.isascii() or not curso_id.isdecimal() or len(curso_id) > 18:
             return HttpResponseForbidden("El curso seleccionado no está disponible.")
         curso = get_object_or_404(cursos, pk=curso_id)
@@ -226,5 +227,5 @@ def registrar_calificacion(request):
                     messages.error(request, "No se guardó ninguna calificación. Revise las filas señaladas; sus valores escritos se conservan.")
     except DatabaseError:
         messages.error(request, "No se pudo completar la operación. No se guardaron cambios. La estructura de la base de datos debe ser revisada por la administración.")
-        return render(request, "academico/registrar_calificacion.html", contexto, status=503)
-    return render(request, "academico/registrar_calificacion.html", contexto)
+        return presentar_libro(request, contexto, status=503)
+    return presentar_libro(request, contexto)

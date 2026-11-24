@@ -1,7 +1,7 @@
 {% extends 'reportes/base.html' %}{% block title %}{{ titulo }}{% endblock %}
 {% block content %}
 <p class="reportes-no-imprimir"><a href="{% url 'reportes' %}">← Reportes institucionales</a></p><p class="seccion">INSTITUTO BÍBLICO VIDA · REPORTE INSTITUCIONAL</p><h1>{{ titulo }}</h1><p>Fecha del filtro: {{ fecha_filtro }}.</p>
-{% if request.user.rol == 'MAESTRO' %}<p>Alcance: únicamente sus cursos asignados.</p>{% endif %}
+{% if request.user.rol == 'MAESTRO' %}<p>Alcance: únicamente sus cursos asignados.</p><p class="reportes-no-imprimir"><a href="{% url 'mis_cursos' %}">Volver a Mis cursos</a>{% if form.cleaned_data.curso %} · <a href="{% url 'registrar_calificacion' %}?curso={{ form.cleaned_data.curso.pk }}">Volver al libro de {{ form.cleaned_data.curso.materia.nombre }}</a>{% endif %}</p>{% endif %}
 <form method="get" class="panel-curso est-filtros reportes-no-imprimir">{{ form.non_field_errors }}{% for field in form %}<div>{{ field.label_tag }}{{ field }}{{ field.errors }}</div>{% endfor %}<button type="submit">Consultar reporte</button><a href="{% url 'reportes_consultar' tipo %}">Limpiar filtros</a></form>
 {% if error_reporte %}<p role="alert" class="mensaje error">{{ error_reporte }}</p>{% elif not form.errors %}
 <div class="est-acciones reportes-no-imprimir"><a class="est-boton" href="?{{ parametros }}&amp;formato=csv">Exportar CSV</a><a href="?{{ parametros }}&amp;formato=imprimir">Vista para imprimir / Guardar PDF</a>{% if imprimir %}<button type="button" data-imprimir-reporte>Imprimir / Guardar PDF</button>{% endif %}</div>

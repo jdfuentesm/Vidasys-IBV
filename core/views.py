@@ -112,4 +112,11 @@ def dashboard(request):
         from .paneles_views import inicio
         return inicio(request)
     contexto={"usuario":request.user}
+    if request.user.rol == 'MAESTRO' and request.user.is_active:
+        from academico.presentacion_docente import resumenes_propios
+        from django.db import DatabaseError
+        try:
+            contexto['cursos_docente'] = resumenes_propios(request.user)
+        except DatabaseError:
+            contexto['error_docente'] = 'No se pudieron consultar sus cursos. Intente desde Mis cursos.'
     return render(request, "core/dashboard.html", contexto)

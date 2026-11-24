@@ -4,7 +4,7 @@ Objetivo futuro: usuarios con conocimientos tecnológicos básicos puedan comple
 operaciones sin asistencia, conservando la identidad institucional y los permisos.
 Este archivo registra deuda y entregas. F8.1 está implementada como base visual y de navegación;
 F8.2 incorpora paneles y consultas compactas; F8.3 mejora Secretaría y formularios operativos.
-F8.4–F8.6 siguen pendientes de autorización.
+F8.4 mejora el recorrido docente y el libro; F8.5–F8.6 siguen pendientes de autorización.
 Las entradas históricas conservan su contexto y las actualizaciones posteriores indican el estado vigente.
 
 | Prioridad | Trabajo futuro | Criterio verificable |
@@ -150,3 +150,35 @@ Mismos datos iniciales F7.1; los dos cobros ficticios posteriores suman USD 13,6
 
 Sin cambios en modelos, migraciones, reglas, servicios, permisos ni lanzador LAN. Sin acceso
 a Neon, migraciones persistentes o despliegue. Conservar stash y ZIP; publicación requiere autorización.
+
+
+## Entrega F8.4 — Maestros y libro de calificaciones
+
+Implementados: inicio y tarjetas con cursos propios/pendientes verificables; contexto de curso
+único y catálogo de nombres completos; libro con identidad/nota/estado juntos, componentes
+ampliables y un solo formulario/DOM por lote; vista previa desde servidor sin alterar estados
+mostrados de filas sin editar/bloqueadas; asistencia adaptable y estados de consulta coherentes;
+calendario ordinario/extraordinario y mensajes de cursos cerrados; disponibilidad de corrección
+por validador original e historial de pendiente propia; retorno desde reportes al libro.
+
+Validación: 729 pruebas (706 conservadas + 23 nuevas), 48 pantallas docentes y 126 de regresión,
+390/768/1366 px, sin desbordamiento exterior ni errores JS. Operaciones con y sin JS, cambio de
+resolución conservando FormData, campos únicos, errores con valores/foco y un envío ante doble
+submit. Mismos datos iniciales académicos/financieros de F7.1. Sin cambios en modelos, migraciones,
+formularios, servicios, permisos, reglas ni lanzador LAN.
+
+[Inventario y recorrido](../frontend/F84_maestros_libro.md) ·
+[Evidencias y mediciones](../evidencias/F84/README.md).
+
+| Estado vigente | Trabajo | Seguimiento |
+| --- | --- | --- |
+| Base resuelta F8.4 | Libro docente adaptable y edición por lote | En 390 px, ancho real base 1.932–1.961 → 360 px; scroll horizontal 1.572–1.601 → 0. Misma cantidad de campos. |
+| Base resuelta F8.4 | Cursos cerrados y correcciones | No confunde solo lectura con inasistencia; usa elegibilidad canónica sin reparar historia. |
+| Base resuelta F8.4 | Asistencia, sesiones y reportes propios | Presentación coherente, permisos/validaciones originales; sin nuevas acciones masivas ni estados. |
+| Pendiente | Comprensión/lector de pantalla y altura móvil | 20 fichas aumentan altura; índice y búsqueda no eliminan información. Medir con docentes reales antes de otra simplificación. |
+| Pendiente | Elegibilidad por lotes y cursos de gran volumen | El validador original consulta por inscripción; diseñar lectura común/medir PostgreSQL sin duplicar reglas. |
+| Pendiente F8.5–F8.6 | Siguientes alcances, incluido portal | No implementados ni autorizados implícitamente por F8.4. |
+| Obligatorio antes de despliegue | PostgreSQL aislado, solvencia Django/SQL | Restricciones, transacciones y concurrencia; despliegue pendiente, sin acceso a Neon. |
+| Pendiente funcional | Servicio formal de convenios INCUMPLIDO | Sin implementar. |
+
+Conservar evidencias anteriores, stash y ZIP. Commit local tras validación; sin push hasta autorización.

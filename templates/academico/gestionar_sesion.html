@@ -2,9 +2,9 @@
 {% block title %}Gestionar sesión{% endblock %}
 {% block content %}
 <p><a href="{% url 'programar_sesiones' curso.pk %}">← Calendario del curso</a></p>
-<h1>Gestionar clase {{ sesion.numero_clase }}</h1><h2>{{ curso }}</h2>
-<p>Estado registrado: {{ sesion.get_estado_display }}. Marque impartida después de realizar la sesión. Puede suspender o reprogramar una sesión no impartida si no tiene asistencia registrada.</p>
-<p>Para reprogramar, confirme fecha y horas en estado PROGRAMADA. No se cambia el número de clase ni la autorización de extraordinarias.</p>
+<h1>{% if editable %}Gestionar{% else %}Consultar{% endif %} clase {{ sesion.numero_clase }}</h1>
+<p>Estado registrado: {{ sesion.get_estado_display }}.</p>{% if editable %}<p>Marque impartida después de realizar la sesión. Puede suspender o reprogramar una sesión no impartida si no tiene asistencia registrada.</p>
+<p>Para reprogramar, confirme fecha y horas en estado PROGRAMADA. No se cambia el número de clase ni la autorización de extraordinarias.</p>{% endif %}
 {% if editable %}<form method="post" class="panel-curso formulario-academico">{% csrf_token %}{{ form.as_p }}<button type="submit">Confirmar cambio de sesión</button></form>
 {% else %}<p class="mensaje">Solo consulta: el curso no está activo o la sesión ya fue impartida/cancelada. Solicite revisión de Dirección; no hay reapertura automática.</p>{% endif %}
 {% if not bloqueo_cancelacion %}<p><a href="{% url 'solicitar_cancelacion' sesion.pk %}">Solicitar cancelación a Dirección</a></p>{% else %}<p>No puede solicitar cancelación: {{ bloqueo_cancelacion }}</p>{% endif %}

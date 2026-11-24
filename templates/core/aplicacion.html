@@ -27,15 +27,7 @@
     <main id="contenido" class="app-main" tabindex="-1">
         {% include 'core/componentes/menu_seccion.html' with grupo=navegacion.seccion %}
         {% if curso and request.user.rol == 'MAESTRO' %}
-            <nav class="contexto-curso" aria-label="Navegación del curso">
-                <a href="{% url 'mis_cursos' %}">← Mis cursos</a><strong>{{ curso }}</strong>
-                <div class="tareas-curso">
-                    <a href="{% url 'registrar_asistencia' %}?curso={{ curso.pk }}" {% if request.resolver_match.url_name == 'registrar_asistencia' %}aria-current="page"{% endif %}>Asistencia</a>
-                    <a href="{% url 'registrar_calificacion' %}?curso={{ curso.pk }}" {% if request.resolver_match.url_name == 'registrar_calificacion' %}aria-current="page"{% endif %}>Calificaciones</a>
-                    <a href="{% url 'programar_sesiones' curso.pk %}" {% if request.resolver_match.url_name == 'programar_sesiones' %}aria-current="page"{% endif %}>Programación</a>
-                    <a href="{% url 'cierre_curso' curso.pk %}" {% if request.resolver_match.url_name == 'cierre_curso' %}aria-current="page"{% endif %}>Cierre del curso</a>
-                </div>
-            </nav>
+            {% include 'academico/docente/curso_contexto.html' %}
         {% endif %}
         {% for message in messages %}{% include 'core/componentes/aviso.html' with texto=message tipo=message.tags %}{% endfor %}
         {% block content %}{% endblock %}

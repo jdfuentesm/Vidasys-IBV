@@ -1,0 +1,10 @@
+            <nav class="contexto-curso" aria-label="Navegación del curso">
+                <a href="{% url 'mis_cursos' %}">← Mis cursos</a><strong>{{ curso }}</strong><small>{{ curso.get_estado_display }} · Ciclo formativo {{ curso.materia.numero_ciclo_formativo }}</small>
+                <div class="tareas-curso">
+                    <a href="{% url 'registrar_asistencia' %}?curso={{ curso.pk }}" {% if request.resolver_match.url_name == 'registrar_asistencia' %}aria-current="page"{% endif %}>Asistencia</a>
+                    <a href="{% url 'registrar_calificacion' %}?curso={{ curso.pk }}" {% if request.resolver_match.url_name == 'registrar_calificacion' %}aria-current="page"{% endif %}>Calificaciones</a>
+                    <a href="{% url 'programar_sesiones' curso.pk %}" {% if request.resolver_match.url_name == 'programar_sesiones' %}aria-current="page"{% endif %}>Programación</a>
+                    <a href="{% url 'cierre_curso' curso.pk %}" {% if request.resolver_match.url_name == 'cierre_curso' %}aria-current="page"{% endif %}>Cierre del curso</a>
+                    <a href="{% url 'reportes_consultar' 'calificaciones' %}?curso={{ curso.pk }}">Reporte del curso</a>
+                </div>
+            </nav>
