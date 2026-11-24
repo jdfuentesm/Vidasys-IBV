@@ -1,0 +1,107 @@
+[
+  {
+    "ancho": 390,
+    "ruta": "/",
+    "alto_antes": 1162,
+    "alto_despues": 1113,
+    "variacion_porcentaje": -4.22
+  },
+  {
+    "ancho": 390,
+    "ruta": "/estudiantes/",
+    "alto_antes": 4870,
+    "alto_despues": 3976,
+    "variacion_porcentaje": -18.36
+  },
+  {
+    "ancho": 390,
+    "ruta": "/estudiantes/17/",
+    "alto_antes": 2231,
+    "alto_despues": 1916,
+    "variacion_porcentaje": -14.12
+  },
+  {
+    "ancho": 390,
+    "ruta": "/estudiantes/17/matricular/",
+    "alto_antes": 1122,
+    "alto_despues": 1469,
+    "variacion_porcentaje": 30.93
+  },
+  {
+    "ancho": 390,
+    "ruta": "/finanzas/estudiantes/17/pago/",
+    "alto_antes": 1495,
+    "alto_despues": 2694,
+    "variacion_porcentaje": 80.2
+  },
+  {
+    "ancho": 768,
+    "ruta": "/",
+    "alto_antes": 952,
+    "alto_despues": 952,
+    "variacion_porcentaje": 0.0
+  },
+  {
+    "ancho": 768,
+    "ruta": "/estudiantes/",
+    "alto_antes": 3620,
+    "alto_despues": 2726,
+    "variacion_porcentaje": -24.7
+  },
+  {
+    "ancho": 768,
+    "ruta": "/estudiantes/17/",
+    "alto_antes": 1517,
+    "alto_despues": 1430,
+    "variacion_porcentaje": -5.74
+  },
+  {
+    "ancho": 768,
+    "ruta": "/estudiantes/17/matricular/",
+    "alto_antes": 1004,
+    "alto_despues": 1098,
+    "variacion_porcentaje": 9.36
+  },
+  {
+    "ancho": 768,
+    "ruta": "/finanzas/estudiantes/17/pago/",
+    "alto_antes": 1041,
+    "alto_despues": 1919,
+    "variacion_porcentaje": 84.34
+  },
+  {
+    "ancho": 1366,
+    "ruta": "/",
+    "alto_antes": 952,
+    "alto_despues": 952,
+    "variacion_porcentaje": 0.0
+  },
+  {
+    "ancho": 1366,
+    "ruta": "/estudiantes/",
+    "alto_antes": 3600,
+    "alto_despues": 2706,
+    "variacion_porcentaje": -24.83
+  },
+  {
+    "ancho": 1366,
+    "ruta": "/estudiantes/17/",
+    "alto_antes": 1558,
+    "alto_despues": 1472,
+    "variacion_porcentaje": -5.52
+  },
+  {
+    "ancho": 1366,
+    "ruta": "/estudiantes/17/matricular/",
+    "alto_antes": 1020,
+    "alto_despues": 1140,
+    "variacion_porcentaje": 11.76
+  },
+  {
+    "ancho": 1366,
+    "ruta": "/finanzas/estudiantes/17/pago/",
+    "alto_antes": 1061,
+    "alto_despues": 1937,
+    "variacion_porcentaje": 82.56
+  }
+]

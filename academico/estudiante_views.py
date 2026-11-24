@@ -81,4 +81,10 @@ def estudiante_expediente(request, estudiante_id):
     inscripciones = InscripcionCurso.objects.select_related('curso__materia', 'curso__ciclo').order_by('curso__materia__nombre')
     matriculas = Matricula.objects.filter(estudiante=estudiante).select_related('ciclo').order_by('-fecha_matricula', '-pk').prefetch_related(
         Prefetch('inscripciones', queryset=inscripciones))
-    return render(request, 'academico/estudiantes/expediente.html', {'estudiante': estudiante, 'matriculas': matriculas})
+    from financiero.consultas import solvente
+    try:
+        estado_financiero = {'solvente': solvente(estudiante)}
+    except DatabaseError:
+        estado_financiero = {'error_cuenta': 'No se pudo consultar la situación financiera. Intente desde el estado de cuenta.'}
+    return render(request, 'academico/estudiantes/expediente.html', {'estudiante': estudiante, 'matriculas': matriculas,
+        'estado_financiero': estado_financiero})

@@ -3,7 +3,8 @@
 Objetivo futuro: usuarios con conocimientos tecnológicos básicos puedan completar sus
 operaciones sin asistencia, conservando la identidad institucional y los permisos.
 Este archivo registra deuda y entregas. F8.1 está implementada como base visual y de navegación;
-F8.2 incorpora paneles y consultas compactas. F8.3–F8.6 siguen pendientes de autorización.
+F8.2 incorpora paneles y consultas compactas; F8.3 mejora Secretaría y formularios operativos.
+F8.4–F8.6 siguen pendientes de autorización.
 Las entradas históricas conservan su contexto y las actualizaciones posteriores indican el estado vigente.
 
 | Prioridad | Trabajo futuro | Criterio verificable |
@@ -116,3 +117,36 @@ impresión conservan las 240 obligaciones y las 16 columnas. No se elimina infor
 | Pendiente funcional | Servicio formal para declarar convenios INCUMPLIDO | No implementado; no inferir ni cambiar el estado desde la bandeja. |
 
 No se implementan F8.3–F8.6. Lanzadores básico, integral y LAN sin modificaciones.
+
+
+## Entrega F8.3 — Secretaría y formularios operativos
+
+Implementados: inicio de tareas de Secretaría, registro directo y secundarios agrupados;
+formularios de estudiante por secciones, búsqueda/filtros originales con paginación doble,
+expediente con solvencia canónica y contacto plegable; matrícula con vista de cursos/calendario;
+cobro con totales orientativos en centavos, revisión progresiva y retorno directo al expediente;
+componentes compartidos para becas, convenios, caja, ingresos/egresos y anulaciones.
+F6 conserva sus componentes y lógica sin duplicarlos. Contratos y servicios intactos.
+
+Validación: 706 pruebas (678 conservadas + 28 nuevas), 60 pantallas operativas y 126 de
+regresión por rol; 390/768/1366 px, sin desbordamiento exterior ni errores JS. Cobros con y
+sin JavaScript, reenvío del mismo recibo, datos/foco ante errores y cifras independientes.
+Mismos datos iniciales F7.1; los dos cobros ficticios posteriores suman USD 13,60.
+
+[Inventario, permisos y recorrido](../frontend/F83_secretaria_operaciones.md) ·
+[Evidencias, medidas y límites](../evidencias/F83/README.md).
+
+| Estado vigente | Trabajo | Seguimiento |
+| --- | --- | --- |
+| Base resuelta F8.3 | Estudiantes, matrícula y cobro | Validar aprendizaje con usuarios; sin alterar sus reglas. |
+| Base resuelta F8.3 | Formularios operativos comunes | Componentes de secciones, errores con foco, teclado y búsqueda local; no rediseño integral de todos los listados/resoluciones. |
+| Base resuelta F8.3 | Totales orientativos de cobro y cuotas | Servidor conserva autoridad, centavos, reserva, caja, idempotencia y transacciones. F6 conserva su resumen previo. |
+| Pendiente | Compacidad del cobro y pruebas de comprensión | El cobro crece por saldos/resumen; medir con personas, sin ocultar condiciones necesarias. |
+| Limitación de ensayo F7.1 | No permite nueva matrícula en sus dos ciclos parcialmente finalizados | Prueba positiva con seis cursos activos en SQLite; preparar ciclo adicional para ensayo manual. No reabrir ni modificar el generador. |
+| Pendiente | Grandes selectores e historiales | Búsqueda local sobre opciones existentes; futura búsqueda remota requiere diseño/permisos y regresión. |
+| Pendiente F8.4–F8.6 | Libro docente, portal y siguientes alcances | Sin implementar ni autorización implícita en F8.3. |
+| Obligatorio antes de despliegue | PostgreSQL aislado y unificación solvencia Django/SQL | Restricciones, transacciones y concurrencia siguen pendientes. |
+| Pendiente funcional | Servicio formal de convenios INCUMPLIDO | Sin implementar ni inferir estados desde UI. |
+
+Sin cambios en modelos, migraciones, reglas, servicios, permisos ni lanzador LAN. Sin acceso
+a Neon, migraciones persistentes o despliegue. Conservar stash y ZIP; publicación requiere autorización.

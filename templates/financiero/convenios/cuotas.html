@@ -1,2 +1,2 @@
-{{ cuotas.management_form }}{{ cuotas.non_form_errors }}
-{% for cuota in cuotas %}<fieldset class="panel-curso"><legend>Cuota {{ forloop.counter }}</legend>{{ cuota.as_p }}</fieldset>{% endfor %}
+{{ cuotas.management_form }}{% if cuotas.errors or cuotas.non_form_errors %}<div class="mensaje error" role="alert" data-errores tabindex="-1"><h2>Revise las cuotas</h2>{{ cuotas.non_form_errors }}<ul>{% for cuota in cuotas %}{% for campo in cuota %}{% if campo.errors %}<li><a href="#{{ campo.id_for_label }}">Cuota {{ forloop.parentloop.counter }} · {{ campo.label }}: {{ campo.errors|striptags }}</a></li>{% endif %}{% endfor %}{% endfor %}</ul></div>{% endif %}
+{% for cuota in cuotas %}<fieldset class="f83-seccion"><legend>Cuota {{ forloop.counter }}</legend>{{ cuota.non_field_errors }}<div class="f83-campos">{% for campo in cuota %}{% include 'core/operativa/campo.html' %}{% endfor %}</div></fieldset>{% endfor %}

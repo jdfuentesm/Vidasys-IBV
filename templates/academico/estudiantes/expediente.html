@@ -4,14 +4,15 @@
 <nav aria-label="Ruta de navegación"><a href="{% url 'estudiantes' %}">← Estudiantes</a></nav>
 <div class="est-cabecera"><div><p class="seccion">EXPEDIENTE ESTUDIANTIL · {{ estudiante.codigo_estudiante }}</p><h1>{{ estudiante.nombres }} {{ estudiante.apellidos }}</h1><span class="estado">{{ estudiante.estado }}</span></div><div class="est-acciones"><a class="est-boton" href="{% url 'estudiante_matricular' estudiante.pk %}">Matricular en un ciclo</a><a href="{% url 'estudiante_editar' estudiante.pk %}">Editar información</a></div></div>
 {% if request.user.rol == 'SECRETARIA' or request.user.rol == 'ADMINISTRADOR' or request.user.rol == 'DIRECTORA' %}<p><a class="est-boton" href="{% url 'finanzas_cuenta' estudiante.pk %}">Consultar estado de cuenta</a></p>{% endif %}
-<section class="panel-curso"><h2>Información personal</h2><dl class="est-datos">
+{% if estado_financiero.error_cuenta %}<p role="status" class="mensaje warning">{{ estado_financiero.error_cuenta }}</p>{% else %}<section class="f83-resumen" aria-label="Situación financiera"><h2>Situación financiera actual</h2><dl><div><dt>Solvencia</dt><dd>{% if estado_financiero.solvente %}SOLVENTE{% else %}INSOLVENTE{% endif %}</dd></div></dl><a href="{% url 'finanzas_cuenta' estudiante.pk %}">Ver obligaciones, cobertura y recibos →</a></section>{% endif %}
+<details class="ui-ayuda"><summary>Información personal y de contacto</summary><section class="panel-curso"><h2>Información personal</h2><dl class="est-datos">
 <div><dt>Código</dt><dd>{{ estudiante.codigo_estudiante }}</dd></div>
 <div><dt>Fecha de ingreso</dt><dd>{{ estudiante.fecha_ingreso|date:'d/m/Y' }}</dd></div>
 <div><dt>Fecha de nacimiento</dt><dd>{{ estudiante.fecha_nacimiento|date:'d/m/Y'|default:'No registrada' }}</dd></div>
 <div><dt>Teléfono</dt><dd>{{ estudiante.telefono|default:'No registrado' }}</dd></div>
 <div><dt>Correo electrónico</dt><dd>{{ estudiante.correo|default:'No registrado' }}</dd></div>
 <div><dt>Dirección</dt><dd>{{ estudiante.direccion|default:'No registrada'|linebreaksbr }}</dd></div>
-</dl></section>
+</dl></section></details>
 <section class="est-historial"><h2>Matrículas e historial académico</h2><p>Los estados se muestran tal como están registrados. Esta consulta no modifica el historial.</p>
 {% for matricula in matriculas %}<article class="panel-curso"><h3>{{ matricula.ciclo }}</h3><p>Matrícula <strong>{{ matricula.numero_matricula }}</strong> · {{ matricula.fecha_matricula|date:'d/m/Y' }} · {{ matricula.estado }}</p>
 <ul class="est-materias">{% for item in matricula.inscripciones.all %}<li><div><strong>{{ item.curso.materia.nombre }}</strong><small>{{ item.curso.materia.codigo_materia }} · Curso: {{ item.curso.estado }}</small>{% if item.fecha_cierre %}<small>Cierre: {{ item.fecha_cierre|date:'d/m/Y' }}</small>{% endif %}</div><span class="estado">{{ item.estado }}</span></li>{% empty %}<li>Esta matrícula todavía no tiene materias inscritas.</li>{% endfor %}</ul></article>

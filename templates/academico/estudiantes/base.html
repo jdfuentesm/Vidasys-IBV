@@ -1,3 +1,5 @@
 {% extends 'core/aplicacion.html' %}
 {% load static %}
-{% block extra_css %}<link rel="stylesheet" href="{% static 'css/estudiantes.css' %}">{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/estudiantes.css' %}"><link rel="stylesheet" href="{% static 'css/paneles_institucionales.css' %}"><link rel="stylesheet" href="{% static 'css/operativa.css' %}">{% endblock %}
+
+{% block extra_js %}<script src="{% static 'js/operativa.js' %}" defer></script>{% endblock %}

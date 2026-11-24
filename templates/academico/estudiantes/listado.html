@@ -9,9 +9,9 @@
 <button type="submit">Buscar</button><a href="{% url 'estudiantes' %}">Limpiar filtros</a>
 </form>
 <p class="est-conteo" role="status">{{ pagina.paginator.count }} estudiante{{ pagina.paginator.count|pluralize:'s' }} encontrado{{ pagina.paginator.count|pluralize:'s' }}.</p>
-<div class="est-lista">
-{% for item in pagina %}<article class="panel-curso est-fila"><div><small>{{ item.codigo_estudiante }}</small><h2><a href="{% url 'estudiante_expediente' item.pk %}">{{ item.apellidos }}, {{ item.nombres }}</a></h2><p>Ingreso: {{ item.fecha_ingreso|date:'d/m/Y' }}</p></div><span class="estado">{{ item.estado }}</span><a href="{% url 'estudiante_expediente' item.pk %}" aria-label="Ver expediente de {{ item.nombres }} {{ item.apellidos }}">Ver expediente →</a></article>
+{% include 'core/paneles/paginacion.html' with posicion='de estudiantes superior' %}<div class="est-lista f83-lista-compacta">
+{% for item in pagina %}<article class="panel-curso est-fila"><div><small>{{ item.codigo_estudiante }}</small><h2><a href="{% url 'estudiante_expediente' item.pk %}">{{ item.apellidos }}, {{ item.nombres }}</a></h2></div><span class="estado">{{ item.estado }}</span><a href="{% url 'estudiante_expediente' item.pk %}" aria-label="Ver expediente de {{ item.nombres }} {{ item.apellidos }}">Ver expediente →</a></article>
 {% empty %}<section class="estado-vacio"><h2>No se encontraron estudiantes</h2><p>Pruebe otro nombre o quite los filtros. Antes de registrar uno nuevo, compruebe su código.</p></section>{% endfor %}
 </div>
-{% if pagina.has_other_pages %}<nav class="est-acciones" aria-label="Páginas de estudiantes">{% if pagina.has_previous %}<a href="?{{ parametros }}&amp;page={{ pagina.previous_page_number }}">← Anterior</a>{% endif %}<span>Página {{ pagina.number }} de {{ pagina.paginator.num_pages }}</span>{% if pagina.has_next %}<a href="?{{ parametros }}&amp;page={{ pagina.next_page_number }}">Siguiente →</a>{% endif %}</nav>{% endif %}
+{% include 'core/paneles/paginacion.html' with posicion='de estudiantes inferior' %}
 {% endblock %}

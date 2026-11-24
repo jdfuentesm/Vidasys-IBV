@@ -41,7 +41,15 @@ def matricula_secretaria(request, estudiante_id=None):
             messages.success(request, 'Matrícula registrada con sus seis materias.' if creada else 'Matrícula existente verificada. Se conservaron sus registros y cierres.')
         except (ValidationError, DatabaseError) as error:
             mostrar_error(form,error)
-    return render(request,'academico/matricula_secretaria.html',{'form':form,'confirmacion':confirmacion,'estudiante':estudiante})
+    from .presentacion_operativa import ciclos_para_matricula
+    try:
+        vista_ciclos = ciclos_para_matricula(form)
+        error_vista = ''
+    except DatabaseError:
+        vista_ciclos = []
+        error_vista = 'No se pudo consultar la vista previa del ciclo. Revise la configuración antes de confirmar.'
+    return render(request,'academico/matricula_secretaria.html',{'form':form,'confirmacion':confirmacion,'estudiante':estudiante,
+        'vista_ciclos':vista_ciclos,'error_vista':error_vista})
 
 
 @login_required

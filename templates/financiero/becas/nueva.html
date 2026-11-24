@@ -1,3 +1,3 @@
 {% extends 'financiero/base.html' %}{% block title %}Solicitar beca{% endblock %}{% block content %}
 <p><a href="{% url 'becas_listado' %}">← Becas</a></p><h1>Solicitar beca</h1><p>Seleccione la matrícula activa del estudiante y ciclo. El porcentaje se calcula sobre el monto original. Dirección determinará expresamente las obligaciones beneficiadas.</p>
-<form method="post" class="panel-curso fin-becas-form">{% csrf_token %}{{ form.as_p }}<button type="submit">Enviar solicitud a Dirección</button></form>{% endblock %}
+<form method="post" class="panel-curso fin-becas-form f83-form">{% csrf_token %}{% include 'core/operativa/formulario.html' with tipo='beca' %}<button type="submit">Enviar solicitud a Dirección</button><p data-estado-envio role="status"></p></form>{% endblock %}

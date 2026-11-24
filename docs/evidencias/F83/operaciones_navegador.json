@@ -1,0 +1,503 @@
+{
+  "pantallas": [
+    {
+      "rol": "SECRETARIA",
+      "width": 390,
+      "ruta": "/",
+      "status": 200,
+      "ancho": 390,
+      "alto": 1113
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 390,
+      "ruta": "/estudiantes/",
+      "status": 200,
+      "ancho": 390,
+      "alto": 3976
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 390,
+      "ruta": "/estudiantes/nuevo/",
+      "status": 200,
+      "ancho": 390,
+      "alto": 1633
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 390,
+      "ruta": "/estudiantes/17/",
+      "status": 200,
+      "ancho": 390,
+      "alto": 1916
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 390,
+      "ruta": "/estudiantes/17/editar/",
+      "status": 200,
+      "ancho": 390,
+      "alto": 1725
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 390,
+      "ruta": "/estudiantes/17/matricular/",
+      "status": 200,
+      "ancho": 390,
+      "alto": 1469
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 390,
+      "ruta": "/matriculas/nueva/",
+      "status": 200,
+      "ancho": 390,
+      "alto": 1525
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 390,
+      "ruta": "/finanzas/",
+      "status": 200,
+      "ancho": 390,
+      "alto": 4060
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 390,
+      "ruta": "/finanzas/estudiantes/17/",
+      "status": 200,
+      "ancho": 390,
+      "alto": 6476
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 390,
+      "ruta": "/finanzas/estudiantes/17/pago/",
+      "status": 200,
+      "ancho": 390,
+      "alto": 2694
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 390,
+      "ruta": "/finanzas/becas/nueva/",
+      "status": 200,
+      "ancho": 390,
+      "alto": 1540
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 390,
+      "ruta": "/finanzas/convenios/nuevo/",
+      "status": 200,
+      "ancho": 390,
+      "alto": 970
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 390,
+      "ruta": "/finanzas/convenios/nuevo/?estudiante=17&cantidad=2",
+      "status": 200,
+      "ancho": 390,
+      "alto": 2641
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 390,
+      "ruta": "/finanzas/convenios/1/cobro/",
+      "status": 200,
+      "ancho": 390,
+      "alto": 2290
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 390,
+      "ruta": "/finanzas/caja/",
+      "status": 200,
+      "ancho": 390,
+      "alto": 2806
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 390,
+      "ruta": "/finanzas/caja/apertura/",
+      "status": 200,
+      "ancho": 390,
+      "alto": 986
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 390,
+      "ruta": "/finanzas/operaciones/ingresos/nuevo/",
+      "status": 200,
+      "ancho": 390,
+      "alto": 1750
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 390,
+      "ruta": "/finanzas/operaciones/egresos/nuevo/",
+      "status": 200,
+      "ancho": 390,
+      "alto": 1755
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 390,
+      "ruta": "/finanzas/aportes/recibir/",
+      "status": 200,
+      "ancho": 390,
+      "alto": 1801
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 390,
+      "ruta": "/finanzas/aportes/padrinazgo/17/nuevo/",
+      "status": 200,
+      "ancho": 390,
+      "alto": 3158
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 768,
+      "ruta": "/",
+      "status": 200,
+      "ancho": 768,
+      "alto": 952
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 768,
+      "ruta": "/estudiantes/",
+      "status": 200,
+      "ancho": 768,
+      "alto": 2726
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 768,
+      "ruta": "/estudiantes/nuevo/",
+      "status": 200,
+      "ancho": 768,
+      "alto": 1174
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 768,
+      "ruta": "/estudiantes/17/",
+      "status": 200,
+      "ancho": 768,
+      "alto": 1430
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 768,
+      "ruta": "/estudiantes/17/editar/",
+      "status": 200,
+      "ancho": 768,
+      "alto": 1222
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 768,
+      "ruta": "/estudiantes/17/matricular/",
+      "status": 200,
+      "ancho": 768,
+      "alto": 1098
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 768,
+      "ruta": "/matriculas/nueva/",
+      "status": 200,
+      "ancho": 768,
+      "alto": 1178
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 768,
+      "ruta": "/finanzas/",
+      "status": 200,
+      "ancho": 768,
+      "alto": 3115
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 768,
+      "ruta": "/finanzas/estudiantes/17/",
+      "status": 200,
+      "ancho": 768,
+      "alto": 4869
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 768,
+      "ruta": "/finanzas/estudiantes/17/pago/",
+      "status": 200,
+      "ancho": 768,
+      "alto": 1919
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 768,
+      "ruta": "/finanzas/becas/nueva/",
+      "status": 200,
+      "ancho": 768,
+      "alto": 1471
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 768,
+      "ruta": "/finanzas/convenios/nuevo/",
+      "status": 200,
+      "ancho": 768,
+      "alto": 952
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 768,
+      "ruta": "/finanzas/convenios/nuevo/?estudiante=17&cantidad=2",
+      "status": 200,
+      "ancho": 768,
+      "alto": 2005
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 768,
+      "ruta": "/finanzas/convenios/1/cobro/",
+      "status": 200,
+      "ancho": 768,
+      "alto": 1513
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 768,
+      "ruta": "/finanzas/caja/",
+      "status": 200,
+      "ancho": 768,
+      "alto": 2507
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 768,
+      "ruta": "/finanzas/caja/apertura/",
+      "status": 200,
+      "ancho": 768,
+      "alto": 968
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 768,
+      "ruta": "/finanzas/operaciones/ingresos/nuevo/",
+      "status": 200,
+      "ancho": 768,
+      "alto": 1423
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 768,
+      "ruta": "/finanzas/operaciones/egresos/nuevo/",
+      "status": 200,
+      "ancho": 768,
+      "alto": 1643
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 768,
+      "ruta": "/finanzas/aportes/recibir/",
+      "status": 200,
+      "ancho": 768,
+      "alto": 1686
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 768,
+      "ruta": "/finanzas/aportes/padrinazgo/17/nuevo/",
+      "status": 200,
+      "ancho": 768,
+      "alto": 2608
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 1366,
+      "ruta": "/",
+      "status": 200,
+      "ancho": 1366,
+      "alto": 952
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 1366,
+      "ruta": "/estudiantes/",
+      "status": 200,
+      "ancho": 1366,
+      "alto": 2706
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 1366,
+      "ruta": "/estudiantes/nuevo/",
+      "status": 200,
+      "ancho": 1366,
+      "alto": 1170
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 1366,
+      "ruta": "/estudiantes/17/",
+      "status": 200,
+      "ancho": 1366,
+      "alto": 1472
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 1366,
+      "ruta": "/estudiantes/17/editar/",
+      "status": 200,
+      "ancho": 1366,
+      "alto": 1198
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 1366,
+      "ruta": "/estudiantes/17/matricular/",
+      "status": 200,
+      "ancho": 1366,
+      "alto": 1140
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 1366,
+      "ruta": "/matriculas/nueva/",
+      "status": 200,
+      "ancho": 1366,
+      "alto": 1220
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 1366,
+      "ruta": "/finanzas/",
+      "status": 200,
+      "ancho": 1366,
+      "alto": 3096
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 1366,
+      "ruta": "/finanzas/estudiantes/17/",
+      "status": 200,
+      "ancho": 1366,
+      "alto": 4454
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 1366,
+      "ruta": "/finanzas/estudiantes/17/pago/",
+      "status": 200,
+      "ancho": 1366,
+      "alto": 1937
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 1366,
+      "ruta": "/finanzas/becas/nueva/",
+      "status": 200,
+      "ancho": 1366,
+      "alto": 1516
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 1366,
+      "ruta": "/finanzas/convenios/nuevo/",
+      "status": 200,
+      "ancho": 1366,
+      "alto": 952
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 1366,
+      "ruta": "/finanzas/convenios/nuevo/?estudiante=17&cantidad=2",
+      "status": 200,
+      "ancho": 1366,
+      "alto": 2025
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 1366,
+      "ruta": "/finanzas/convenios/1/cobro/",
+      "status": 200,
+      "ancho": 1366,
+      "alto": 1421
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 1366,
+      "ruta": "/finanzas/caja/",
+      "status": 200,
+      "ancho": 1366,
+      "alto": 2549
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 1366,
+      "ruta": "/finanzas/caja/apertura/",
+      "status": 200,
+      "ancho": 1366,
+      "alto": 1014
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 1366,
+      "ruta": "/finanzas/operaciones/ingresos/nuevo/",
+      "status": 200,
+      "ancho": 1366,
+      "alto": 1446
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 1366,
+      "ruta": "/finanzas/operaciones/egresos/nuevo/",
+      "status": 200,
+      "ancho": 1366,
+      "alto": 1666
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 1366,
+      "ruta": "/finanzas/aportes/recibir/",
+      "status": 200,
+      "ancho": 1366,
+      "alto": 1732
+    },
+    {
+      "rol": "SECRETARIA",
+      "width": 1366,
+      "ruta": "/finanzas/aportes/padrinazgo/17/nuevo/",
+      "status": 200,
+      "ancho": 1366,
+      "alto": 2653
+    }
+  ],
+  "errores_js": [],
+  "controles": {
+    "select_busqueda": true,
+    "pago_js": "12.60",
+    "pago_sin_js": "1.00",
+    "reintento_mismo_recibo": true,
+    "post_antes_de_confirmar": 0,
+    "nuevo_estudiante": true,
+    "edicion": true,
+    "matricula_f71_bloqueada_por_cursos_finalizados": true,
+    "matricula_obligaciones": 0,
+    "matricula_valida_sqlite_obligaciones": 6,
+    "matricula_valida_sqlite_total": "120.00",
+    "ingresos_despues": "2777.60",
+    "resultado_despues": "2691.60",
+    "error_conserva_valor_y_foco": true,
+    "posts_pagina_cobro_incluido_error_posterior": 2,
+    "posts_tras_confirmar_antes_del_error": 1
+  }
+}

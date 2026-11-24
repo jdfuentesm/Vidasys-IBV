@@ -1,0 +1,92 @@
+[
+  {
+    "width": 390,
+    "ruta": "/",
+    "alto": 1113,
+    "ancho": 390
+  },
+  {
+    "width": 390,
+    "ruta": "/estudiantes/",
+    "alto": 3976,
+    "ancho": 390
+  },
+  {
+    "width": 390,
+    "ruta": "/estudiantes/17/",
+    "alto": 1916,
+    "ancho": 390
+  },
+  {
+    "width": 390,
+    "ruta": "/estudiantes/17/matricular/",
+    "alto": 1469,
+    "ancho": 390
+  },
+  {
+    "width": 390,
+    "ruta": "/finanzas/estudiantes/17/pago/",
+    "alto": 2694,
+    "ancho": 390
+  },
+  {
+    "width": 768,
+    "ruta": "/",
+    "alto": 952,
+    "ancho": 768
+  },
+  {
+    "width": 768,
+    "ruta": "/estudiantes/",
+    "alto": 2726,
+    "ancho": 768
+  },
+  {
+    "width": 768,
+    "ruta": "/estudiantes/17/",
+    "alto": 1430,
+    "ancho": 768
+  },
+  {
+    "width": 768,
+    "ruta": "/estudiantes/17/matricular/",
+    "alto": 1098,
+    "ancho": 768
+  },
+  {
+    "width": 768,
+    "ruta": "/finanzas/estudiantes/17/pago/",
+    "alto": 1919,
+    "ancho": 768
+  },
+  {
+    "width": 1366,
+    "ruta": "/",
+    "alto": 952,
+    "ancho": 1366
+  },
+  {
+    "width": 1366,
+    "ruta": "/estudiantes/",
+    "alto": 2706,
+    "ancho": 1366
+  },
+  {
+    "width": 1366,
+    "ruta": "/estudiantes/17/",
+    "alto": 1472,
+    "ancho": 1366
+  },
+  {
+    "width": 1366,
+    "ruta": "/estudiantes/17/matricular/",
+    "alto": 1140,
+    "ancho": 1366
+  },
+  {
+    "width": 1366,
+    "ruta": "/finanzas/estudiantes/17/pago/",
+    "alto": 1937,
+    "ancho": 1366
+  }
+]

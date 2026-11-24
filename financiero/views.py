@@ -125,7 +125,13 @@ def pago_nuevo(request, estudiante_id):
             return redirect('finanzas_recibo', pago_id=pago.pk)
         except (ValidationError, DatabaseError) as error:
             error_formulario(form, error)
-    return render(request, 'financiero/pago.html', {'form': form, 'estudiante': estudiante})
+    from .presentacion_operativa import preparar_cobro
+    try:
+        presentacion = preparar_cobro(form, datos, request.user)
+    except DatabaseError:
+        return render(request, 'financiero/pago.html', {'estudiante': estudiante,
+            'error_pago': 'No se pudo consultar caja y obligaciones. No confirme un cobro con información incompleta.'}, status=503)
+    return render(request, 'financiero/pago.html', dict(form=form, estudiante=estudiante, **presentacion))
 
 
 @financiero()
