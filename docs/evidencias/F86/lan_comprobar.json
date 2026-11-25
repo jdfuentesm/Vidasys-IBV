@@ -1,0 +1,9 @@
+{
+  "modo": "--lan --comprobar",
+  "semilla": 711,
+  "referencia": "2026-11-22",
+  "estado": "CONCILIADO",
+  "comprobaciones": 619,
+  "direccion": "192.168.1.154:8000",
+  "limite": "Se validó configuración y generación; --comprobar no abre un socket en esa IP ni prueba la Wi-Fi física."
+}

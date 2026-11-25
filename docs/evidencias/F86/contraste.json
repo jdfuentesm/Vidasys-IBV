@@ -1,0 +1,110 @@
+[
+  {
+    "componente": "Texto",
+    "frente": "#24364b",
+    "fondo": "#ffffff",
+    "contraste": 12.32,
+    "minimo": 4.5,
+    "tokens_en_css_actual": true,
+    "aprobado": true
+  },
+  {
+    "componente": "Texto secundario",
+    "frente": "#53657a",
+    "fondo": "#ffffff",
+    "contraste": 5.98,
+    "minimo": 4.5,
+    "tokens_en_css_actual": true,
+    "aprobado": true
+  },
+  {
+    "componente": "Bot\u00f3n",
+    "frente": "#ffffff",
+    "fondo": "#1765a1",
+    "contraste": 6.15,
+    "minimo": 4.5,
+    "tokens_en_css_actual": true,
+    "aprobado": true
+  },
+  {
+    "componente": "Men\u00fa",
+    "frente": "#e2eaf5",
+    "fondo": "#102c50",
+    "contraste": 11.56,
+    "minimo": 4.5,
+    "tokens_en_css_actual": true,
+    "aprobado": true
+  },
+  {
+    "componente": "Men\u00fa activo",
+    "frente": "#ffffff",
+    "fondo": "#25466d",
+    "contraste": 9.65,
+    "minimo": 4.5,
+    "tokens_en_css_actual": true,
+    "aprobado": true
+  },
+  {
+    "componente": "\u00c9xito",
+    "frente": "#21643e",
+    "fondo": "#edf7f0",
+    "contraste": 6.48,
+    "minimo": 4.5,
+    "tokens_en_css_actual": true,
+    "aprobado": true
+  },
+  {
+    "componente": "Error",
+    "frente": "#982c38",
+    "fondo": "#fff1f2",
+    "contraste": 6.95,
+    "minimo": 4.5,
+    "tokens_en_css_actual": true,
+    "aprobado": true
+  },
+  {
+    "componente": "Aviso",
+    "frente": "#79520a",
+    "fondo": "#fff6df",
+    "contraste": 6.45,
+    "minimo": 4.5,
+    "tokens_en_css_actual": true,
+    "aprobado": true
+  },
+  {
+    "componente": "Estado bloqueado",
+    "frente": "#42526a",
+    "fondo": "#e9eef5",
+    "contraste": 6.81,
+    "minimo": 4.5,
+    "tokens_en_css_actual": true,
+    "aprobado": true
+  },
+  {
+    "componente": "Foco sobre blanco",
+    "frente": "#a75b00",
+    "fondo": "#ffffff",
+    "contraste": 5.07,
+    "minimo": 3,
+    "tokens_en_css_actual": true,
+    "aprobado": true
+  },
+  {
+    "componente": "Foco en men\u00fa",
+    "frente": "#ffd085",
+    "fondo": "#102c50",
+    "contraste": 9.75,
+    "minimo": 3,
+    "tokens_en_css_actual": true,
+    "aprobado": true
+  },
+  {
+    "componente": "Borde de campo",
+    "frente": "#78899f",
+    "fondo": "#ffffff",
+    "contraste": 3.57,
+    "minimo": 3,
+    "tokens_en_css_actual": true,
+    "aprobado": true
+  }
+]

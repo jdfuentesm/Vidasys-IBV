@@ -1,0 +1,497 @@
+[
+  {
+    "rol": "directora",
+    "width": 390,
+    "encabezado": "Dirección",
+    "desbordamiento": 0,
+    "imagenes": [
+      {
+        "src": "/static/img/vidasys.png",
+        "cargada": true
+      },
+      {
+        "src": "/static/img/logo.png",
+        "cargada": true
+      }
+    ],
+    "enlaces_pequenos": [
+      {
+        "texto": "Revisar compromisos →",
+        "alto": 20,
+        "ancho": 169
+      },
+      {
+        "texto": "Ver toda la bandeja →",
+        "alto": 22,
+        "ancho": 166
+      },
+      {
+        "texto": "Consultar detalle académico",
+        "alto": 19,
+        "ancho": 186
+      },
+      {
+        "texto": "Consultar solvencia y sus modalidades →",
+        "alto": 22,
+        "ancho": 309
+      }
+    ]
+  },
+  {
+    "rol": "directora",
+    "width": 768,
+    "encabezado": "Dirección",
+    "desbordamiento": 0,
+    "imagenes": [
+      {
+        "src": "/static/img/vidasys.png",
+        "cargada": true
+      },
+      {
+        "src": "/static/img/logo.png",
+        "cargada": true
+      }
+    ],
+    "enlaces_pequenos": [
+      {
+        "texto": "Revisar compromisos →",
+        "alto": 20,
+        "ancho": 169
+      },
+      {
+        "texto": "Ver toda la bandeja →",
+        "alto": 22,
+        "ancho": 166
+      },
+      {
+        "texto": "Consultar detalle académico",
+        "alto": 19,
+        "ancho": 186
+      },
+      {
+        "texto": "Consultar solvencia y sus modalidades →",
+        "alto": 22,
+        "ancho": 309
+      }
+    ]
+  },
+  {
+    "rol": "directora",
+    "width": 1366,
+    "encabezado": "Dirección",
+    "desbordamiento": 0,
+    "imagenes": [
+      {
+        "src": "/static/img/vidasys.png",
+        "cargada": true
+      },
+      {
+        "src": "/static/img/logo.png",
+        "cargada": true
+      }
+    ],
+    "enlaces_pequenos": [
+      {
+        "texto": "Revisar compromisos →",
+        "alto": 20,
+        "ancho": 169
+      },
+      {
+        "texto": "Ver toda la bandeja →",
+        "alto": 22,
+        "ancho": 166
+      },
+      {
+        "texto": "Consultar detalle académico",
+        "alto": 19,
+        "ancho": 186
+      },
+      {
+        "texto": "Consultar solvencia y sus modalidades →",
+        "alto": 22,
+        "ancho": 309
+      }
+    ]
+  },
+  {
+    "rol": "administracion",
+    "width": 390,
+    "encabezado": "Administración",
+    "desbordamiento": 0,
+    "imagenes": [
+      {
+        "src": "/static/img/vidasys.png",
+        "cargada": true
+      },
+      {
+        "src": "/static/img/logo.png",
+        "cargada": true
+      }
+    ],
+    "enlaces_pequenos": [
+      {
+        "texto": "Mes actual",
+        "alto": 21,
+        "ancho": 362
+      },
+      {
+        "texto": "Consultar cajas y fotos de cierre →",
+        "alto": 22,
+        "ancho": 259
+      },
+      {
+        "texto": "Solicitudes financieras pendientes: 6",
+        "alto": 22,
+        "ancho": 273
+      },
+      {
+        "texto": "Autorizado aún sin desembolsar: USD 15.00",
+        "alto": 22,
+        "ancho": 328
+      },
+      {
+        "texto": "Registrar ingreso",
+        "alto": 22,
+        "ancho": 129
+      },
+      {
+        "texto": "Solicitar egreso",
+        "alto": 22,
+        "ancho": 116
+      },
+      {
+        "texto": "Caja y cierres",
+        "alto": 22,
+        "ancho": 99
+      }
+    ]
+  },
+  {
+    "rol": "administracion",
+    "width": 768,
+    "encabezado": "Administración",
+    "desbordamiento": 0,
+    "imagenes": [
+      {
+        "src": "/static/img/vidasys.png",
+        "cargada": true
+      },
+      {
+        "src": "/static/img/logo.png",
+        "cargada": true
+      }
+    ],
+    "enlaces_pequenos": [
+      {
+        "texto": "Mes actual",
+        "alto": 21,
+        "ancho": 236
+      },
+      {
+        "texto": "Consultar cajas y fotos de cierre →",
+        "alto": 22,
+        "ancho": 259
+      },
+      {
+        "texto": "Solicitudes financieras pendientes: 6",
+        "alto": 22,
+        "ancho": 273
+      },
+      {
+        "texto": "Autorizado aún sin desembolsar: USD 15.00",
+        "alto": 22,
+        "ancho": 328
+      },
+      {
+        "texto": "Registrar ingreso",
+        "alto": 22,
+        "ancho": 129
+      },
+      {
+        "texto": "Solicitar egreso",
+        "alto": 22,
+        "ancho": 116
+      },
+      {
+        "texto": "Caja y cierres",
+        "alto": 22,
+        "ancho": 99
+      }
+    ]
+  },
+  {
+    "rol": "administracion",
+    "width": 1366,
+    "encabezado": "Administración",
+    "desbordamiento": 0,
+    "imagenes": [
+      {
+        "src": "/static/img/vidasys.png",
+        "cargada": true
+      },
+      {
+        "src": "/static/img/logo.png",
+        "cargada": true
+      }
+    ],
+    "enlaces_pequenos": [
+      {
+        "texto": "Mes actual",
+        "alto": 21,
+        "ancho": 252
+      },
+      {
+        "texto": "Consultar cajas y fotos de cierre →",
+        "alto": 22,
+        "ancho": 259
+      },
+      {
+        "texto": "Solicitudes financieras pendientes: 6",
+        "alto": 22,
+        "ancho": 273
+      },
+      {
+        "texto": "Autorizado aún sin desembolsar: USD 15.00",
+        "alto": 22,
+        "ancho": 328
+      },
+      {
+        "texto": "Registrar ingreso",
+        "alto": 22,
+        "ancho": 129
+      },
+      {
+        "texto": "Solicitar egreso",
+        "alto": 22,
+        "ancho": 116
+      },
+      {
+        "texto": "Caja y cierres",
+        "alto": 22,
+        "ancho": 99
+      }
+    ]
+  },
+  {
+    "rol": "secretaria",
+    "width": 390,
+    "encabezado": "Inicio",
+    "desbordamiento": 0,
+    "imagenes": [
+      {
+        "src": "/static/img/vidasys.png",
+        "cargada": true
+      },
+      {
+        "src": "/static/img/logo.png",
+        "cargada": true
+      }
+    ],
+    "enlaces_pequenos": [
+      {
+        "texto": "Mi caja y cierres",
+        "alto": 22,
+        "ancho": 119
+      }
+    ]
+  },
+  {
+    "rol": "secretaria",
+    "width": 768,
+    "encabezado": "Inicio",
+    "desbordamiento": 0,
+    "imagenes": [
+      {
+        "src": "/static/img/vidasys.png",
+        "cargada": true
+      },
+      {
+        "src": "/static/img/logo.png",
+        "cargada": true
+      }
+    ],
+    "enlaces_pequenos": [
+      {
+        "texto": "Mi caja y cierres",
+        "alto": 22,
+        "ancho": 119
+      }
+    ]
+  },
+  {
+    "rol": "secretaria",
+    "width": 1366,
+    "encabezado": "Inicio",
+    "desbordamiento": 0,
+    "imagenes": [
+      {
+        "src": "/static/img/vidasys.png",
+        "cargada": true
+      },
+      {
+        "src": "/static/img/logo.png",
+        "cargada": true
+      }
+    ],
+    "enlaces_pequenos": [
+      {
+        "texto": "Mi caja y cierres",
+        "alto": 22,
+        "ancho": 119
+      }
+    ]
+  },
+  {
+    "rol": "maestro",
+    "width": 390,
+    "encabezado": "Inicio",
+    "desbordamiento": 0,
+    "imagenes": [
+      {
+        "src": "/static/img/vidasys.png",
+        "cargada": true
+      },
+      {
+        "src": "/static/img/logo.png",
+        "cargada": true
+      }
+    ],
+    "enlaces_pequenos": []
+  },
+  {
+    "rol": "maestro",
+    "width": 768,
+    "encabezado": "Inicio",
+    "desbordamiento": 0,
+    "imagenes": [
+      {
+        "src": "/static/img/vidasys.png",
+        "cargada": true
+      },
+      {
+        "src": "/static/img/logo.png",
+        "cargada": true
+      }
+    ],
+    "enlaces_pequenos": []
+  },
+  {
+    "rol": "maestro",
+    "width": 1366,
+    "encabezado": "Inicio",
+    "desbordamiento": 0,
+    "imagenes": [
+      {
+        "src": "/static/img/vidasys.png",
+        "cargada": true
+      },
+      {
+        "src": "/static/img/logo.png",
+        "cargada": true
+      }
+    ],
+    "enlaces_pequenos": []
+  },
+  {
+    "rol": "estudiante",
+    "width": 390,
+    "encabezado": "Joel Ficticio Amanecer Ensayo",
+    "desbordamiento": 0,
+    "imagenes": [
+      {
+        "src": "/static/img/vidasys.png",
+        "cargada": true
+      },
+      {
+        "src": "/static/img/logo.png",
+        "cargada": true
+      }
+    ],
+    "enlaces_pequenos": []
+  },
+  {
+    "rol": "estudiante",
+    "width": 768,
+    "encabezado": "Joel Ficticio Amanecer Ensayo",
+    "desbordamiento": 0,
+    "imagenes": [
+      {
+        "src": "/static/img/vidasys.png",
+        "cargada": true
+      },
+      {
+        "src": "/static/img/logo.png",
+        "cargada": true
+      }
+    ],
+    "enlaces_pequenos": []
+  },
+  {
+    "rol": "estudiante",
+    "width": 1366,
+    "encabezado": "Joel Ficticio Amanecer Ensayo",
+    "desbordamiento": 0,
+    "imagenes": [
+      {
+        "src": "/static/img/vidasys.png",
+        "cargada": true
+      },
+      {
+        "src": "/static/img/logo.png",
+        "cargada": true
+      }
+    ],
+    "enlaces_pequenos": []
+  },
+  {
+    "rol": "pastor",
+    "width": 390,
+    "encabezado": "Inicio",
+    "desbordamiento": 0,
+    "imagenes": [
+      {
+        "src": "/static/img/vidasys.png",
+        "cargada": true
+      },
+      {
+        "src": "/static/img/logo.png",
+        "cargada": true
+      }
+    ],
+    "enlaces_pequenos": []
+  },
+  {
+    "rol": "pastor",
+    "width": 768,
+    "encabezado": "Inicio",
+    "desbordamiento": 0,
+    "imagenes": [
+      {
+        "src": "/static/img/vidasys.png",
+        "cargada": true
+      },
+      {
+        "src": "/static/img/logo.png",
+        "cargada": true
+      }
+    ],
+    "enlaces_pequenos": []
+  },
+  {
+    "rol": "pastor",
+    "width": 1366,
+    "encabezado": "Inicio",
+    "desbordamiento": 0,
+    "imagenes": [
+      {
+        "src": "/static/img/vidasys.png",
+        "cargada": true
+      },
+      {
+        "src": "/static/img/logo.png",
+        "cargada": true
+      }
+    ],
+    "enlaces_pequenos": []
+  }
+]

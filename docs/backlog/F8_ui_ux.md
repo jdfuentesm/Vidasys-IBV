@@ -5,7 +5,7 @@ operaciones sin asistencia, conservando la identidad institucional y los permiso
 Este archivo registra deuda y entregas. F8.1 está implementada como base visual y de navegación;
 F8.2 incorpora paneles y consultas compactas; F8.3 mejora Secretaría y formularios operativos.
 F8.4 mejora el recorrido docente y el libro; F8.5 simplifica el portal estudiantil.
-F8.6 sigue pendiente de autorización.
+F8.6 auditada: cierre técnico de interfaces; integración y despliegue pendientes.
 Las entradas históricas conservan su contexto y las actualizaciones posteriores indican el estado vigente.
 
 | Prioridad | Trabajo futuro | Criterio verificable |
@@ -214,3 +214,39 @@ y cuenta coherente con F7. Misma simulación inicial, sin escribir datos desde e
 
 Sin modelos, migraciones, servicios, reglas, permisos, rutas ni LAN modificados. Conservar
 stash y ZIP. Commit local tras validación; sin push, Neon, bases persistentes o despliegue.
+
+
+## Cierre F8.6 — Auditoría integral de interfaces
+
+**F8 lista para cierre técnico de interfaces en los recorridos ensayados; no lista para
+publicación web.** Sin defectos bloqueantes/altos de interfaz reproducidos. Se corrigió
+la guía general desactualizada y se agregó una prueba transversal de coherencia entre
+apoyos, cobro/reintento y cierre/corrección académica. Sin cambios operativos ni rediseño.
+
+Validación: **749 pruebas** (748 anteriores + 1 integración), Django check y diff check;
+252 combinaciones generales con/sin JS, 54 del portal, 48 docentes y 60 de Secretaría;
+390/768/1366 px. Navegación/teclado: 200 controles, 47 enlaces autorizados. Integridad:
+619 comprobaciones F7.1 antes/después de consultas y huella lógica original idéntica.
+LAN: --lan --comprobar, sin probar conectividad física de la Wi-Fi del usuario.
+
+| Prioridad / estado | Trabajo pendiente y criterio de aceptación |
+| --- | --- |
+| Media, medido | Libro cerrado: 172 consultas/20 alumnos, 102 SELECT repetidos. Diseñar lectura común sin duplicar elegibilidad canónica; comparar planes y concurrencia en PostgreSQL aislado. |
+| Media, volumen | Bandeja materializa orígenes antes de paginar; reportes/cuentas cargan historias completas. Ensayar tamaños reales, memoria y latencia antes de una optimización separada. |
+| Baja / usabilidad pendiente | Enlaces secundarios de 19–22 px, altura móvil y comprensión de saldo/reserva/cobertura: evaluar separación y tareas con usuarios reales; no eliminar información para acortar pantallas. |
+| Accesibilidad pendiente | Lectores de pantalla reales, usuarios y dispositivos físicos; las pruebas Chromium/teclado/contraste no certifican conformidad universal. |
+| Bloqueante para despliegue, fuera de F8 | Unificar solvencia Django/SQL y revisar todos sus consumidores, reportes y autorizaciones, especialmente F6 y límites de fecha. |
+| Bloqueante para despliegue, fuera de F8 | Validar versión completa en PostgreSQL aislado: esquema histórico managed=False, DDL incremental, restricciones, transacciones, bloqueos, concurrencia, idempotencia y recuperación. |
+| Pendiente funcional previo a aceptación operativa | Servicio formal para declarar convenios INCUMPLIDO y tratamiento autorizado; conservar ACTIVO con cuotas vencidas hasta definirlo. |
+| Bloqueante para publicación web | Configuración/seguridad productiva, HTTPS/proxy/CSRF, WhiteNoise, persistencia, respaldo y recuperación; autorización separada para despliegue. |
+
+[Informe F8.6](../frontend/F86_auditoria_integral.md) ·
+[Matriz por rol](../frontend/F86_matriz_roles.md) ·
+[Evidencias](../evidencias/F86/README.md) ·
+[Aceptación Windows/teléfono](../frontend/F86_aceptacion_manual.md) ·
+[Puertas de despliegue](../despliegue/F86_requisitos_pendientes.md).
+
+Las tablas previas son históricas; esta sección establece el cierre técnico vigente.
+Modelos, migraciones, servicios, permisos, reglas, rutas y lanzadores intactos. Sin Neon,
+PostgreSQL iniciado, migraciones persistentes, cambios a main o despliegue. Stash y ZIP
+conservados. Commit local autorizado; push pendiente de autorización.

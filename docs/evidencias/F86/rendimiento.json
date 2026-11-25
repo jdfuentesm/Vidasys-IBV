@@ -1,0 +1,511 @@
+{
+  "motor": "SQLite :memory:",
+  "repeticiones": 3,
+  "cliente": "Django Client, ejecuci\u00f3n secuencial, sin transporte HTTP ni Chromium",
+  "medidas": [
+    {
+      "rol": "directora",
+      "ruta": "/",
+      "status": 200,
+      "ms": [
+        71.64,
+        114.96,
+        47.71
+      ],
+      "mediana_ms": 71.64,
+      "consultas": [
+        32,
+        32,
+        32
+      ],
+      "select_repetidos": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "rol": "directora",
+      "ruta": "/direccion/pendientes/",
+      "status": 200,
+      "ms": [
+        54.93,
+        50.69,
+        47.16
+      ],
+      "mediana_ms": 50.69,
+      "consultas": [
+        29,
+        29,
+        29
+      ],
+      "select_repetidos": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "rol": "directora",
+      "ruta": "/direccion/pendientes/?vista=HISTORIAL",
+      "status": 200,
+      "ms": [
+        46.89,
+        85.23,
+        47.83
+      ],
+      "mediana_ms": 47.83,
+      "consultas": [
+        29,
+        29,
+        29
+      ],
+      "select_repetidos": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "rol": "directora",
+      "ruta": "/reportes/finanzas/cuentas/",
+      "status": 200,
+      "ms": [
+        48.56,
+        49.84,
+        46.9
+      ],
+      "mediana_ms": 48.56,
+      "consultas": [
+        18,
+        18,
+        18
+      ],
+      "select_repetidos": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "rol": "directora",
+      "ruta": "/reportes/finanzas/resultados/?desde=&hasta=",
+      "status": 200,
+      "ms": [
+        30.7,
+        30.66,
+        32.7
+      ],
+      "mediana_ms": 30.7,
+      "consultas": [
+        17,
+        17,
+        17
+      ],
+      "select_repetidos": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "rol": "administracion",
+      "ruta": "/",
+      "status": 200,
+      "ms": [
+        47.07,
+        82.92,
+        42.46
+      ],
+      "mediana_ms": 47.07,
+      "consultas": [
+        38,
+        38,
+        38
+      ],
+      "select_repetidos": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "rol": "administracion",
+      "ruta": "/usuarios/",
+      "status": 200,
+      "ms": [
+        5.55,
+        3.69,
+        4.07
+      ],
+      "mediana_ms": 4.07,
+      "consultas": [
+        4,
+        4,
+        4
+      ],
+      "select_repetidos": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "rol": "administracion",
+      "ruta": "/reportes/finanzas/auditoria/",
+      "status": 200,
+      "ms": [
+        34.32,
+        32.89,
+        33.72
+      ],
+      "mediana_ms": 33.72,
+      "consultas": [
+        23,
+        23,
+        23
+      ],
+      "select_repetidos": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "rol": "secretaria",
+      "ruta": "/",
+      "status": 200,
+      "ms": [
+        3.22,
+        1.82,
+        2.11
+      ],
+      "mediana_ms": 2.11,
+      "consultas": [
+        2,
+        2,
+        2
+      ],
+      "select_repetidos": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "rol": "secretaria",
+      "ruta": "/estudiantes/",
+      "status": 200,
+      "ms": [
+        5.11,
+        3.87,
+        4.06
+      ],
+      "mediana_ms": 4.06,
+      "consultas": [
+        6,
+        6,
+        6
+      ],
+      "select_repetidos": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "rol": "secretaria",
+      "ruta": "/finanzas/estudiantes/17/",
+      "status": 200,
+      "ms": [
+        30.44,
+        25.76,
+        25.59
+      ],
+      "mediana_ms": 25.76,
+      "consultas": [
+        60,
+        60,
+        60
+      ],
+      "select_repetidos": [
+        12,
+        12,
+        12
+      ]
+    },
+    {
+      "rol": "secretaria",
+      "ruta": "/finanzas/estudiantes/17/pago/",
+      "status": 200,
+      "ms": [
+        27.71,
+        25.25,
+        24.82
+      ],
+      "mediana_ms": 25.25,
+      "consultas": [
+        57,
+        57,
+        57
+      ],
+      "select_repetidos": [
+        12,
+        12,
+        12
+      ]
+    },
+    {
+      "rol": "maestro_cerrado",
+      "ruta": "/",
+      "status": 200,
+      "ms": [
+        11.8,
+        10.31,
+        10.6
+      ],
+      "mediana_ms": 10.6,
+      "consultas": [
+        13,
+        13,
+        13
+      ],
+      "select_repetidos": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "rol": "maestro_cerrado",
+      "ruta": "/calificacion/?curso=1",
+      "status": 200,
+      "ms": [
+        88.86,
+        89.92,
+        85.91
+      ],
+      "mediana_ms": 88.86,
+      "consultas": [
+        172,
+        172,
+        172
+      ],
+      "select_repetidos": [
+        102,
+        102,
+        102
+      ]
+    },
+    {
+      "rol": "maestro_activo",
+      "ruta": "/calificacion/?curso=4",
+      "status": 200,
+      "ms": [
+        47.25,
+        47.91,
+        46.16
+      ],
+      "mediana_ms": 47.25,
+      "consultas": [
+        9,
+        9,
+        9
+      ],
+      "select_repetidos": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "rol": "maestro_activo",
+      "ruta": "/asistencia/?curso=4",
+      "status": 200,
+      "ms": [
+        5.99,
+        3.74,
+        3.59
+      ],
+      "mediana_ms": 3.74,
+      "consultas": [
+        7,
+        7,
+        7
+      ],
+      "select_repetidos": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "rol": "estudiante",
+      "ruta": "/portal/",
+      "status": 200,
+      "ms": [
+        13.0,
+        12.17,
+        11.96
+      ],
+      "mediana_ms": 12.17,
+      "consultas": [
+        19,
+        19,
+        19
+      ],
+      "select_repetidos": [
+        7,
+        7,
+        7
+      ]
+    },
+    {
+      "rol": "estudiante",
+      "ruta": "/portal/academico/",
+      "status": 200,
+      "ms": [
+        11.86,
+        12.99,
+        11.69
+      ],
+      "mediana_ms": 11.86,
+      "consultas": [
+        13,
+        13,
+        13
+      ],
+      "select_repetidos": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "rol": "estudiante",
+      "ruta": "/portal/cuenta/",
+      "status": 200,
+      "ms": [
+        24.5,
+        23.85,
+        25.19
+      ],
+      "mediana_ms": 24.5,
+      "consultas": [
+        60,
+        60,
+        60
+      ],
+      "select_repetidos": [
+        12,
+        12,
+        12
+      ]
+    },
+    {
+      "rol": "padrinazgo",
+      "ruta": "/portal/",
+      "status": 200,
+      "ms": [
+        13.45,
+        13.52,
+        12.19
+      ],
+      "mediana_ms": 13.45,
+      "consultas": [
+        21,
+        21,
+        21
+      ],
+      "select_repetidos": [
+        8,
+        8,
+        8
+      ]
+    },
+    {
+      "rol": "padrinazgo",
+      "ruta": "/portal/cuenta/",
+      "status": 200,
+      "ms": [
+        26.35,
+        27.0,
+        26.59
+      ],
+      "mediana_ms": 26.59,
+      "consultas": [
+        70,
+        70,
+        70
+      ],
+      "select_repetidos": [
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "rol": "insolvente",
+      "ruta": "/portal/",
+      "status": 200,
+      "ms": [
+        7.34,
+        6.8,
+        9.66
+      ],
+      "mediana_ms": 7.34,
+      "consultas": [
+        11,
+        11,
+        11
+      ],
+      "select_repetidos": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "rol": "insolvente",
+      "ruta": "/portal/academico/",
+      "status": 403,
+      "ms": [
+        6.63,
+        6.38,
+        6.36
+      ],
+      "mediana_ms": 6.38,
+      "consultas": [
+        10,
+        10,
+        10
+      ],
+      "select_repetidos": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "rol": "pastor",
+      "ruta": "/",
+      "status": 200,
+      "ms": [
+        1.64,
+        1.38,
+        1.35
+      ],
+      "mediana_ms": 1.38,
+      "consultas": [
+        2,
+        2,
+        2
+      ],
+      "select_repetidos": [
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

@@ -9,14 +9,16 @@ modelos, reglas, esquemas, matrículas, docentes ni el módulo financiero.
 
 El usuario mostrado proviene de Usuario.get_full_name(), que actualmente devuelve
 numero_usuario: no se inventa un nombre personal ni se consulta otro perfil para
-suponerlo. No hay estadísticas en el dashboard. Se retiraron las cifras literales,
-comparaciones, próxima clase y mensaje general de construcción.
+suponerlo. Los paneles actuales de Dirección y Administración muestran consultas reales
+(F8.2); Secretaría, Maestro y Estudiante muestran sus tareas y datos autorizados. Se
+retiraron las cifras literales de demostración. Esta guía se actualiza con F8.6;
+las evidencias de cada entrega conservan su fecha y alcance original.
 
 | Rol | Menú operativo |
 | --- | --- |
 | SECRETARIA | Inicio, Finanzas, Estudiantes, Matricular estudiante, Reportes institucionales |
 | MAESTRO | Inicio, Reportes institucionales de sus cursos, Mis cursos |
-| DIRECTORA | Inicio, Finanzas (consulta), Estudiantes, Matricular estudiante, Reportes institucionales, Autorizar extraordinarias |
+| DIRECTORA | Inicio, Pendientes de Dirección, Finanzas y resoluciones autorizadas, Estudiantes, Matrícula, Solicitudes académicas, Extraordinarias y Reportes |
 | ADMINISTRADOR | Inicio, Finanzas, Estudiantes, Matricular estudiante, Usuarios y accesos, Reportes institucionales |
 | ESTUDIANTE | Portal, Mis materias y resultados (según solvencia), Mi estado de cuenta y recibos propios |
 | PASTOR_PRINCIPAL | Inicio; estado informativo sin módulos operativos |
@@ -47,42 +49,54 @@ Los scripts de datos académicos no se modifican: sus advertencias y cálculos s
 funcionando. El menú móvil no envía formularios ni deshabilita las advertencias de
 cambios pendientes.
 
-## Funciones pendientes (sin enlaces operativos)
+## Funciones verificadas y límites actuales
 
-Ya están disponibles la gestión institucional de estudiantes y usuarios, la matrícula
-con obligaciones, el cobro ordinario y recibos, ocho reportes con CSV/impresión y el
-portal estudiantil con controles de identidad y solvencia. Véanse los manuales de
-[estudiantes](../manuales/modulo_estudiantes.md), [usuarios](../manuales/administracion_usuarios.md),
-[finanzas](../manuales/modulo_financiero.md), [reportes](../manuales/reportes_institucionales.md)
-y [portal](../manuales/portal_estudiante.md).
+Están disponibles la gestión institucional de estudiantes y usuarios, matrícula con
+obligaciones, cobro y recibos, caja, becas, convenios y sus cuotas, anulaciones,
+ingresos/egresos, donaciones/padrinazgos, reportes y portal estudiantil. Las solicitudes
+se resuelven por los servicios originales y solo con el rol autorizado; no toda opción
+de Finanzas implica facultad de aprobación. El menú aplica la matriz por rol.
 
-Permanecen pendientes:
+El maestro programa sesiones, gestiona sus estados permitidos, registra asistencia y
+notas provisionales, finaliza cursos y solicita excepciones. Dirección resuelve las
+cancelaciones elegibles y correcciones definitivas existentes. No se implementó una
+reapertura general ni corrección de asistencia posterior al cierre.
 
-- Indicadores del dashboard basados en consultas y alcance institucional acordado.
-- Preparación institucional del ciclo, asignaciones docentes y operación de estados de sesiones.
-- Flujos institucionales completos de becas, cuotas de convenios y anulación de pagos.
-- Supervisión académica general de Dirección/Administrador distinta de las rutas
-  docentes actualmente autorizadas.
+Consultar las entregas [F8.2](F82_direccion_administracion.md),
+[F8.3](F83_secretaria_operaciones.md), [F8.4](F84_maestros_libro.md),
+[F8.5](F85_portal_estudiante.md) y la [auditoría F8.6](F86_auditoria_integral.md).
+Los manuales de [estudiantes](../manuales/modulo_estudiantes.md),
+[usuarios](../manuales/administracion_usuarios.md),
+[finanzas](../manuales/modulo_financiero.md),
+[reportes](../manuales/reportes_institucionales.md) y
+[portal](../manuales/portal_estudiante.md) detallan sus contratos.
+
+Permanecen pendientes, fuera del cierre visual:
+
+- Preparación institucional completa de ciclos/asignaciones mediante interfaz propia.
+- Supervisión académica general distinta de las rutas docentes autorizadas.
 - Recuperación automática de contraseñas.
-- Los pendientes académicos y de validación física/concurrencia en PostgreSQL
-  documentados en Asistencia y Flujo Académico conservan su alcance.
+- Servicio formal para declarar convenios INCUMPLIDO.
+- Unificación de solvencia Django/SQL y validación PostgreSQL de la versión completa,
+  restricciones, concurrencia y despliegue; consultar el [plan F8.6](../despliegue/F86_requisitos_pendientes.md).
+- Comprensión con usuarios reales, tecnologías de apoyo e historiales de gran volumen.
 
-No se crean botones para módulos futuros. La presencia de modelos, SQL o páginas
-Admin no implica que exista una interfaz propia para esos roles. Las futuras
-estadísticas requerirán definir el alcance y consultas reales con permisos; no se
-sustituyen valores desconocidos por cifras de demostración.
+La existencia de un modelo, SQL o página Admin no demuestra una interfaz institucional
+terminada. Los indicadores actuales proceden de consultas reales; no se sustituyen
+valores desconocidos por cifras de demostración.
 
 ## Verificación aislada
 
 ```powershell
-.\venv\Scripts\python.exe manage.py test core academico --settings=academico.test_settings --noinput
+.\venv\Scripts\python.exe manage.py test --settings=academico.test_settings --noinput
 .\venv\Scripts\python.exe manage.py check --settings=academico.test_settings
 ```
 
 Pruebas nuevas de menú para seis roles, permisos existentes, navegación compartida,
 logo, estado vacío, ausencia de enlaces/cifras ficticios y nombres/IDs de controles.
 Chromium usa únicamente datos ficticios con SQLite en memoria. No se consultó ni
-modificó PostgreSQL. Las capturas de revisión quedan fuera del repositorio.
+modificó PostgreSQL. Las capturas F8 y los resultados se conservan en `docs/evidencias/`;
+F8.6 distingue evidencia histórica de las comprobaciones actuales.
 
 No se amplía la configuración financiera ni se afirma validar aquí los permisos,
 CHECK, disparadores o bloqueos del PostgreSQL real. La revisión con usuarios reales
