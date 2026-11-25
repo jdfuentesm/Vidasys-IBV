@@ -4,7 +4,8 @@ Objetivo futuro: usuarios con conocimientos tecnológicos básicos puedan comple
 operaciones sin asistencia, conservando la identidad institucional y los permisos.
 Este archivo registra deuda y entregas. F8.1 está implementada como base visual y de navegación;
 F8.2 incorpora paneles y consultas compactas; F8.3 mejora Secretaría y formularios operativos.
-F8.4 mejora el recorrido docente y el libro; F8.5–F8.6 siguen pendientes de autorización.
+F8.4 mejora el recorrido docente y el libro; F8.5 simplifica el portal estudiantil.
+F8.6 sigue pendiente de autorización.
 Las entradas históricas conservan su contexto y las actualizaciones posteriores indican el estado vigente.
 
 | Prioridad | Trabajo futuro | Criterio verificable |
@@ -182,3 +183,34 @@ formularios, servicios, permisos, reglas ni lanzador LAN.
 | Pendiente funcional | Servicio formal de convenios INCUMPLIDO | Sin implementar. |
 
 Conservar evidencias anteriores, stash y ZIP. Commit local tras validación; sin push hasta autorización.
+
+
+## Entrega F8.5 — Portal estudiantil y experiencia móvil
+
+Implementados: inicio personal con dos consultas principales y estados de acceso claros;
+materias con resultados almacenados, nota provisional/definitiva, componentes y asistencia
+ampliables; cuenta propia con saldo/cargo/cobertura separados, obligaciones compactas,
+reservas, becas, compromisos futuros propios y recibos originales. Sin nueva fórmula ni
+acciones financieras. Identidad de sesión y bloqueo académico canónico conservados.
+
+Validación: 748 pruebas (729 anteriores + 19 nuevas), 54 pantallas del portal con/sin JS y
+126 de regresión por rol; 390/768/1366 px. Sin desbordamiento exterior ni errores JS. IDs
+ajenos 404, insolvente 403 académico, formatos no eluden controles, privacidad del padrino
+y cuenta coherente con F7. Misma simulación inicial, sin escribir datos desde el recorrido.
+
+[Fuentes, permisos y recorrido](../frontend/F85_portal_estudiante.md) ·
+[Evidencias y medidas](../evidencias/F85/README.md).
+
+| Estado vigente | Trabajo | Seguimiento |
+| --- | --- | --- |
+| Base resuelta F8.5 | Portal móvil y estados de acceso | Inicio sin matrícula protegida al estar insolvente/desconocido; cuenta/recibos disponibles según contrato original. |
+| Base resuelta F8.5 | Cuenta y apoyos propios | No confundir saldo, cargo, reserva, cobertura efectiva o compromiso futuro; sin datos privados del padrino. |
+| Base resuelta F8.5 | Materias, notas y asistencia compactas | No inferir aprobación definitiva de una nota provisional; conservar detalles completos. |
+| Pendiente | Comprensión, lectores de pantalla y grandes historiales | Probar con estudiantes reales y medir carga/paginación; hoy se mantienen historiales propios completos. |
+| Pendiente F8.6 | Siguiente alcance | Sin implementar ni autorización implícita. |
+| Obligatorio antes de despliegue | PostgreSQL aislado y solvencia Django/SQL | Restricciones, transacciones y concurrencia; no se resuelve cambiando UI. |
+| Pendiente funcional | Tratamiento formal de convenios INCUMPLIDO | Sin implementar. |
+| Pendiente | Despliegue web posterior | Requiere resolver/verificar la integración crítica y autorización. |
+
+Sin modelos, migraciones, servicios, reglas, permisos, rutas ni LAN modificados. Conservar
+stash y ZIP. Commit local tras validación; sin push, Neon, bases persistentes o despliegue.

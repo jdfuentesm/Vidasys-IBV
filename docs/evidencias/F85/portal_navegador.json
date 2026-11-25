@@ -1,0 +1,448 @@
+{
+  "pantallas": [
+    {
+      "id": "01",
+      "js": true,
+      "width": 390,
+      "ruta": "/portal/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "01",
+      "js": true,
+      "width": 390,
+      "ruta": "/portal/cuenta/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "01",
+      "js": true,
+      "width": 390,
+      "ruta": "/portal/academico/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "01",
+      "js": true,
+      "width": 768,
+      "ruta": "/portal/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "01",
+      "js": true,
+      "width": 768,
+      "ruta": "/portal/cuenta/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "01",
+      "js": true,
+      "width": 768,
+      "ruta": "/portal/academico/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "01",
+      "js": true,
+      "width": 1366,
+      "ruta": "/portal/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "01",
+      "js": true,
+      "width": 1366,
+      "ruta": "/portal/cuenta/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "01",
+      "js": true,
+      "width": 1366,
+      "ruta": "/portal/academico/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "17",
+      "js": true,
+      "width": 390,
+      "ruta": "/portal/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "17",
+      "js": true,
+      "width": 390,
+      "ruta": "/portal/cuenta/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "17",
+      "js": true,
+      "width": 390,
+      "ruta": "/portal/academico/",
+      "status": 403,
+      "desbordamiento": 0
+    },
+    {
+      "id": "17",
+      "js": true,
+      "width": 768,
+      "ruta": "/portal/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "17",
+      "js": true,
+      "width": 768,
+      "ruta": "/portal/cuenta/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "17",
+      "js": true,
+      "width": 768,
+      "ruta": "/portal/academico/",
+      "status": 403,
+      "desbordamiento": 0
+    },
+    {
+      "id": "17",
+      "js": true,
+      "width": 1366,
+      "ruta": "/portal/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "17",
+      "js": true,
+      "width": 1366,
+      "ruta": "/portal/cuenta/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "17",
+      "js": true,
+      "width": 1366,
+      "ruta": "/portal/academico/",
+      "status": 403,
+      "desbordamiento": 0
+    },
+    {
+      "id": "29",
+      "js": true,
+      "width": 390,
+      "ruta": "/portal/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "29",
+      "js": true,
+      "width": 390,
+      "ruta": "/portal/cuenta/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "29",
+      "js": true,
+      "width": 390,
+      "ruta": "/portal/academico/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "29",
+      "js": true,
+      "width": 768,
+      "ruta": "/portal/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "29",
+      "js": true,
+      "width": 768,
+      "ruta": "/portal/cuenta/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "29",
+      "js": true,
+      "width": 768,
+      "ruta": "/portal/academico/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "29",
+      "js": true,
+      "width": 1366,
+      "ruta": "/portal/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "29",
+      "js": true,
+      "width": 1366,
+      "ruta": "/portal/cuenta/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "29",
+      "js": true,
+      "width": 1366,
+      "ruta": "/portal/academico/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "01",
+      "js": false,
+      "width": 390,
+      "ruta": "/portal/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "01",
+      "js": false,
+      "width": 390,
+      "ruta": "/portal/cuenta/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "01",
+      "js": false,
+      "width": 390,
+      "ruta": "/portal/academico/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "01",
+      "js": false,
+      "width": 768,
+      "ruta": "/portal/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "01",
+      "js": false,
+      "width": 768,
+      "ruta": "/portal/cuenta/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "01",
+      "js": false,
+      "width": 768,
+      "ruta": "/portal/academico/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "01",
+      "js": false,
+      "width": 1366,
+      "ruta": "/portal/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "01",
+      "js": false,
+      "width": 1366,
+      "ruta": "/portal/cuenta/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "01",
+      "js": false,
+      "width": 1366,
+      "ruta": "/portal/academico/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "17",
+      "js": false,
+      "width": 390,
+      "ruta": "/portal/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "17",
+      "js": false,
+      "width": 390,
+      "ruta": "/portal/cuenta/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "17",
+      "js": false,
+      "width": 390,
+      "ruta": "/portal/academico/",
+      "status": 403,
+      "desbordamiento": 0
+    },
+    {
+      "id": "17",
+      "js": false,
+      "width": 768,
+      "ruta": "/portal/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "17",
+      "js": false,
+      "width": 768,
+      "ruta": "/portal/cuenta/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "17",
+      "js": false,
+      "width": 768,
+      "ruta": "/portal/academico/",
+      "status": 403,
+      "desbordamiento": 0
+    },
+    {
+      "id": "17",
+      "js": false,
+      "width": 1366,
+      "ruta": "/portal/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "17",
+      "js": false,
+      "width": 1366,
+      "ruta": "/portal/cuenta/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "17",
+      "js": false,
+      "width": 1366,
+      "ruta": "/portal/academico/",
+      "status": 403,
+      "desbordamiento": 0
+    },
+    {
+      "id": "29",
+      "js": false,
+      "width": 390,
+      "ruta": "/portal/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "29",
+      "js": false,
+      "width": 390,
+      "ruta": "/portal/cuenta/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "29",
+      "js": false,
+      "width": 390,
+      "ruta": "/portal/academico/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "29",
+      "js": false,
+      "width": 768,
+      "ruta": "/portal/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "29",
+      "js": false,
+      "width": 768,
+      "ruta": "/portal/cuenta/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "29",
+      "js": false,
+      "width": 768,
+      "ruta": "/portal/academico/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "29",
+      "js": false,
+      "width": 1366,
+      "ruta": "/portal/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "29",
+      "js": false,
+      "width": 1366,
+      "ruta": "/portal/cuenta/",
+      "status": 200,
+      "desbordamiento": 0
+    },
+    {
+      "id": "29",
+      "js": false,
+      "width": 1366,
+      "ruta": "/portal/academico/",
+      "status": 200,
+      "desbordamiento": 0
+    }
+  ],
+  "errores_js": [],
+  "controles": {
+    "sin_js": true,
+    "ids_ajenos_404": true,
+    "params_no_cambian_identidad": true,
+    "academico_insolvente_403": true,
+    "endpoints_alternativos_403": true,
+    "post_405": true,
+    "privacidad_donante": true,
+    "recibos_pdf": true,
+    "teclado_y_detalles": true
+  }
+}

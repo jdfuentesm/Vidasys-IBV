@@ -1,0 +1,218 @@
+[
+  {
+    "estudiante": "01",
+    "ancho": 390,
+    "ruta": "/portal/",
+    "alto_antes": 1025,
+    "alto_despues": 970,
+    "variacion_porcentaje": -5.37
+  },
+  {
+    "estudiante": "01",
+    "ancho": 390,
+    "ruta": "/portal/cuenta/",
+    "alto_antes": 5951,
+    "alto_despues": 4310,
+    "variacion_porcentaje": -27.58
+  },
+  {
+    "estudiante": "01",
+    "ancho": 390,
+    "ruta": "/portal/academico/",
+    "alto_antes": 6165,
+    "alto_despues": 2437,
+    "variacion_porcentaje": -60.47
+  },
+  {
+    "estudiante": "01",
+    "ancho": 768,
+    "ruta": "/portal/",
+    "alto_antes": 952,
+    "alto_despues": 952,
+    "variacion_porcentaje": 0.0
+  },
+  {
+    "estudiante": "01",
+    "ancho": 768,
+    "ruta": "/portal/cuenta/",
+    "alto_antes": 4471,
+    "alto_despues": 3770,
+    "variacion_porcentaje": -15.68
+  },
+  {
+    "estudiante": "01",
+    "ancho": 768,
+    "ruta": "/portal/academico/",
+    "alto_antes": 4666,
+    "alto_despues": 2294,
+    "variacion_porcentaje": -50.84
+  },
+  {
+    "estudiante": "01",
+    "ancho": 1366,
+    "ruta": "/portal/",
+    "alto_antes": 952,
+    "alto_despues": 952,
+    "variacion_porcentaje": 0.0
+  },
+  {
+    "estudiante": "01",
+    "ancho": 1366,
+    "ruta": "/portal/cuenta/",
+    "alto_antes": 4055,
+    "alto_despues": 3812,
+    "variacion_porcentaje": -5.99
+  },
+  {
+    "estudiante": "01",
+    "ancho": 1366,
+    "ruta": "/portal/academico/",
+    "alto_antes": 4708,
+    "alto_despues": 2310,
+    "variacion_porcentaje": -50.93
+  },
+  {
+    "estudiante": "17",
+    "ancho": 390,
+    "ruta": "/portal/",
+    "alto_antes": 970,
+    "alto_despues": 970,
+    "variacion_porcentaje": 0.0
+  },
+  {
+    "estudiante": "17",
+    "ancho": 390,
+    "ruta": "/portal/cuenta/",
+    "alto_antes": 6267,
+    "alto_despues": 4644,
+    "variacion_porcentaje": -25.9
+  },
+  {
+    "estudiante": "17",
+    "ancho": 390,
+    "ruta": "/portal/academico/",
+    "alto_antes": 970,
+    "alto_despues": 970,
+    "variacion_porcentaje": 0.0
+  },
+  {
+    "estudiante": "17",
+    "ancho": 768,
+    "ruta": "/portal/",
+    "alto_antes": 952,
+    "alto_despues": 952,
+    "variacion_porcentaje": 0.0
+  },
+  {
+    "estudiante": "17",
+    "ancho": 768,
+    "ruta": "/portal/cuenta/",
+    "alto_antes": 4721,
+    "alto_despues": 4032,
+    "variacion_porcentaje": -14.59
+  },
+  {
+    "estudiante": "17",
+    "ancho": 768,
+    "ruta": "/portal/academico/",
+    "alto_antes": 952,
+    "alto_despues": 952,
+    "variacion_porcentaje": 0.0
+  },
+  {
+    "estudiante": "17",
+    "ancho": 1366,
+    "ruta": "/portal/",
+    "alto_antes": 952,
+    "alto_despues": 952,
+    "variacion_porcentaje": 0.0
+  },
+  {
+    "estudiante": "17",
+    "ancho": 1366,
+    "ruta": "/portal/cuenta/",
+    "alto_antes": 4306,
+    "alto_despues": 4074,
+    "variacion_porcentaje": -5.39
+  },
+  {
+    "estudiante": "17",
+    "ancho": 1366,
+    "ruta": "/portal/academico/",
+    "alto_antes": 952,
+    "alto_despues": 952,
+    "variacion_porcentaje": 0.0
+  },
+  {
+    "estudiante": "29",
+    "ancho": 390,
+    "ruta": "/portal/",
+    "alto_antes": 1187,
+    "alto_despues": 979,
+    "variacion_porcentaje": -17.52
+  },
+  {
+    "estudiante": "29",
+    "ancho": 390,
+    "ruta": "/portal/cuenta/",
+    "alto_antes": 4770,
+    "alto_despues": 2870,
+    "variacion_porcentaje": -39.83
+  },
+  {
+    "estudiante": "29",
+    "ancho": 390,
+    "ruta": "/portal/academico/",
+    "alto_antes": 6389,
+    "alto_despues": 2623,
+    "variacion_porcentaje": -58.95
+  },
+  {
+    "estudiante": "29",
+    "ancho": 768,
+    "ruta": "/portal/",
+    "alto_antes": 952,
+    "alto_despues": 952,
+    "variacion_porcentaje": 0.0
+  },
+  {
+    "estudiante": "29",
+    "ancho": 768,
+    "ruta": "/portal/cuenta/",
+    "alto_antes": 3463,
+    "alto_despues": 2337,
+    "variacion_porcentaje": -32.52
+  },
+  {
+    "estudiante": "29",
+    "ancho": 768,
+    "ruta": "/portal/academico/",
+    "alto_antes": 4875,
+    "alto_despues": 2506,
+    "variacion_porcentaje": -48.59
+  },
+  {
+    "estudiante": "29",
+    "ancho": 1366,
+    "ruta": "/portal/",
+    "alto_antes": 952,
+    "alto_despues": 952,
+    "variacion_porcentaje": 0.0
+  },
+  {
+    "estudiante": "29",
+    "ancho": 1366,
+    "ruta": "/portal/cuenta/",
+    "alto_antes": 3022,
+    "alto_despues": 2353,
+    "variacion_porcentaje": -22.14
+  },
+  {
+    "estudiante": "29",
+    "ancho": 1366,
+    "ruta": "/portal/academico/",
+    "alto_antes": 4916,
+    "alto_despues": 2522,
+    "variacion_porcentaje": -48.7
+  }
+]

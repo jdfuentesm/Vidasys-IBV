@@ -59,22 +59,42 @@ def inicio(request):
         pass
     # No consultar ni incluir matrículas o materias protegidas al estar insolvente/desconocido.
     matricula = None
+    aviso_matricula = ''
     if habilitado:
-        matricula = Matricula.objects.filter(estudiante=estudiante).select_related('ciclo').order_by('-fecha_matricula', '-pk').first()
+        try:
+            matricula = Matricula.objects.filter(estudiante=estudiante).select_related('ciclo').order_by('-fecha_matricula', '-pk').first()
+        except DatabaseError:
+            aviso_matricula = 'No se pudo consultar su ciclo de referencia. Intente nuevamente o contacte a Secretaría.'
     from financiero.aportes import detalle_solvencia
-    cobertura=detalle_solvencia(estudiante)['por_padrinazgo'] if habilitado else False
+    cobertura=False
+    aviso_cobertura=''
+    if habilitado:
+        try:
+            cobertura=detalle_solvencia(estudiante)['por_padrinazgo']
+        except DatabaseError:
+            aviso_cobertura='No se pudo consultar el detalle de cobertura. Revise su estado de cuenta o contacte a Secretaría.'
     from financiero.models import RevisionPadrinazgo
-    avisos=RevisionPadrinazgo.objects.filter(solicitud__matricula__estudiante=estudiante).exclude(notificacion='').values('notificacion','fecha').order_by('-fecha')[:10] if habilitado is not None else []
+    aviso_notificaciones=''
+    try:
+        avisos=list(RevisionPadrinazgo.objects.filter(solicitud__matricula__estudiante=estudiante).exclude(notificacion='').values('notificacion','fecha').order_by('-fecha')[:10]) if habilitado is not None else []
+    except DatabaseError:
+        avisos=[]
+        aviso_notificaciones='No se pudieron consultar sus avisos. Intente nuevamente o contacte a Secretaría.'
     return render(request, 'core/portal/inicio.html', {
-        'notificaciones_padrinazgo':avisos,'estudiante': estudiante, 'cobertura_padrinazgo':cobertura, 'habilitado': habilitado, 'matricula': matricula, 'mensaje_solvencia': MENSAJE_SOLVENCIA})
+        'aviso_matricula':aviso_matricula,'aviso_notificaciones':aviso_notificaciones,'aviso_cobertura':aviso_cobertura,'notificaciones_padrinazgo':avisos,'estudiante': estudiante, 'cobertura_padrinazgo':cobertura, 'habilitado': habilitado, 'matricula': matricula, 'mensaje_solvencia': MENSAJE_SOLVENCIA})
 
 
 @acceso_portal(academico=True)
 def academico(request):
-    inscripciones = InscripcionCurso.objects.filter(matricula__estudiante=request.estudiante).select_related('curso__materia', 'calificacion').order_by('curso__materia__nombre').prefetch_related(
-        Prefetch('asistencias', queryset=Asistencia.objects.filter(inscripcion__matricula__estudiante=request.estudiante).select_related('sesion').order_by('sesion__fecha', 'sesion__numero_clase')))
-    matriculas = Matricula.objects.filter(estudiante=request.estudiante).select_related('ciclo').order_by('-fecha_matricula', '-pk').prefetch_related(
-        Prefetch('inscripciones', queryset=inscripciones))
+    try:
+        inscripciones = InscripcionCurso.objects.filter(matricula__estudiante=request.estudiante).select_related('curso__materia', 'calificacion').order_by('curso__materia__nombre').prefetch_related(
+            Prefetch('asistencias', queryset=Asistencia.objects.filter(inscripcion__matricula__estudiante=request.estudiante).select_related('sesion').order_by('sesion__fecha', 'sesion__numero_clase')))
+        matriculas = Matricula.objects.filter(estudiante=request.estudiante).select_related('ciclo').order_by('-fecha_matricula', '-pk').prefetch_related(
+            Prefetch('inscripciones', queryset=inscripciones))
+        matriculas=list(matriculas)
+    except DatabaseError:
+        return render(request, 'core/portal/aviso.html', {'titulo':'Consulta académica no disponible',
+            'mensaje':'No se pudo consultar su historial completo. Intente más tarde o contacte a Secretaría.'}, status=503)
     return render(request, 'core/portal/academico.html', {'estudiante': request.estudiante, 'matriculas': matriculas})
 
 
@@ -86,8 +106,16 @@ def estado_cuenta(request):
     except DatabaseError:
         datos = {'error_cuenta': 'No se pudo consultar su estado de cuenta. Contacte a Secretaría; no se presume solvencia.'}
     pagos = Pago.objects.filter(estudiante=estudiante).prefetch_related('detalles__obligacion__concepto').order_by('-fecha_pago', '-pk')
-    return render(request, 'financiero/cuenta.html', dict(datos, estudiante=estudiante,
-        pagos=pagos, puede_cobrar=False, portal=True))
+    from .portal_presentacion import compromisos_futuros
+    futuros=[]
+    aviso_futuros=''
+    if not datos.get('error_cuenta'):
+        try:
+            futuros=compromisos_futuros(estudiante)
+        except DatabaseError:
+            aviso_futuros='No se pudo consultar el detalle de compromisos futuros. No se presume cobertura adicional.'
+    return render(request, 'core/portal/cuenta.html', dict(datos, estudiante=estudiante,
+        pagos=pagos, puede_cobrar=False, portal=True, compromisos_futuros=futuros, aviso_futuros=aviso_futuros))
 
 
 @acceso_portal()

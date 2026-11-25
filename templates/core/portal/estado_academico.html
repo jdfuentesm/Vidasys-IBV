@@ -1,0 +1,1 @@
+{% if item.estado == 'APROBADA' %}Aprobada{% elif item.estado == 'REPROBADA_ACADEMICAMENTE' %}Reprobada académicamente{% elif item.estado == 'REPROBADA_POR_INASISTENCIA' %}Reprobada por inasistencia{% elif item.estado == 'CURSANDO' %}Cursando{% else %}{{ item.estado }}{% endif %}

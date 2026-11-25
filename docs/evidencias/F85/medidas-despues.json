@@ -1,0 +1,218 @@
+[
+  {
+    "estudiante": "01",
+    "width": 390,
+    "ruta": "/portal/",
+    "status": 200,
+    "alto": 970,
+    "ancho": 390
+  },
+  {
+    "estudiante": "01",
+    "width": 390,
+    "ruta": "/portal/cuenta/",
+    "status": 200,
+    "alto": 4310,
+    "ancho": 390
+  },
+  {
+    "estudiante": "01",
+    "width": 390,
+    "ruta": "/portal/academico/",
+    "status": 200,
+    "alto": 2437,
+    "ancho": 390
+  },
+  {
+    "estudiante": "01",
+    "width": 768,
+    "ruta": "/portal/",
+    "status": 200,
+    "alto": 952,
+    "ancho": 768
+  },
+  {
+    "estudiante": "01",
+    "width": 768,
+    "ruta": "/portal/cuenta/",
+    "status": 200,
+    "alto": 3770,
+    "ancho": 768
+  },
+  {
+    "estudiante": "01",
+    "width": 768,
+    "ruta": "/portal/academico/",
+    "status": 200,
+    "alto": 2294,
+    "ancho": 768
+  },
+  {
+    "estudiante": "01",
+    "width": 1366,
+    "ruta": "/portal/",
+    "status": 200,
+    "alto": 952,
+    "ancho": 1366
+  },
+  {
+    "estudiante": "01",
+    "width": 1366,
+    "ruta": "/portal/cuenta/",
+    "status": 200,
+    "alto": 3812,
+    "ancho": 1366
+  },
+  {
+    "estudiante": "01",
+    "width": 1366,
+    "ruta": "/portal/academico/",
+    "status": 200,
+    "alto": 2310,
+    "ancho": 1366
+  },
+  {
+    "estudiante": "17",
+    "width": 390,
+    "ruta": "/portal/",
+    "status": 200,
+    "alto": 970,
+    "ancho": 390
+  },
+  {
+    "estudiante": "17",
+    "width": 390,
+    "ruta": "/portal/cuenta/",
+    "status": 200,
+    "alto": 4644,
+    "ancho": 390
+  },
+  {
+    "estudiante": "17",
+    "width": 390,
+    "ruta": "/portal/academico/",
+    "status": 403,
+    "alto": 970,
+    "ancho": 390
+  },
+  {
+    "estudiante": "17",
+    "width": 768,
+    "ruta": "/portal/",
+    "status": 200,
+    "alto": 952,
+    "ancho": 768
+  },
+  {
+    "estudiante": "17",
+    "width": 768,
+    "ruta": "/portal/cuenta/",
+    "status": 200,
+    "alto": 4032,
+    "ancho": 768
+  },
+  {
+    "estudiante": "17",
+    "width": 768,
+    "ruta": "/portal/academico/",
+    "status": 403,
+    "alto": 952,
+    "ancho": 768
+  },
+  {
+    "estudiante": "17",
+    "width": 1366,
+    "ruta": "/portal/",
+    "status": 200,
+    "alto": 952,
+    "ancho": 1366
+  },
+  {
+    "estudiante": "17",
+    "width": 1366,
+    "ruta": "/portal/cuenta/",
+    "status": 200,
+    "alto": 4074,
+    "ancho": 1366
+  },
+  {
+    "estudiante": "17",
+    "width": 1366,
+    "ruta": "/portal/academico/",
+    "status": 403,
+    "alto": 952,
+    "ancho": 1366
+  },
+  {
+    "estudiante": "29",
+    "width": 390,
+    "ruta": "/portal/",
+    "status": 200,
+    "alto": 979,
+    "ancho": 390
+  },
+  {
+    "estudiante": "29",
+    "width": 390,
+    "ruta": "/portal/cuenta/",
+    "status": 200,
+    "alto": 2870,
+    "ancho": 390
+  },
+  {
+    "estudiante": "29",
+    "width": 390,
+    "ruta": "/portal/academico/",
+    "status": 200,
+    "alto": 2623,
+    "ancho": 390
+  },
+  {
+    "estudiante": "29",
+    "width": 768,
+    "ruta": "/portal/",
+    "status": 200,
+    "alto": 952,
+    "ancho": 768
+  },
+  {
+    "estudiante": "29",
+    "width": 768,
+    "ruta": "/portal/cuenta/",
+    "status": 200,
+    "alto": 2337,
+    "ancho": 768
+  },
+  {
+    "estudiante": "29",
+    "width": 768,
+    "ruta": "/portal/academico/",
+    "status": 200,
+    "alto": 2506,
+    "ancho": 768
+  },
+  {
+    "estudiante": "29",
+    "width": 1366,
+    "ruta": "/portal/",
+    "status": 200,
+    "alto": 952,
+    "ancho": 1366
+  },
+  {
+    "estudiante": "29",
+    "width": 1366,
+    "ruta": "/portal/cuenta/",
+    "status": 200,
+    "alto": 2353,
+    "ancho": 1366
+  },
+  {
+    "estudiante": "29",
+    "width": 1366,
+    "ruta": "/portal/academico/",
+    "status": 200,
+    "alto": 2522,
+    "ancho": 1366
+  }
+]
